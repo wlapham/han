@@ -4,6 +4,14 @@
 
 Han is a suite of AI skills and agents for solo (or small-team) product engineers. It combines evidence-based planning, full documentation maintenance, deep code review, and architectural analysis into a team of specialists you can dispatch from Claude Code.
 
+## What this plugin does
+
+Han turns planning, review, and documentation work that would normally take a team into a set of deterministic skills you can run from Claude Code. Each skill dispatches specialist agents — project managers, adversarial reviewers, investigators, architectural analysts, testing and security specialists — to do the judgment-heavy work, then folds their findings into an artifact you can trust.
+
+The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on the plan, then review the resulting code, then write the PR description — all through named skills that hand off to each other cleanly.
+
+Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs through the whole plugin.
+
 ## Which path are you on?
 
 - **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
@@ -13,23 +21,56 @@ Han is a suite of AI skills and agents for solo (or small-team) product engineer
 - **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md) — the evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
 - **Writing or editing a skill or agent?** → [Contributing](./CONTRIBUTING.md).
 
-## What this plugin does
+## Skills
 
-Han turns planning, review, and documentation work that would normally take a team into a set of deterministic skills you can run from Claude Code. Each skill dispatches specialist agents — project managers, adversarial reviewers, investigators, architectural analysts, testing and security specialists — to do the judgment-heavy work, then folds their findings into an artifact you can trust.
+Fifteen skills, grouped by the moment you reach for them. Each category links to the full long-form docs via the [Skills Index](./docs/skills/README.md).
 
-The skills are designed to compose. You can plan a feature, then plan its implementation, then iterate on the plan, then review the resulting code, then write the PR description — all through named skills that hand off to each other cleanly.
+### Planning
 
-Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs through the whole plugin.
-
-## You probably want
-
-Three skills cover the majority of first-contact use:
+Spec what to build, plan how to build it, sequence it into phases, and stress-test the plan before you commit.
 
 - **[`/plan-a-feature`](./docs/skills/plan-a-feature.md)** — Build a feature specification from scratch through an evidence-based interview.
-- **[`/code-review`](./docs/skills/code-review.md)** — Comprehensive code review of the current branch or specified files.
-- **[`/investigate`](./docs/skills/investigate.md)** — Evidence-based investigation of a bug, with adversarial validation of the proposed fix.
+- **[`/plan-implementation`](./docs/skills/plan-implementation.md)** — Turn a feature specification into an implementation plan through a project-manager-led team conversation.
+- **[`/plan-a-phased-build`](./docs/skills/plan-a-phased-build.md)** — Split a body of work into a numbered sequence of vertical-slice phases, each independently demoable.
+- **[`/iterative-plan-review`](./docs/skills/iterative-plan-review.md)** — Stress-test an existing plan through multiple codebase-grounded review passes.
 
-The [Quickstart](./docs/quickstart.md) has path-by-path guidance for every other situation.
+### Investigation & root cause
+
+Find out *why* something is broken, with evidence to back it.
+
+- **[`/investigate`](./docs/skills/investigate.md)** — Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
+
+### Review & analysis
+
+Get a second set of eyes on code that already exists.
+
+- **[`/code-review`](./docs/skills/code-review.md)** — Comprehensive code review of the current branch or specified files.
+- **[`/gh-pr-review`](./docs/skills/gh-pr-review.md)** — Run a code review against a GitHub PR and post the review as comments.
+- **[`/architectural-analysis`](./docs/skills/architectural-analysis.md)** — Deep architectural analysis of a module: coupling, data flow, concurrency, risk, and SOLID alignment.
+- **[`/gap-analysis`](./docs/skills/gap-analysis.md)** — Compare two artifacts (spec vs. implementation, PRD vs. shipped feature) and produce a plain-language report indexed by stable gap IDs.
+- **[`/test-planning`](./docs/skills/test-planning.md)** — Produce a prioritized test plan for a branch or directory.
+
+### Discovery & context
+
+Produce reference material every other skill (and future-you) benefits from.
+
+- **[`/project-discovery`](./docs/skills/project-discovery.md)** — Scan the repository for languages, frameworks, tooling, and structure.
+- **[`/project-documentation`](./docs/skills/project-documentation.md)** — Create and maintain documentation for features, systems, and components.
+
+### Conventions & decisions
+
+Codify how the team works.
+
+- **[`/coding-standard`](./docs/skills/coding-standard.md)** — Create and update coding standards from existing patterns or evidence-based research.
+- **[`/architectural-decision-record`](./docs/skills/architectural-decision-record.md)** — Create, extract, or convert architectural decision records.
+
+### Reporting
+
+Turn work into something shareable outside the repo.
+
+- **[`/update-pr-description`](./docs/skills/update-pr-description.md)** — Generate a PR description from the current branch's changes.
+
+Not sure which category fits your situation? The [Quickstart](./docs/quickstart.md) has path-by-path guidance for the most common ones.
 
 ## Installation
 
@@ -40,7 +81,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 /plugin install han@testdouble-skills-internal
 ```
 
-## Documentation map
+## Documentation
 
 - [Concepts](./docs/concepts.md) — Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Quickstart](./docs/quickstart.md) — Four paths for four common situations. Each path is a short sequence of skills.
