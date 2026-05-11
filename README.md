@@ -53,10 +53,10 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 ## Maintainers
 
-Han is owned by [Test Double](https://testdouble.com), and maintained by the following people:
+Han is an open source product of [Test Double](https://testdouble.com), and maintained by the following people:
 
 - [River Lynn Bailey](https://github.com/mxriverlynn): Creator, and primary maintainer
 
 ## LEGAL NOTICES
 
-Copyright 2026 Test Double, Inc. Distributed under the [MIT license](./LICENSE).
+Copyright 2026 [Test Double, Inc](https://testdouble.com). Distributed under the [MIT license](./LICENSE).
