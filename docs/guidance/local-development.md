@@ -41,13 +41,13 @@ If you previously installed `testdouble/skills-internal` from GitHub, remove it 
 ### 5. Install the plugin you're working on
 
 1. Run `/plugin`
-2. Switch to the **Marketplace** tab (singular — this is the plugin browser, not the marketplace config tab)
+2. Switch to the **Marketplace** tab (singular: this is the plugin browser, not the marketplace config tab)
 3. Find and select the plugin you want to test
 4. Install it in **user scope** so it's available across all your Claude instances, not just this project
 
 ## Workflow
 
-Once installed, your local marketplace points at your working tree. Any changes you make to skill files (`SKILL.md`, references, scripts) are picked up immediately — no reinstall needed. This means you can:
+Once installed, your local marketplace points at your working tree. Any changes you make to skill files (`SKILL.md`, references, scripts) are picked up immediately. No reinstall needed. This means you can:
 
 1. Edit a skill on your branch
 2. Open (or switch to) any Claude instance
