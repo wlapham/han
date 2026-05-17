@@ -23,7 +23,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 
 ## Skills
 
-Fifteen skills, grouped by the moment you reach for them. Each category links to the full long-form docs through the [Skills Index](./docs/skills/README.md).
+Sixteen skills, grouped by the moment you reach for them. Each category links to the full long-form docs through the [Skills Index](./docs/skills/README.md).
 
 ### Planning
 
@@ -38,6 +38,7 @@ Spec what to build, plan how to build it, sequence it into phases, and stress-te
 
 Find out *why* something is broken, with evidence to back it.
 
+- **[`/issue-triage`](docs/skills/issue-triage.md).** Classify a vague issue or bug report, identify missing information, assess severity and reproducibility, and recommend the right next skill.
 - **[`/investigate`](./docs/skills/investigate.md).** Evidence-based investigation of bugs, failures, and unexpected behavior, with adversarial validation of the proposed fix.
 
 ### Review & analysis
@@ -85,7 +86,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Quickstart](./docs/quickstart.md). Four paths for four common situations. Each path is a short sequence of skills.
-- [Skills Index](./docs/skills/README.md). All 15 skills, grouped by purpose.
+- [Skills Index](./docs/skills/README.md). All 16 skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All 21 agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.
 - [YAGNI](./docs/yagni.md). The evidence-based "You Aren't Gonna Need It" rule every planning, review, and architecture skill applies.
