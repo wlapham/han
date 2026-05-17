@@ -15,7 +15,7 @@ Read [Concepts](./docs/concepts.md) for the skill-and-agent model that runs thro
 ## Which path are you on?
 
 - **New to han?** → Start with [Concepts](./docs/concepts.md), then the [Quickstart](./docs/quickstart.md).
-- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 15 skills grouped by purpose.
+- **Looking for a specific skill?** → [Skills Index](./docs/skills/README.md). 16 skills grouped by purpose.
 - **Looking for a specific agent?** → [Agents Index](./docs/agents/README.md). 21 agents grouped by role.
 - **Wondering how the agent swarms scale?** → [Sizing](./docs/sizing.md). The small / medium / large dispatch model used by `/code-review`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation`.
 - **Wondering why a skill said "YAGNI"?** → [YAGNI](./docs/yagni.md). The evidence-based rule every planning, review, and architecture skill applies before committing items to an artifact.
