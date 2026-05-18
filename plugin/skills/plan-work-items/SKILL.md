@@ -25,10 +25,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
 
 Break an implementation plan into vertical slices (tracer bullets) and write them as work items to a single `work-items.md` file.
 
-This skill mostly coordinates: locating the plan or context, resolving where the file goes, getting confirmation, writing the work-items file. Step 5 is where the judgement comes into play, in dividing up the plan.
+This skill mostly coordinates: locating the plan or context, resolving where the file goes, printing the breakdown, writing the work-items file. It runs autonomously end to end. Step 5 is where the judgement comes into play, in dividing up the plan.
 
 ## Operating Principles
 
+- **Run autonomously.** After the initial request, run end to end without pausing for human confirmation. When a decision has a reasonable default (where the file goes, how the plan divides), make it, state it, and proceed. Print the work item breakdown for visibility, but never gate on approval to continue. Stop for the user only when the skill genuinely cannot continue without input — there is no plan or context to work from at all.
 - **One file, no repository awareness.** This skill produces exactly one `work-items.md`. It does not split work by repository, count repositories, or reason about cross-repository integration. The breakdown is driven only by the plan or context it is given.
 - **Save incrementally — never lose work.** Write the work-items file as soon as the title and intro are drafted, then append each work item as it is finalized. Do not buffer the whole document in conversation memory and write it at the end.
 - **All sub-agents in this skill run on sonnet.** When launching any Agent tool call in this skill, pass `model: "sonnet"`.
@@ -62,9 +63,9 @@ Resolve `{folder}` in this order:
 1. If the user specified an output folder, use it.
 2. If the plan is a file, default to the same folder as the plan file.
 3. If there is no plan file but the provided context points at a folder or document location, write next to that.
-4. Otherwise, make a best educated guess based on the provided context: propose a folder of **2 to 4 words** in kebab-case, placed under an existing documentation root surfaced via CLAUDE.md, `project-discovery.md`, or a Glob fallback (`docs/features/<feature>/`, `docs/plans/`, `docs/`). Confirm the folder with the user in one short line before writing files.
+4. Otherwise, make a best educated guess based on the provided context: choose a folder of **2 to 4 words** in kebab-case, placed under an existing documentation root surfaced via CLAUDE.md, `project-discovery.md`, or a Glob fallback (`docs/features/<feature>/`, `docs/plans/`, `docs/`). State the chosen folder in one short line and proceed; do not wait for confirmation.
 
-If `work-items.md` already exists in the chosen folder, ask the user whether to overwrite, write to a timestamp-suffixed name, or stop. Do not silently overwrite.
+If `work-items.md` already exists in the chosen folder, do not silently overwrite it and do not stop to ask: write to a timestamp-suffixed name (e.g., `work-items-2026-05-18.md`) and state which file was written. The existing file is preserved.
 
 ### 3. Explore the codebase when needed
 
@@ -74,7 +75,7 @@ If the plan references existing code or boundaries that aren't in your context, 
 
 Before drafting work items, list every artifact an implementer of those work items will need. See [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md) for the include list, exclude list, and screenshot-to-work-item mapping rules.
 
-If an expected artifact is missing (for example, the plan touches an HTTP boundary but no contract file exists), surface it to the user before Step 5. Work items that consume an undefined contract are not draftable.
+If an expected artifact is missing (for example, the plan touches an HTTP boundary but no contract file exists), note it in the breakdown report rather than stopping: draft the work items that do not depend on it, and flag the work items it blocks as not draftable until the artifact exists. Stop only if no work items are draftable without the missing artifact.
 
 ### 5. Draft the work items
 
@@ -96,9 +97,9 @@ If the user asked for a different prefix (for example, a short feature-derived p
 
 Work item title format: `<W-N> — <short descriptive name>` (em-dash separator).
 
-### 7. Show the breakdown and get confirmation
+### 7. Print the breakdown
 
-Present a numbered list. For each work item show:
+Print a numbered list for visibility. For each work item show:
 
 - **Title**: `<W-N> — <short descriptive name>`
 - **Type**: HITL or AFK
@@ -107,7 +108,7 @@ Present a numbered list. For each work item show:
 - **Reference artifacts**: contract sections, design frame IDs, ADRs, and other references from Step 4
 - **Design references**: when `ui-designs/` exists and the work item is UI-bearing, the screenshot filenames that will be referenced
 
-Wait for the user's confirmation before writing files.
+This report is for visibility, not approval. Do not wait for the user's confirmation — proceed directly to Step 8 and write the file.
 
 ### 8. Write the work-items file
 

@@ -17,6 +17,7 @@ Operator documentation for the `/plan-work-items` skill in the han plugin. This 
 - **Symbolic ID.** Each work item gets a stable identifier (`W-N`). IDs are for cross-referencing work items within the file and citing them in tickets, threads, and follow-up work. They are stable for the life of the file.
 - **One file, no repository awareness.** The output is exactly one `work-items.md`. The skill never splits work by repository, counts repositories, or reasons about cross-repository integration. The breakdown is driven only by the plan or context it is given.
 - **Dependencies.** A work item's `Depends on` line names other work items in the same file that must complete first, or `None`. Work items are written in dependency order.
+- **Runs autonomously.** After you invoke it, the skill runs end to end without pausing for approval. It makes the reasonable default decision (where the file goes, how the plan divides), states it, prints the breakdown for visibility, and writes the file. It stops for you only when it genuinely cannot continue: there is no plan or context to work from.
 
 ## When to use it
 
@@ -42,13 +43,13 @@ Run `/plan-work-items` in Claude Code.
 Give it:
 
 1. **The feature name or implementation plan, optional.** The default is to look for the plan within the project. If there is no plan file, point it at whatever context describes the work.
-2. **The output folder, optional.** Defaults to the plan file's folder. When there is no plan file, the skill writes next to the source context or proposes a best-guess folder and confirms it with you before writing.
+2. **The output folder, optional.** Defaults to the plan file's folder. When there is no plan file, the skill writes next to the source context or chooses a best-guess folder, states which folder it picked, and proceeds without waiting.
 
 Example prompts that work well:
 
 - `/plan-work-items docs/features/my-feature/feature-implementation-plan.md`. Divides the plan in `feature-implementation-plan.md` into work items written to `docs/features/my-feature/work-items.md`.
 - `/plan-work-items my-feature`. Looks for a plan under `docs/features/my-feature/` to divide into work items.
-- `/plan-work-items`. *"Break this context into work items"* with the context described inline. The skill proposes a folder and confirms it with you before writing.
+- `/plan-work-items`. *"Break this context into work items"* with the context described inline. The skill states the folder it chose and proceeds without waiting.
 
 ## What you get back
 
@@ -63,7 +64,7 @@ One file on disk plus an in-channel summary:
 - **Pair with `/plan-implementation` upstream.** This skill depends on there being a plan to break down. `/plan-implementation` produces it.
 - **Pair with `/iterative-plan-review` upstream.** A highly-trusted, reviewed-and-battle-tested plan makes dividing it into work items much easier and the breakdown sharper. Do not break down a plan you do not yet trust.
 - **Pair with `/plan-a-phased-build` upstream when the work is large.** When the effort is big enough to ship in slices, phase it first, plan the implementation of a single phase, then run this skill against that phase's plan. Each work-items file then covers one phase.
-- **Pair with `/tdd` downstream.** Once a work item is confirmed, `/tdd` implements it test-first. The work item's `Description`, `Tests`, and `Acceptance criteria` become the behavior test list.
+- **Pair with `/tdd` downstream.** Once the breakdown is written, `/tdd` implements a work item test-first. The work item's `Description`, `Tests`, and `Acceptance criteria` become the behavior test list.
 
 ## YAGNI (when applicable)
 
@@ -75,17 +76,17 @@ See [YAGNI](../yagni.md) for the two gates, the acceptable-evidence list, and th
 
 ## Cost and latency
 
-One sub-agent dispatch: `project-manager` on `sonnet` for the work item breakdown (Step 5). All other work runs in-process: locating and reading the plan, resolving the output location, inventorying reference artifacts, assigning symbolic IDs, presenting the breakdown for confirmation, and writing the work-items file. The project-manager dispatch is the most expensive step. For a typical feature plan, expect a single dispatch plus a few minutes of in-process work. The skill is designed for a once-per-plan cadence after planning is complete. Re-run it only after the plan has materially changed. For iterating on the plan itself, use `/iterative-plan-review`.
+One sub-agent dispatch: `project-manager` on `sonnet` for the work item breakdown (Step 5). All other work runs in-process: locating and reading the plan, resolving the output location, inventorying reference artifacts, assigning symbolic IDs, printing the breakdown for visibility, and writing the work-items file. The project-manager dispatch is the most expensive step. For a typical feature plan, expect a single dispatch plus a few minutes of in-process work. The skill is designed for a once-per-plan cadence after planning is complete. Re-run it only after the plan has materially changed. For iterating on the plan itself, use `/iterative-plan-review`.
 
 ## In more detail
 
-The skill's input is a trusted implementation plan, or whatever context describes the work when no plan file exists. Its output is a single decomposition file. The judgment-heavy work happens in one place: the work item breakdown (Step 5), dispatched to `project-manager`. Everything around it is coordination: locating the plan, resolving where the file goes, inventorying the artifacts an implementer needs, presenting the breakdown for confirmation, and writing the file incrementally.
+The skill's input is a trusted implementation plan, or whatever context describes the work when no plan file exists. Its output is a single decomposition file. The judgment-heavy work happens in one place: the work item breakdown (Step 5), dispatched to `project-manager`. Everything around it is coordination: locating the plan, resolving where the file goes, inventorying the artifacts an implementer needs, printing the breakdown for visibility, and writing the file incrementally. The skill runs unattended from invocation to the finished file; it stops for you only when there is no plan or context to work from at all.
 
 **Locating the source.** The skill takes the plan from an explicit path, a feature name resolved to `docs/features/<name>/feature-implementation-plan.md`, the most recently updated plan when several exist, or inline context when there is no plan file at all. It reads the plan plus anything the plan links (a feature specification, a contract file, an ADR). The plan content is the union of those sources. It never fetches a plan from a URL or an external issue tracker.
 
-**Resolving the output location.** The skill writes exactly one `work-items.md`. It goes in the user-specified folder, or the plan file's folder, or next to the source context, or — when none of those exist — a best-guess folder of two to four kebab-case words under an existing documentation root, confirmed with you before any file is written. If a `work-items.md` already exists in the chosen folder, the skill asks whether to overwrite, write to a timestamped name, or stop. It never silently overwrites.
+**Resolving the output location.** The skill writes exactly one `work-items.md`. It goes in the user-specified folder, or the plan file's folder, or next to the source context, or, when none of those exist, a best-guess folder of two to four kebab-case words under an existing documentation root. It states which folder it chose and proceeds without waiting for confirmation. If a `work-items.md` already exists in the chosen folder, the skill does not overwrite it and does not stop to ask: it writes to a timestamp-suffixed name and states which file it wrote. The existing file is always preserved.
 
-**The breakdown.** `project-manager` (sonnet) receives the full plan content, the reference artifact inventory, and the skill's Rules verbatim, with a directive to draft vertical slices: each work item a narrow but complete path through the appropriate layers, demoable or verifiable on its own, classified HITL or AFK, preferring AFK and preferring many thin work items over few thick ones. It returns a numbered list and writes no files. The skill returns that list verbatim, assigns `W-N` IDs, and presents the breakdown for your confirmation before writing anything.
+**The breakdown.** `project-manager` (sonnet) receives the full plan content, the reference artifact inventory, and the skill's Rules verbatim, with a directive to draft vertical slices: each work item a narrow but complete path through the appropriate layers, demoable or verifiable on its own, classified HITL or AFK, preferring AFK and preferring many thin work items over few thick ones. It returns a numbered list and writes no files. The skill returns that list verbatim, assigns `W-N` IDs, prints the breakdown for visibility, and writes the file without waiting for approval.
 
 **Incremental writing.** The skill writes the title and intro first, then appends each work item as it is finalized. Buffering the whole document in conversation memory and writing at the end is explicitly disallowed. If something interrupts the run, the work in progress is preserved on disk.
 
