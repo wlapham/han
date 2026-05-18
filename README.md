@@ -33,7 +33,7 @@ Spec what to build, plan how to build it, sequence it into phases, and stress-te
 - **[`/plan-implementation`](./docs/skills/plan-implementation.md).** Turn a feature specification into an implementation plan through a project-manager-led team conversation.
 - **[`/plan-a-phased-build`](./docs/skills/plan-a-phased-build.md).** Split a body of work into a numbered sequence of vertical-slice phases, each independently demoable.
 - **[`/iterative-plan-review`](./docs/skills/iterative-plan-review.md).** Stress-test an existing plan through multiple codebase-grounded review passes.
-- **[`/implementation-plan-to-issues`](./docs/skills/implementation-plan-to-issues.md).** Divide up the implementation plan into atomic units of work.
+- **[`/plan-work-items`](./docs/skills/plan-work-items.md).** Divide a trusted implementation plan into independently-grabbable work items in a single work-items file.
 
 ### Building
 
