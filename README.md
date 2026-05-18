@@ -100,7 +100,7 @@ Add the Test Double skills marketplace to Claude Code, then install the plugin:
 - [Contributing](./CONTRIBUTING.md). Adding or editing skills, agents, and documentation.
 - [Changelog](./CHANGELOG.md). What's new in each version of the plugin.
 
-## Maintainance and Support
+## Maintenance and Support
 
 - **Maintenance horizon:** Indefinitely maintained, best-effort. No SLA.
 - **Project type:** Personal project, with some Test Double support

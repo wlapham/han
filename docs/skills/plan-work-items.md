@@ -124,3 +124,4 @@ URL: https://www.mountaingoatsoftware.com/books/user-stories-applied
 - [`/tdd`](./tdd.md). Pair downstream to implement a work item test-first.
 - [Work item template](../../plugin/skills/plan-work-items/references/work-item-template.md). The template the skill renders for each work item.
 - [Work-items file format](../../plugin/skills/plan-work-items/references/work-items-file-format.md). The title, intro, and preamble structure of the output file.
+- [Reference artifact inventory](../../plugin/skills/plan-work-items/references/reference-artifact-inventory.md). The include list, exclude list, and screenshot-to-work-item mapping rules the skill applies in Step 4.

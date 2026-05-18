@@ -72,41 +72,39 @@ A triage report file with these sections:
 This is the exact output contract the skill follows. It is intentionally strict to prevent inference from vague reports.
 
 ```md
-# Summary
+# {one-sentence summary of the issue in plain terms}
 
-{one sentence}
-
-# Issue Type
+## Issue Type
 
 {Bug | Feature Request | Performance | Security | Regression | Question | Other}
 
-# Reported Behavior
+## Reported Behavior
 
 {what the reporter said happened}
 
-# Expected Behavior
+## Expected Behavior
 
 {what the reporter said should happen, or Unknown}
 
-# Missing Information
+## Missing Information
 
 {bulleted list, or "None - report has enough to proceed."}
 
-# Suspected Areas
+## Suspected Areas
 
-{bulleted list. Omit if nothing is explicitly mentioned}
+{bulleted list. Omitted entirely when nothing is inferable}
 
-# Severity
+## Severity
 
 {Critical | High | Medium | Low | Unknown}
 
-# Reproducibility
+## Reproducibility
 
 {Always | Intermittent | Rare | Unknown}
 
-# Recommended Next Step
+## Recommended Next Step
 
-{"Clarify with reporter before proceeding" or one of: /investigate, /plan-a-feature, /plan-implementation}
+{"Clarify with reporter before proceeding", "Answer the question directly; no han skill needed", or one of: /investigate, /plan-a-feature, /plan-implementation}
 ```
 
 
@@ -166,7 +164,7 @@ Intermittent
 
 ## Cost and latency
 
-The skill dispatches no sub-agents. It reads the report and the project context (CLAUDE.md if present), then produces the triage document in a single pass. Expect fast turnaround relative to investigation or planning skills. Use it at the start of any incoming issue before deciding which deeper skill to run.
+The skill dispatches no sub-agents. It reads the report and, only to sharpen the Suspected Areas section, the project context (`CLAUDE.md` and `project-discovery.md` when present, with `project-discovery.md` treated as the richer system map), then produces the triage document in a single pass. Expect fast turnaround relative to investigation or planning skills. Use it at the start of any incoming issue before deciding which deeper skill to run.
 
 
 ## Related documentation
