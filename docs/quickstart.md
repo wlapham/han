@@ -32,8 +32,9 @@ You have a feature idea and want a specification grounded in evidence, then a pl
 
 Something is broken. You want a root cause, not a guess.
 
-1. **[`/investigate`](./skills/investigate.md).** Evidence-based investigation: file paths, line numbers, git history, test coverage. Produces an investigation report with the root cause and a proposed fix that an `adversarial-validator` has already tried to falsify.
-2. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* If the investigation produced a fix plan you do not trust, iterate on it before writing code.
+1. **[`/issue-triage`](./skills/issue-triage.md)** *(as needed).* If the report is vague or incomplete, classify the issue, identify missing information, and capture the next step before you investigate.
+2. **[`/investigate`](./skills/investigate.md).** Evidence-based investigation: file paths, line numbers, git history, test coverage. Produces an investigation report with the root cause and a proposed fix that an `adversarial-validator` has already tried to falsify.
+3. **[`/iterative-plan-review`](./skills/iterative-plan-review.md)** *(optional).* If the investigation produced a fix plan you do not trust, iterate on it before writing code.
 
 **You are done when:** you have a report that names the root cause with file-level evidence, and a fix plan that has survived adversarial review.
 

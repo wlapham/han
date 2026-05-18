@@ -130,7 +130,7 @@ URL: https://www.domainlanguage.com/ddd/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 15 skills, grouped by purpose.
+- [Skills Index](./README.md). All 16 skills, grouped by purpose.
 - [`structural-analyst`](../agents/structural-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`concurrency-analyst`](../agents/concurrency-analyst.md). The three parallel analysts.
 - [`risk-analyst`](../agents/risk-analyst.md). The agent that scores the analysts' findings by likelihood, severity, blast radius, and reversibility.
 - [`software-architect`](../agents/software-architect.md). The adversarial synthesis agent that produces intra-codebase recommendations and pseudocode sketches (dispatched by this skill).
