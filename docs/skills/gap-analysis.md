@@ -40,6 +40,7 @@ Operator documentation for the `/gap-analysis` skill in the han plugin. This doc
 - **Iterating on a plan that already exists.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of a plan you already drafted. This skill compares two artifacts. It does not refine a single plan in place.
 - **Auditing whether documentation updates preserved important content.** Use the [`content-auditor`](../agents/content-auditor.md) agent directly when the question is *"did the rewrite drop facts the original carried."* This skill compares two distinct artifacts. `content-auditor` validates a single artifact across a before-and-after.
 - **Single-artifact analysis with no comparison target, even implied.** If there is genuinely no second artifact and no implied target, the work is documentation, investigation, or architectural. Pick the matching skill instead.
+- **Open-ended research with no comparison target.** Use [`/research`](./research.md) to survey options, prior art, or how something works. This skill needs two artifacts to compare; `/research` needs only a question.
 
 ## How to invoke it
 
@@ -200,7 +201,7 @@ URLs: https://hbr.org/2007/09/performing-a-project-premortem and https://en.wiki
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 18 skills, grouped by purpose.
+- [Skills Index](./README.md). All 19 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`gap-analyzer`](../agents/gap-analyzer.md). The agent that performs the underlying gap analysis. The skill always dispatches it once and reads its full output.
 - [`adversarial-validator`](../agents/adversarial-validator.md). Required swarm role at every size. Attacks each gap with counter-evidence to produce per-gap `confirmed` / `contradicted` / `inconclusive` verdicts.

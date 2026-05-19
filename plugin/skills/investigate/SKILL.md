@@ -9,7 +9,8 @@ description: >
   not review code for quality or style — use code-review for auditing changes or
   gh-pr-review for posting review feedback to GitHub. Does not assess
   architectural health or structural risk — use architectural-analysis for
-  architectural concerns.
+  architectural concerns. Does not research open-ended options, prior art, or
+  how something works when nothing is broken — use research for that.
 allowed-tools: Read, Glob, Grep, Agent
 ---
 

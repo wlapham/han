@@ -39,6 +39,7 @@ Operator documentation for the `/architectural-analysis` skill in the han plugin
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](./project-documentation.md).
 - **Architectural decision records.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to capture a decision the architectural analysis motivated.
+- **Researching options or prior art.** Use [`/research`](./research.md) when the question is "what are the options" or "how does X work", not "is this existing module sound".
 
 ## How to invoke it
 
@@ -165,7 +166,7 @@ URL: https://www.domainlanguage.com/ddd/
 ## Related documentation
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
-- [Skills Index](./README.md). All 18 skills, grouped by purpose.
+- [Skills Index](./README.md). All 19 skills, grouped by purpose.
 - [Sizing](../sizing.md). The small / medium / large dispatch model this skill shares with the other swarming skills.
 - [`structural-analyst`](../agents/structural-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`concurrency-analyst`](../agents/concurrency-analyst.md). The discovery analysts.
 - [`adversarial-security-analyst`](../agents/adversarial-security-analyst.md), [`data-engineer`](../agents/data-engineer.md), [`devops-engineer`](../agents/devops-engineer.md), [`codebase-explorer`](../agents/codebase-explorer.md). The signal-selected specialists added at medium and large.

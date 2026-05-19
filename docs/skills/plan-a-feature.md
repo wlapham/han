@@ -39,6 +39,7 @@ Operator documentation for the `/plan-a-feature` skill in the han plugin. This d
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and needs documentation.
 - **Recording an architectural decision.** Use `/architectural-decision-record` when the team has made a decision that needs to be captured as an ADR.
 - **File-level code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code.
+- **Researching options before there is a feature to spec.** Use [`/research`](./research.md) to weigh options and prior art; bring the recommendation back here to specify it.
 
 ## How to invoke it
 
@@ -183,7 +184,7 @@ URLs: https://asana.com/resources/raid-log and https://projectmanagementcompass.
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 18 skills, grouped by purpose.
+- [Skills Index](./README.md). All 19 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative, project-manager-led team conversation.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for plans that already exist. Use this when an implementation plan or spec has been drafted and needs multiple review passes to challenge assumptions and refine.

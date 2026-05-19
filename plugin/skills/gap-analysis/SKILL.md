@@ -17,8 +17,10 @@ description: >
   distribution, and the specific domains the gaps touch. Does not perform the
   underlying gap analysis itself (delegates to `gap-analyzer`), does not
   investigate runtime bugs (use `investigate`), does not audit documentation
-  preservation after edits (use the `content-auditor` agent), and does not
-  assess module-level architecture (use `architectural-analysis`).
+  preservation after edits (use the `content-auditor` agent), does not
+  assess module-level architecture (use `architectural-analysis`), and does not
+  research open-ended options or prior art with no second artifact to compare
+  against (use `research`).
 arguments: size
 argument-hint: "[size: small | medium | large] [current state artifact, desired state artifact, optional: scope and modes]"
 allowed-tools: Read, Write, Glob, Grep, Agent, Bash(find *), Bash(git *)
