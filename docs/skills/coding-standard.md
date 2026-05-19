@@ -8,7 +8,7 @@ Operator documentation for the `/coding-standard` skill in the han plugin. This 
 
 - **What it does.** Creates and updates coding standards for the current project. From scratch, by converting an existing document, or by updating an existing standard.
 - **When to use it.** You want to formalize a convention the team already follows, or to research and establish a new one, with real code examples from the codebase.
-- **What you get back.** A hierarchically-named coding-standard document under `docs/coding-standards/` with metadata, Correct-usage examples, What-to-avoid examples, and a reference added to `CLAUDE.md`.
+- **What you get back.** A hierarchically-named coding-standard document under `docs/coding-standards/` with metadata, `paths:` YAML frontmatter, Correct-usage examples, What-to-avoid examples, and a symlink under `.claude/rules/coding-standards/` so Claude Code loads the standard as a path-scoped rule on demand.
 
 ## Key concepts
 
@@ -17,6 +17,7 @@ Operator documentation for the `/coding-standard` skill in the han plugin. This 
 - **Evidence from the codebase via parallel explorers.** Two `codebase-explorer` agents run in parallel. One finds implementation patterns (Correct-usage and What-to-avoid candidates with file:line references); the other finds existing standards and ADRs the new one should link or resolve. Correct-usage examples are drawn from real files. If the pattern is not yet implemented, examples are labeled "Proposed pattern."
 - **Adversarial review before verification.** A `junior-developer` agent stress-tests the draft for ambiguous rules, hidden assumptions, and conflicts with existing standards. An `information-architect` agent audits the draft for findability, scannability, and whether the Rationale is placed where the right reader will find it.
 - **Hierarchically-prefixed filenames.** `{top-level}[-{second-level}]-{hyphenated-name}.md`. A one- or two-level hierarchy prefix (for example, `svelte-stores-state-shape.md`) discovered at runtime from existing standards and project context, so related standards sort together in a directory listing.
+- **Path-scoped rules via symlink.** Each new standard carries `paths:` YAML frontmatter declaring the file globs it governs, and is symlinked from `.claude/rules/coding-standards/{filename}` into the canonical doc. Claude Code loads the standard into context only when it reads a file matching one of the globs (`load_reason: path_glob_match`), so the rule does not bloat session startup. Standards do not appear in the available-skills picker — the rules surface is separate.
 - **`/code-review` reads these automatically.** Once landed, the standards are consulted during every `/code-review`. Violations surface as findings.
 
 ## When to use it
@@ -56,8 +57,8 @@ Example prompts:
 
 A coding-standard document in the project's coding-standards directory, plus integration:
 
-- **`docs/coding-standards/{top-level}[-{second-level}]-{name}.md`.** The standard itself, following the template at [`references/template.md`](../../plugin/skills/coding-standard/references/template.md). The hierarchy prefix is discovered from existing standards and the project's languages, frameworks, and subsystems so related standards sort together. Includes metadata (Status, Authors, Applies To, Date Created, Last Updated, Reviewers), an Introduction, the Standard (rules in testable form), Correct-usage examples from real code, What-to-avoid examples, Rationale, and Additional Resources.
-- **A reference added to `CLAUDE.md`** under the coding-standards section, following the project's existing pattern so every downstream skill finds it.
+- **`docs/coding-standards/{top-level}[-{second-level}]-{name}.md`.** The standard itself, following the template at [`references/template.md`](../../plugin/skills/coding-standard/references/template.md). The hierarchy prefix is discovered from existing standards and the project's languages, frameworks, and subsystems so related standards sort together. The file opens with a YAML frontmatter block carrying the approved `paths:` globs, followed by metadata (Status, Authors, Applies To, Date Created, Last Updated, Reviewers), an Introduction, the Standard (rules in testable form), Correct-usage examples from real code, What-to-avoid examples, Rationale, and Additional Resources.
+- **A symlink under `.claude/rules/coding-standards/{filename}`** with a relative target pointing back to the canonical doc. Claude Code resolves it as a path-scoped rule and loads the standard into context only when a file matching one of the `paths:` globs is read. The skill never adds the standard as an enumerated entry in `CLAUDE.md` (or `AGENTS.md`); it adds a one-time pointer paragraph to the memory file only if the file does not already reference `.claude/rules/coding-standards/`.
 - **Cross-references.** Links to related standards, ADRs, and feature docs, added bidirectionally.
 - **Source-document handling** (conversion mode). If the source is fully subsumed, it is deleted and references updated. If it retains useful content, a link to the new standard is added.
 
@@ -79,13 +80,13 @@ The skill walks a nine-step process:
 
 1. **Determine mode.** Creating new / Converting existing / Updating existing.
 2. **Evaluate appropriateness.** Should this be tooling instead? If yes, warn and ask.
-3. **Discover project structure.** Find the coding-standards directory (or create one), enumerate existing standards, check format compatibility, resolve author info, and discover the filename hierarchy taxonomy from existing standards' filenames plus the project's languages, frameworks, and subsystems.
+3. **Discover project structure.** Find the coding-standards directory (or create one), enumerate existing standards, check format compatibility, resolve author info, discover the filename hierarchy taxonomy from existing standards' filenames plus the project's languages, frameworks, and subsystems, and capture the project's primary file-type globs for the `paths:` proposal in Step 6.
 4. **Gather context.** Topic, scope, motivation. Dispatch two `codebase-explorer` agents in parallel for implementation patterns and existing standards/ADRs.
 5. **Convert source document** (conversion mode only). Map sections using the ADR-conversion-mapping reference; handle the source file (delete if fully subsumed, link if partial).
-6. **Write the coding standard.** Hierarchically-prefixed filename (top-level subsystem/framework, optional second level), fill the template with real code examples and actual project language identifiers.
-7. **Integration.** Add `CLAUDE.md` reference; add cross-references in both directions.
+6. **Write the coding standard.** Hierarchically-prefixed filename (top-level subsystem/framework, optional second level), fill the template with real code examples and actual project language identifiers. Propose a `paths:` glob list scoped to what the standard governs, get user approval, and write it as YAML frontmatter at the top of the file.
+7. **Integration.** Create the symlink at `.claude/rules/coding-standards/{filename}` pointing back to the canonical doc with a relative target; ensure the memory file's pointer paragraph exists (added once if missing, never enumerating individual standards); add cross-references in both directions.
 8. **Adversarial review.** Dispatch `junior-developer` for ambiguity and assumption checks and `information-architect` for findability and structure. Apply actionable edits.
-9. **Verification.** Re-read the file, confirm metadata, template structure, real file paths, distinct Correct-vs-Avoid examples, and that Step 8 edits were applied.
+9. **Verification.** Re-read the file, confirm metadata, template structure, `paths:` frontmatter, working symlink, real file paths, distinct Correct-vs-Avoid examples, and that Step 8 edits were applied.
 
 ## YAGNI
 
@@ -114,6 +115,12 @@ URL: https://www.aboutamazon.com/news/workplace/what-is-a-six-page-narrative
 The SRE Book's treatment of postmortem and incident-review conventions (named, discoverable, reviewable documents) shaped the skill's bias toward hierarchically-named filenames that group related standards together and a reviewable metadata block.
 
 URL: https://sre.google/sre-book/
+
+### Claude Code Memory: Path-Scoped Rules
+
+Anthropic's Claude Code memory documentation defines the `.claude/rules/` surface, the `paths:` YAML frontmatter that scopes a rule to file globs (`load_reason: path_glob_match`), and the symlink support that lets the canonical doc live in the project's human-readable docs folder while Claude finds it through the rules surface. The skill's integration step is a direct application of this model: rules out of the memory file, into a path-scoped rules folder, loaded on demand.
+
+URL: https://code.claude.com/docs/en/memory
 
 ## Related documentation
 
