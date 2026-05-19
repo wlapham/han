@@ -33,6 +33,7 @@ Operator documentation for the `/coding-standard` skill in the han plugin. This 
 - **Architectural decisions.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to record a decision. A coding standard encodes a rule; an ADR records a choice and its alternatives.
 - **Feature documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a system works.
 - **Style rules that a linter or formatter can enforce.** Configure the tool. Do not write a standard that duplicates it.
+- **Open-ended research not destined for a standard.** Use [`/research`](./research.md) to survey options and prior art when the output you want is a recommendation, not an enforceable rule.
 
 ## How to invoke it
 

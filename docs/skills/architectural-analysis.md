@@ -39,6 +39,7 @@ Operator documentation for the `/architectural-analysis` skill in the han plugin
 - **Creating new project structures or scaffolding.** This skill analyzes existing code. It does not design from scratch.
 - **Documenting an existing module.** Use [`/project-documentation`](./project-documentation.md).
 - **Architectural decision records.** Use [`/architectural-decision-record`](./architectural-decision-record.md) to capture a decision the architectural analysis motivated.
+- **Researching options or prior art.** Use [`/research`](./research.md) when the question is "what are the options" or "how does X work", not "is this existing module sound".
 
 ## How to invoke it
 

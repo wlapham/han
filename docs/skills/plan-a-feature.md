@@ -39,6 +39,7 @@ Operator documentation for the `/plan-a-feature` skill in the han plugin. This d
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and needs documentation.
 - **Recording an architectural decision.** Use `/architectural-decision-record` when the team has made a decision that needs to be captured as an ADR.
 - **File-level code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code.
+- **Researching options before there is a feature to spec.** Use [`/research`](./research.md) to weigh options and prior art; bring the recommendation back here to specify it.
 
 ## How to invoke it
 

@@ -40,6 +40,7 @@ Operator documentation for the `/gap-analysis` skill in the han plugin. This doc
 - **Iterating on a plan that already exists.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of a plan you already drafted. This skill compares two artifacts. It does not refine a single plan in place.
 - **Auditing whether documentation updates preserved important content.** Use the [`content-auditor`](../agents/content-auditor.md) agent directly when the question is *"did the rewrite drop facts the original carried."* This skill compares two distinct artifacts. `content-auditor` validates a single artifact across a before-and-after.
 - **Single-artifact analysis with no comparison target, even implied.** If there is genuinely no second artifact and no implied target, the work is documentation, investigation, or architectural. Pick the matching skill instead.
+- **Open-ended research with no comparison target.** Use [`/research`](./research.md) to survey options, prior art, or how something works. This skill needs two artifacts to compare; `/research` needs only a question.
 
 ## How to invoke it
 

@@ -34,6 +34,7 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 - **Architectural analysis.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
 - **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
 - **Plan review.** Use [`/iterative-plan-review`](./iterative-plan-review.md) for multi-pass review of an existing plan.
+- **Open-ended research.** Use [`/research`](./research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
 
 ## How to invoke it
 

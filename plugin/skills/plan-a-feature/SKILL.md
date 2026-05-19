@@ -15,6 +15,8 @@ description: >
   bugs or failures — use investigate. Does not analyze existing architecture — use
   architectural-analysis. Does not document already-built features — use
   project-documentation. Does not record architectural decisions — use architectural-decision-record.
+  Does not research open-ended options or prior art before there is a feature to
+  specify — use research.
 arguments: size
 argument-hint: "[size: small | medium | large] [feature description, optional: output folder path]"
 allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *), Bash(mkdir *)
