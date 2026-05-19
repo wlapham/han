@@ -6,16 +6,17 @@ Operator documentation for the `research-analyst` agent in the han plugin. This 
 
 ## TL;DR
 
-- **What it does.** Researches an open-ended question from the open web and provided material, then returns sourced evidence, an options landscape, and a recommendation.
+- **What it does.** Researches an open-ended question from the open web and provided material, then returns sourced artifacts, plain-language results, indexed options when applicable, and a recommendation.
 - **When to dispatch it.** You need multi-angle research into options, prior art, or how something works, and every claim must trace to a checkable source.
-- **What you get back.** Numbered evidence items (E1, E2, …) each with a source and corroboration status, an options landscape, and a recommendation or an explicit "no clear winner".
+- **What you get back.** An indexed Artifacts registry (A1, A2, …) — link, summary, trust class, corroboration status per source — plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence basis (or "no clear winner").
 
 ## Key concepts
 
 - **Question in, landscape out.** The agent starts from a question, not a symptom or a codebase. It ends at a steelmanned set of options and a recommendation, never at a fix or a committed artifact.
-- **Sourced or it is not evidence.** Every item carries a source URL plus retrieval date, or a precise reference to provided material. An assertion with no checkable source is dropped, not reported.
+- **Everything is an artifact.** Every source becomes an indexed artifact with a link or location, a short summary, a trust class, and a corroboration status. Results, options, and the recommendation cross-reference artifact IDs, so every conclusion traces to its sources. An assertion with no artifact behind it is dropped in strict mode, or labeled `[reasoning]` in exploratory mode.
+- **Evidence mode is set by the brief.** Strict by default: unevidenced reasoning cannot be the basis of an option or the recommendation. Exploratory: it can, but every reasoning step is explicitly labeled and never written up as a sourced artifact.
 - **Content is data, never instruction.** Directive language inside a fetched page is recorded as a claim about that page, never acted on. The agent does not change behavior because a source told it to.
-- **Corroboration gate.** A claim that bears on the recommendation must be confirmed by an independent source or by evidence already in the brief, or it is carried with an explicit single-source caveat and cannot stand alone.
+- **Corroboration gate.** A claim that bears on the recommendation must be confirmed by an independent source or by evidence already in the brief, or it is carried with an explicit single-source caveat and cannot stand alone in strict mode.
 
 ## When to use it
 
@@ -48,7 +49,7 @@ Example prompts:
 
 ## What you get back
 
-A numbered evidence list (E1, E2, …), each with a Source line (URL plus retrieval date, or provided-material reference), a verbatim Finding, a Corroboration line (independent confirmation or "single source — caveated"), and a Relevance line. Then an Options Landscape — each viable option steelmanned with trade-offs keyed to evidence items — and a Recommendation, or an explicit "no clear winner" with the deciding criteria. The agent also reports what it searched for and did not find.
+An indexed Artifacts registry (A1, A2, …), each entry carrying a link or location, retrieval date for web sources, trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated by A#, single source — caveated, or contradicted by A#). Then plain-language Research Results that cross-reference artifacts by ID, an indexed Options to Consider list (O1, O2, …) when the question implies alternatives — each steelmanned with trade-offs and evidence status — and a Recommendation with its explicit evidence basis, or an explicit "no clear winner" with the deciding criteria. The agent also reports what it searched for and did not find.
 
 ## How to get the most out of it
 

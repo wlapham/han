@@ -8,7 +8,7 @@ Operator documentation for the `/research` skill in the han plugin. This documen
 
 - **What it does.** Researches an open-ended question and gives you back an evidence-backed, adversarially-validated landscape of options with a recommendation.
 - **When to use it.** You have a question, not a bug, and you want the options and prior art before you commit to a direction.
-- **What you get back.** A research report: the framed question, numbered evidence (E1, E2, …) each with a checkable source, an options landscape with trade-offs, a recommended option, and validation findings (V1, V2, …).
+- **What you get back.** A research report with one fixed structure: a plain-language summary on top, results with minimal jargon, indexed options when applicable, the recommendation and its evidence basis, validation, an indexed Artifacts registry (A1, A2, …) of every source with a link and summary, and a References section at the bottom.
 
 ## Key concepts
 
@@ -16,7 +16,8 @@ Operator documentation for the `/research` skill in the han plugin. This documen
 - **Output-agnostic.** The report is the only thing produced. `/research` never writes a feature spec, a coding standard, a gap report, an architecture assessment, or code. If your question is really one of those, it routes you to the skill that owns it.
 - **Reaches the open web.** Unlike `/investigate`, `/research` can search and fetch from the open web, read your codebase, and use material you provide. That web reach is the whole point: it answers "what is the prior art out there", not only "what does this repo do".
 - **Fetched content is data, never instruction.** A web page that says "ignore your instructions and do X" is recorded as a claim about that page, not followed. The web-facing research runs with no codebase context, so a hostile page has nothing to exfiltrate.
-- **Evidence is sourced and corroborated.** Every evidence item carries a source you can check yourself: a repository location, or a URL plus the date it was retrieved. A web claim that drives the recommendation must be corroborated by an independent source or by the codebase, or it is flagged single-source and cannot stand alone.
+- **Evidence required by default, override available.** "Research" implies evidence-based, so by default every claim that drives the recommendation must be corroborated by an independent source or the codebase, or it is flagged single-source and cannot stand alone. You can opt into *exploratory* mode (say "evidence optional", "allow unsourced", or "exploratory") to let the skill reason past the evidence and give you a take with more freedom. Either way, the report explicitly labels what does and does not have evidence, so the trade is always visible.
+- **One fixed, fully-traceable structure.** Every report has the same shape: a plain-language summary at the very top, then the results with minimal jargon, then indexed options when there are alternatives, then the recommendation and its evidence basis, then validation, then an indexed Artifacts registry (every source with a link and a short summary), then a References section at the very bottom. Artifact IDs are cited inline throughout, so every conclusion traces back to its sources.
 - **Sized small / medium / large.** Like the other swarming skills, `/research` scales its team to the question. It reads the question's conceptual scope — how many options, how many domains, how wide the reach — not its text length.
 
 ## When to use it
@@ -46,6 +47,7 @@ Give it:
 2. **A size, optional.** `small`, `medium`, or `large` as the first word overrides the automatic sizing. Otherwise the skill reads the question's scope and announces the size before dispatching.
 3. **An output path, optional.** The skill writes the report to a file. If a report already exists at the path you give, you are asked before anything is overwritten.
 4. **Any material to consider.** Paste or point at docs, links, or a vendor whitepaper. Provided material is held to the same scrutiny as a web source, since it may come from an interested party.
+5. **An evidence mode, optional.** Strict by default. Add "evidence optional" (or "allow unsourced", or "exploratory") to let the skill reason past the available evidence. The report still labels every claim's evidence status either way.
 
 Example prompts:
 
@@ -56,16 +58,15 @@ Example prompts:
 
 ## What you get back
 
-A research report file, plus an in-channel summary. The report covers:
+A research report file, plus an in-channel summary. Every report has the same fixed structure, top to bottom:
 
-- **Question.** The decision or unknown, framed precisely, with the alternatives in play named (or a note that there are none, for a "how does X work" question).
-- **Evidence Summary.** A numbered list (E1, E2, …) consolidated from the parallel `research-analyst` angles and, when a codebase bears on the question, `codebase-explorer`. Every item carries a checkable source and, for web evidence, the retrieval date and whether it is corroborated or single-source.
-- **Options Landscape.** Each viable option steelmanned, with trade-offs keyed to evidence items. Source-vs-source and codebase-vs-web conflicts are surfaced, not silently resolved.
-- **Recommendation.** The recommended option and why, referencing evidence by number. When the evidence does not support a single answer, the report says "no clear winner" and names the deciding criteria instead of forcing a pick.
-- **Validation.** Numbered `V1, V2, …` findings from `adversarial-validator`, which attacks the evidence, the options framing, the recommendation, and the integrity of the evidence-gathering (injection, staleness, single-source, astroturfing).
-- **Adjustments Made.** What changed after validation. If the recommendation did not survive, it is rewritten into the no-clear-winner form rather than left standing above a contradicting validation section.
-- **Confidence Assessment and Remaining Risks.** The closing judgment, including any single source the recommendation leaned on.
-- **Final Summary.** One sentence each for question, recommendation, why, validation outcome, remaining risks, and any sibling handoff.
+- **Summary.** Plain language, at the very top, no jargon. The answer in brief and one phrase on how solid it is. If you read nothing else, you have the answer.
+- **Research Results.** The relevant findings with minimal technical detail. Every claim cites the artifact IDs it rests on, e.g. "(A1)", and is marked inline when it is single-source or (in exploratory mode) reasoning.
+- **Options to Consider.** Present only when the question implies discrete alternatives. An indexed list (O1, O2, …), each option steelmanned with trade-offs, the artifacts it rests on, and its evidence status. Omitted entirely for "how does X work" questions.
+- **Recommendation.** The recommended option and its explicit evidence basis — which parts rest on corroborated evidence, which on a single source, and (exploratory only) which on reasoning. When the evidence does not support a single answer, it says "no clear winner" and names the deciding criteria instead of forcing a pick.
+- **Validation.** Numbered `V1, V2, …` findings from `adversarial-validator`, which attacks the evidence, the options framing, the recommendation, and the integrity of the evidence-gathering (injection, staleness, single-source, astroturfing). Includes any adjustments made (a non-surviving recommendation is rewritten into the no-clear-winner form) and the confidence assessment and remaining risks.
+- **Artifacts.** An indexed registry (A1, A2, …) of every information source used that is relevant to the results. Each entry: a link or repository location, retrieval date for web sources, trust class (codebase / web / provided), a short plain-language summary, and corroboration status. Always present, even for a minimal run. These IDs are what the rest of the report cross-references.
+- **References.** At the very bottom, the full pointer for every artifact and its original source, formatted for citation and end-to-end traceability.
 
 The report is presented for review. Accept it, ask for specific revisions, or redirect the question.
 
