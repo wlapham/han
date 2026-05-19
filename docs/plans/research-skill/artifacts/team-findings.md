@@ -159,9 +159,9 @@ domain-scoped briefs.
 
 ## Minor edits
 
-- F17: Forward the corrected ~14+ file rollout cost figure (recommendation V8) into OI-1 — gap-analyzer (GAP-3) — feature-specification.md#open-items
-- F18: Enumerate the specific count/sizing files (CLAUDE.md, README.md, docs/concepts.md, docs/sizing.md, docs/skills/README.md) in OI-1 — junior-developer (F5/OQ-5) — feature-specification.md#open-items
-- F19: No skills-index category fits cleanly; recommend grouping with `/investigate` under a relabeled "Investigation & research" grouping, captured as OI-2 — junior-developer (F6/OQ-6) — feature-specification.md#open-items
+- F17: Forward the corrected ~14+ file rollout cost figure (recommendation V8) into OI-1 — gap-analyzer (GAP-3) — later settled by user as D20 (rollout plan) — feature-specification.md#open-items, decision-log.md#d20-rollout-plan
+- F18: Enumerate the specific count/sizing files (CLAUDE.md, README.md, docs/concepts.md, docs/sizing.md, docs/skills/README.md) in OI-1 — junior-developer (F5/OQ-5) — later settled by user as D20 (rollout plan) — feature-specification.md#open-items, decision-log.md#d20-rollout-plan
+- F19: No skills-index category fits cleanly; recommend grouping with `/investigate` under a relabeled "Investigation & research" grouping — junior-developer (F6/OQ-6) — later settled by user as D21 (skills-index grouping) — feature-specification.md#open-items, decision-log.md#d21-skills-index-grouping
 - F20: Forward the recommendation's skill-composition vs. skill-decomposition contradiction as OI-3 so implementers do not cite both as co-equal authorities — gap-analyzer (GAP-4) — feature-specification.md#open-items
 - F21: Reframe Primary Flow step 3 behaviorally (drop the "before dispatching" sequencing mechanic; commit to the visible redirect and non-production of a report) — edge-case-explorer (#9, mechanics-leak) — feature-specification.md#primary-flow
 - F22: Soften the "file path / source URL" wording in Outcome to the behavioral "a source the reader can independently check"; keep the E#/V# numbering (Han product vocabulary, consistent with `/investigate`'s user-facing doc and the source recommendation) — junior-developer (F8, mechanics-leak) — feature-specification.md#outcome, decision-log.md#d11

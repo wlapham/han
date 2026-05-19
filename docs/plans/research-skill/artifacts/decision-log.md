@@ -246,3 +246,30 @@ either stated behaviorally in the spec or discoverable from the repo (the
 - **Driven by findings:** F14
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow, User Interactions, Edge Cases and Failure Modes
+
+### D20: Rollout plan
+
+- **Question:** How is the cross-skill rollout (counts, sizing docs, reciprocal routing) handled, given the corrected ~14+ file cost?
+- **Decision:** The rollout is accepted as owned by `plan-implementation`, which will turn it into an explicit file-by-file checklist. The known cost is ~14+ file changes: reciprocal "Does not — use `/research`" routing in each of the five neighbors' SKILL.md *and* long-form docs (kept in sync), plus the count/sizing surfaces — the skill count and "Counts to verify" line in `CLAUDE.md`, the count in `README.md`, the skill count and "sizing-aware skills" count in `docs/concepts.md`, the named sizing-skill list and table in `docs/sizing.md`, and the grouping in `docs/skills/README.md`. This is a rollout task, not a behavioral unknown, so it does not block.
+- **Rationale:** The user accepted the recommended approach: keep the file-by-file work in `plan-implementation` while recording the corrected cost and the enumerated surfaces here so it is not rediscovered. Resolves former OI-1.
+- **Evidence:** User input (this conversation, "use your recommendation for OI-1"); [../recommendation.md](../recommendation.md) Final recommendation constraint 3 and V8 (~14+ corrected figure); F17, F18.
+- **Rejected alternatives:**
+  - Enumerate the full file-by-file checklist in the spec now — rejected because it is implementation detail that belongs to `plan-implementation`, not a behavior of the skill.
+- **Linked technical notes:** —
+- **Driven by findings:** F17, F18
+- **Dependent decisions:** —
+- **Referenced in spec:** Out of Scope, Open Items, Summary
+
+### D21: Skills-index grouping
+
+- **Question:** Which skills-index category does `/research` belong to, given none of the existing groupings fits cleanly?
+- **Decision:** Group `/research` next to `/investigate` under a relabeled "Investigation & research" grouping in `docs/skills/README.md`. Both are evidence-plus-adversarial-validation deep dives; `/investigate` runs symptom→fix, `/research` runs question→options.
+- **Rationale:** The user accepted the recommended grouping. It places the two structurally-parallel deep-dive skills together and gives operators one obvious place to look for either. Resolves former OI-2.
+- **Evidence:** User input (this conversation, "use your recommendation for OI-2"); `docs/skills/README.md` existing groupings; F19.
+- **Rejected alternatives:**
+  - Place `/research` under "Discovery & context" — rejected because that grouping holds repository-scan skills, not open-ended research.
+  - Add a standalone single-skill category — rejected because it fragments the index and obscures the `/investigate` ↔ `/research` parallel.
+- **Linked technical notes:** —
+- **Driven by findings:** F19
+- **Dependent decisions:** —
+- **Referenced in spec:** Open Items, Summary

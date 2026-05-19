@@ -242,8 +242,9 @@ standard, a gap report, or an architecture assessment
   not code or skill files.
 - The exact enumeration of which neighbor skill files receive reciprocal-routing
   edits and the file-by-file rollout — that is implementation detail owned by
-  `plan-implementation`, not a behavior of the skill (see OI-1 for the known
-  cost).
+  `plan-implementation`, not a behavior of the skill (see
+  [D20](artifacts/decision-log.md#d20-rollout-plan) for the accepted rollout
+  plan and its known cost).
 
 ## Deferred (YAGNI)
 
@@ -271,33 +272,21 @@ standard, a gap report, or an architecture assessment
 
 ## Open Items
 
-- **OI-1:** `/research` becomes Han's 7th sized skill, so the sizing
-  documentation and the hard skill counts must be updated alongside it. The
-  source investigation put the true rollout cost at ~14+ file changes
-  (including reciprocal "Does not" routing in each of the five neighbors'
-  SKILL.md *and* long-form docs, kept in sync). Known count/sizing surfaces to
-  update: the skill count and "Counts to verify" line in `CLAUDE.md`, the
-  count in `README.md`, the skill count and the "sizing-aware skills" count in
-  `docs/concepts.md`, the named sizing-skill list and table in `docs/sizing.md`,
-  and the grouping in `docs/skills/README.md`.
-  - **Resolves when:** `plan-implementation` turns this into the explicit
-    file-by-file rollout checklist.
-  - **Blocks implementation:** No — it is a rollout task, not a behavioral
-    unknown.
-- **OI-2:** No existing skills-index category fits cleanly. Recommended: group
-  `/research` next to `/investigate` under a relabeled "Investigation &
-  research" grouping (both are evidence-plus-adversarial-validation deep dives;
-  `/investigate` runs symptom→fix, `/research` runs question→options).
-  - **Resolves when:** the operator confirms the grouping or names a different
-    one during implementation.
-  - **Blocks implementation:** No — it shapes discoverability, not behavior.
+OI-1 and OI-2 are resolved by user decision:
+[D20](artifacts/decision-log.md#d20-rollout-plan) settles the rollout plan and
+its ~14+ file cost (owned by `plan-implementation`);
+[D21](artifacts/decision-log.md#d21-skills-index-grouping) settles the
+skills-index grouping.
+
 - **OI-3:** The source recommendation's housekeeping note flagged an unresolved
-  contradiction between `skill-composition.md` and `skill-decomposition.md`.
-  Implementers must not treat those two guidance docs as co-equal authorities
-  for new skill design until it is reconciled.
-  - **Resolves when:** the contradiction is reconciled independently of this
-    skill.
-  - **Blocks implementation:** No — but it is a known trap for the implementer.
+  contradiction between `skill-composition.md` and `skill-decomposition.md`
+  over whether skills may call skills. Under investigation via `/investigate`;
+  its conclusion resolves this item and the recommendation's V3 housekeeping
+  note. See [artifacts/skills-calling-skills-investigation.md](artifacts/skills-calling-skills-investigation.md).
+  - **Resolves when:** the skills-calling-skills investigation completes and its
+    conclusion is folded back here.
+  - **Blocks implementation:** No — but it is a known trap for the implementer
+    until resolved.
 
 ## Summary
 
@@ -306,7 +295,7 @@ standard, a gap report, or an architecture assessment
   any committed artifact.
 - **Primary actors:** the Han operator running Claude Code.
 - **Decisions settled by evidence:** 13 — see [artifacts/decision-log.md](artifacts/decision-log.md)
-- **Decisions settled by user input:** 3 — see [artifacts/decision-log.md](artifacts/decision-log.md)
+- **Decisions settled by user input:** 5 — see [artifacts/decision-log.md](artifacts/decision-log.md)
 - **Sub-agents consulted:** junior-developer, gap-analyzer, edge-case-explorer, adversarial-security-analyst — see [artifacts/team-findings.md](artifacts/team-findings.md)
 - **Key adjustments from review:** added untrusted-web-source handling (data-not-instruction, context isolation, corroboration, trust labeling), defined research-specific sizing signals, made option-comparison conditional, dropped `gap-analyzer` from the roster, and added compound-question, hybrid-routing, post-validation-rewrite, and output-collision behaviors — see [artifacts/team-findings.md](artifacts/team-findings.md)
-- **Remaining open items:** 3 (all non-blocking)
+- **Remaining open items:** 1 (OI-3, non-blocking, under investigation)
