@@ -126,4 +126,4 @@ Subdirectories:
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Counts to verify when editing indexes.** 22 agents in `plugin/agents/`; 20 skills in `plugin/skills/`; 22 long-form agent docs in `docs/agents/`; 19 long-form skill docs in `docs/skills/`.
+- **Counts to verify when editing indexes.** 22 agents in `plugin/agents/`; 20 skills in `plugin/skills/`; 22 long-form agent docs in `docs/agents/`; 20 long-form skill docs in `docs/skills/`.

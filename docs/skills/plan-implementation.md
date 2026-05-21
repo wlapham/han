@@ -200,9 +200,10 @@ URL: https://ieeexplore.ieee.org/document/1204375
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 19 skills, grouped by purpose.
+- [Skills Index](./README.md). All 20 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-a-feature`](./plan-a-feature.md). The prior step. Produces the `feature-specification.md` this skill consumes. Running the two in sequence is the intended flow: *what* first, *how* second.
+- [`/stakeholder-summary`](./stakeholder-summary.md). The optional intermediate step. Turns the `feature-specification.md` into a plain-language summary for non-technical stakeholders before this skill runs, so the implementation plan starts from a shape stakeholders have already greenlit.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for stress-testing the plan after it lands. This skill produces the committable plan. `/iterative-plan-review` iterates on it.
 - [`project-manager`](../agents/project-manager.md). The agent the skill uses as coordinator for every facilitation round and as the author of the final synthesized plan. This document covers the PM's operating modes in depth.
 - [`junior-developer`](../agents/junior-developer.md). The generalist stress-tester the skill always includes. When a decision lacks strong evidence, the skill asks this agent to reframe the issue in plain language before escalating to you.

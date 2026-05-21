@@ -195,10 +195,11 @@ URL: see [`information-architect` agent definition](../../plugin/agents/informat
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 19 skills, grouped by purpose.
+- [Skills Index](./README.md). All 20 skills, grouped by purpose.
 - [`information-architect`](../agents/information-architect.md). The agent the skill dispatches at runtime to review the rendered outline. Also the agent that reviewed the output template before the skill shipped.
 - [`/gap-analysis`](./gap-analysis.md). Pair upstream when the source artifact is a comparison between current and desired state. Run `/gap-analysis` first to produce the gap report, then point this skill at the report. `G-NNN` gap IDs become source citations on the phase entries that close them.
 - [`/plan-a-feature`](./plan-a-feature.md). Pair upstream when the source artifact is a single feature that needs a phased rollout. Run `/plan-a-feature` first to produce the spec, then point this skill at the spec when the feature is large enough to ship in slices rather than all at once.
+- [`/stakeholder-summary`](./stakeholder-summary.md). Pair upstream when the source spec needs non-technical sign-off before sequencing the build. Run `/stakeholder-summary` after `/plan-a-feature`, get stakeholder feedback, then run this skill to phase the agreed-on shape.
 - [`/plan-implementation`](./plan-implementation.md). Pair downstream once a phase is greenlit. The phase entry's *"What we build"* and *"Outcome to demonstrate"* become the implementation plan's behavioral spec. *"Preconditions to verify"* become Open Items.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Use to refine an *existing* outline that needs sharpening. This skill produces a new outline from scratch. `/iterative-plan-review` iterates on one in place.
 - [`/architectural-decision-record`](./architectural-decision-record.md). The sibling skill for recording an architectural decision. Use `/architectural-decision-record` when the question is *"what did we decide and why."* Use `/plan-a-phased-build` when the question is *"in what order do we build."*

@@ -184,9 +184,10 @@ URLs: https://asana.com/resources/raid-log and https://projectmanagementcompass.
 
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
-- [Skills Index](./README.md). All 19 skills, grouped by purpose.
+- [Skills Index](./README.md). All 20 skills, grouped by purpose.
 - [Sizing](../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`/plan-implementation`](./plan-implementation.md). The next step after this skill. Takes the `feature-specification.md` produced here and turns it into a feature-implementation-plan through an iterative, project-manager-led team conversation.
+- [`/stakeholder-summary`](./stakeholder-summary.md). The optional sibling for non-technical feedback. Takes the `feature-specification.md` produced here and turns it into a plain-language stakeholder summary with Mermaid diagrams, for sharing with leadership, product, or customer-facing reviewers before implementation kicks off.
 - [`/iterative-plan-review`](./iterative-plan-review.md). The complement for plans that already exist. Use this when an implementation plan or spec has been drafted and needs multiple review passes to challenge assumptions and refine.
 - [`project-manager`](../agents/project-manager.md). The agent the skill dispatches for the final synthesis pass that reconciles sub-agent review output into the authoritative specification.
 - [`junior-developer`](../agents/junior-developer.md). The generalist stress-tester the skill always includes in the sub-agent review round. Surfaces hidden assumptions, muddied scope, and uncited claims before the spec hardens.
