@@ -81,14 +81,31 @@ Use the template at [`references/stakeholder-summary-template.md`](references/st
 
 ## Step 5: Self-Check Before Presenting
 
-Before reporting the summary as done, verify:
+Run two passes before reporting the summary as done. Each pass has a single focus, and **each pass begins with a fresh Read of the output file from disk** — do not check against working memory or the draft you held while writing. The Read tool call is required, not optional. Working memory drifts from what actually landed on disk; only the file contents matter.
 
-- No file paths, function names, class names, database tables, API endpoints, or library names appear in the document.
-- Every Mermaid diagram renders mentally — node labels are short, edges are labeled where the relationship is not obvious, and the diagram tells a story without needing the surrounding prose.
-- The "intentionally not in this slice" list matches what the source spec actually defers — nothing fabricated.
-- The closing questions are answerable by a stakeholder without engineering context.
+### Pass A: Plain-language audit
 
-If any check fails, fix it before presenting.
+**First, use the Read tool to load the output file from disk.** Then read the document as a non-technical stakeholder. For each sentence, ask: would a reader without engineering context understand this without translation? Fix anything that fails. Specifically verify:
+
+- **No engineering artifacts.** No file paths, function names, class names, database tables or columns, API endpoints, HTTP verbs, library or framework names, environment variables, queue or topic names, or language primitives.
+- **No engineering hedges.** No "eventually consistent", "idempotent", "race condition", "backfill", "migration", "schema", "payload", "request/response", "stateless", "async", "webhook", "polling vs. push", or similar. If a concept like this is load-bearing, restate it as a user-visible behavior or omit it.
+- **No leftover scaffolding.** Template placeholders, TODOs, "TBD", or example text from the template that was not replaced with real content.
+- **Closing questions are stakeholder-answerable.** A non-technical reader can give a real answer without asking an engineer what the question means.
+
+If Pass A required any edits, apply them with Edit, then **Read the file again from disk** before starting Pass B. The Pass B read-through must run against the post-fix contents, not your memory of what you intended to fix.
+
+### Pass B: Reading-order and progressive-disclosure check
+
+**First, use the Read tool to load the output file from disk again** — even if Pass A required no edits. This re-load is what makes Pass B an actual second pass rather than a continuation of Pass A's attention. Then read the document straight through, top to bottom, as someone arriving cold. Verify the document builds on itself rather than assuming context from a later section:
+
+- **The opening establishes the customer problem before naming any capability.** A reader should know *who is hurting and why* before they see *what we are building*.
+- **Each section uses only vocabulary the reader has already encountered.** A noun that appears in the data-flow diagram should have been introduced in the problem or capabilities sections — not first defined inside the diagram. Acronyms and product-internal names appear only if a stakeholder would already know them; otherwise generalize one level up ("the telematics provider", "the customer list").
+- **Diagrams are readable on their own.** Node labels and edge labels tell the story without requiring the surrounding prose. A reader who only skims the diagrams should still get the shape of the change.
+- **The "today vs. after this change" pairing is obvious.** The before-and-after diagrams sit close enough together that the contrast is visible without scrolling back and forth.
+- **The "intentionally not in this slice" list comes after the reader understands what *is* in the slice.** Out-of-scope only makes sense once in-scope is concrete.
+- **The closing questions follow from the body.** Each question should connect to a specific section above it — not introduce a new topic the document never mentioned.
+
+If any check in either pass fails, fix it with Edit and Read the file again before re-running the affected pass. Do not present a summary that fails Pass A — a stakeholder who has to ask "what does X mean?" has already lost trust in the document.
 
 ## Step 6: Present the Summary
 
