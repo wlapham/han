@@ -125,7 +125,7 @@ The `/code-review` skill is recalibrated so its first pass produces the output t
 - A dedicated S12 mode flag for default-SUGG suppression is deferred. The size-aware rubric (Pair A) plus the merged Step 7.2 demotion gate (Pair B) plus the rewritten Review Constraints rule subsume the workaround the user has been running manually.
 - A structured "directly introduced" field in agent output formats is deferred in favor of phrase-matching at Step 7.2.
 - Cross-file semantic contradiction detection in Step 9.0 is deferred; only single-file overlapping-line-range contradictions are checked.
-- An automated test harness, per-agent unit tests, and Mode C standalone tests are deferred. Validation runs against three real PR bundles in `tmp/gearjot-v2-web-pr-{299,307,339}/`.
+- An automated test harness, per-agent unit tests, and Mode C standalone tests are deferred.
 - Edits to the four affected agent definition files are deferred; `/code-review`'s tailoring lives in Step 3.5 dispatcher directives so the agents remain general-purpose for other callers.
 
 ## v2.2.0
