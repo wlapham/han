@@ -53,9 +53,9 @@ State each viable option with its trade-offs, keyed to the evidence items that s
 
 ## Output Format
 
-Return an indexed Artifacts registry first, then Research Results, then Options to Consider (when applicable), then a Recommendation. Honor the evidence mode given in your brief (strict by default, or exploratory).
+Return an indexed Sources registry first, then Research Results, then Options to Consider (when applicable), then a Recommendation. Honor the evidence mode given in your brief (strict by default, or exploratory).
 
-### Artifacts
+### Sources
 
 **A1: [short source title]**
 - **Link / location:** `https://example.com/path` — or `repo/path.ext:line` — or `provided: {reference}`

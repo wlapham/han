@@ -6,9 +6,9 @@ Operator documentation for the `research-analyst` agent in the han plugin. This 
 
 ## TL;DR
 
-- **What it does.** Researches an open-ended question from the open web and provided material, then returns sourced artifacts, plain-language results, indexed options when applicable, and a recommendation.
+- **What it does.** Researches an open-ended question from the open web and provided material, then returns sourced entries, plain-language results, indexed options when applicable, and a recommendation.
 - **When to dispatch it.** You need multi-angle research into options, prior art, or how something works, and every claim must trace to a checkable source.
-- **What you get back.** An indexed Artifacts registry (A1, A2, …) — link, summary, trust class, corroboration status per source — plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence basis (or "no clear winner").
+- **What you get back.** An indexed Sources registry (A1, A2, …) — link, summary, trust class, corroboration status per source — plus plain-language results, indexed options when applicable, and a recommendation with its explicit evidence basis (or "no clear winner").
 
 ## Key concepts
 
@@ -49,7 +49,7 @@ Example prompts:
 
 ## What you get back
 
-An indexed Artifacts registry (A1, A2, …), each entry carrying a link or location, retrieval date for web sources, trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated by A#, single source — caveated, or contradicted by A#). Then plain-language Research Results that cross-reference artifacts by ID, an indexed Options to Consider list (O1, O2, …) when the question implies alternatives — each steelmanned with trade-offs and evidence status — and a Recommendation with its explicit evidence basis, or an explicit "no clear winner" with the deciding criteria. The agent also reports what it searched for and did not find.
+An indexed Sources registry (A1, A2, …), each entry carrying a link or location, retrieval date for web sources, trust class (codebase / web / provided), a short plain-language summary, and an evidence status (corroborated by A#, single source — caveated, or contradicted by A#). Then plain-language Research Results that cross-reference artifacts by ID, an indexed Options to Consider list (O1, O2, …) when the question implies alternatives — each steelmanned with trade-offs and evidence status — and a Recommendation with its explicit evidence basis, or an explicit "no clear winner" with the deciding criteria. The agent also reports what it searched for and did not find.
 
 ## How to get the most out of it
 
