@@ -27,7 +27,9 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 │   ├── agents/         # Long-form docs for all 22 agents, plus README
 │   ├── skills/         # Long-form docs for all 20 skills, plus README
 │   ├── guidance/       # Contributor-facing authoring guidance
-│   └── templates/      # Templates and coverage rule for long-form docs
+│   ├── templates/      # Templates and coverage rule for long-form docs
+│   ├── plans/          # Plan documents (one folder per plan; nested research lives inside)
+│   └── research/       # Standalone research reports not tied to a specific plan
 └── images/             # Banner and graphics for README
 ```
 
@@ -118,7 +120,13 @@ Subdirectories:
 - **[docs/guidance/claude-marketplace-and-plugin-configuration/](./docs/guidance/claude-marketplace-and-plugin-configuration/).** Reference for the JSON config formats: `marketplace.json`, `plugin.json`, `monitors.json`, `themes.json`.
 - **[docs/guidance/templates/](./docs/guidance/templates/).** Example JSON manifests and a plugin README template.
 - **[docs/guidance/rfcs/](./docs/guidance/rfcs/).** Active RFCs for plugin-system changes.
-- **[docs/guidance/plans/](./docs/guidance/plans/).** Internal planning documents and research notes. Historical context, not user-facing guidance.
+
+### Plans and research (`docs/plans/`, `docs/research/`)
+
+- **[docs/plans/](./docs/plans/).** Plan documents for work the team is doing on the plugin itself. One folder per plan, named after the plan. A plan that has its own dedicated research lives inside the plan folder under `docs/plans/{plan-name}/research/`. Use this when writing a plan for something the team is building, not for general standalone research.
+- **[docs/research/](./docs/research/).** Standalone research reports that are not tied to a specific plan — for example, evidence-based research backing a new agent, a new pattern, or a contributor decision that does not have its own plan folder yet. Use this when the research has durable value but no parent plan to nest under.
+
+Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-name}/`. If the artifact is research nested inside a plan, write to `docs/plans/{plan-name}/research/`. If the artifact is standalone research that informs the plugin but does not belong to a plan folder, write to `docs/research/`. Do not invent new top-level folders for these artifacts. Do not write plans or research into `docs/guidance/`; that folder is reserved for authoring guidance, not work-in-progress.
 
 ## Conventions
 
