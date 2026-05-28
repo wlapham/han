@@ -35,6 +35,7 @@ Operator documentation for the `/coding-standard` skill in the han plugin. This 
 - **Feature documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a system works.
 - **Style rules that a linter or formatter can enforce.** Configure the tool. Do not write a standard that duplicates it.
 - **Open-ended research not destined for a standard.** Use [`/research`](./research.md) to survey options and prior art when the output you want is a recommendation, not an enforceable rule.
+- **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures the procedure for an alert or incident; a coding standard encodes a rule the code itself must follow.
 
 ## How to invoke it
 

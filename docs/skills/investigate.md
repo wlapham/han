@@ -130,4 +130,5 @@ URL: https://pragprog.com/titles/tpp20/the-pragmatic-programmer-20th-anniversary
 - [`concurrency-analyst`](../agents/concurrency-analyst.md), [`behavioral-analyst`](../agents/behavioral-analyst.md), [`data-engineer`](../agents/data-engineer.md). Specialist analysts dispatched alongside the investigators when the symptom classification calls for them.
 - [`/iterative-plan-review`](./iterative-plan-review.md). Pair when the fix plan needs further stress-testing before implementation.
 - [`/code-review`](./code-review.md). Run before merge when the fix lands, to audit the change end-to-end.
+- [`/runbook`](./runbook.md). Pair after the investigation lands a procedure the team will reuse. Investigate captures the root cause and fix; the runbook captures the procedure for the next engineer who sees the same symptom.
 - [`SKILL.md` for /investigate](../../plugin/skills/investigate/SKILL.md). The internal process definition.

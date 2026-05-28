@@ -34,6 +34,7 @@ Operator documentation for the `/project-documentation` skill in the han plugin.
 - **Architectural decisions.** Use [`/architectural-decision-record`](./architectural-decision-record.md).
 - **Coding conventions.** Use [`/coding-standard`](./coding-standard.md).
 - **PR descriptions.** Use [`/update-pr-description`](./update-pr-description.md).
+- **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures what to do when an alert fires or a known failure mode occurs; project documentation describes how the feature or system works.
 
 ## How to invoke it
 

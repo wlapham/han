@@ -34,6 +34,7 @@ Operator documentation for the `/architectural-decision-record` skill in the han
 - **Enforceable coding rules.** Use [`/coding-standard`](./coding-standard.md). An ADR records the decision; a coding standard encodes the rule it produces.
 - **Feature documentation.** Use [`/project-documentation`](./project-documentation.md).
 - **Recording an investigation's findings.** Use [`/investigate`](./investigate.md) for bug investigations with evidence and validation.
+- **Runbooks for operational scenarios.** Use [`/runbook`](./runbook.md). A runbook captures the procedure for an alert or incident; an ADR records the decision that shaped the system the runbook operates on.
 
 ## How to invoke it
 
