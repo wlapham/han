@@ -15,7 +15,7 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 ├── plugin/             # The actual plugin shipped to Claude Code
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   ├── agents/         # 22 agent definitions (.md with frontmatter)
+│   ├── agents/         # 23 agent definitions (.md with frontmatter)
 │   ├── skills/         # 19 skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files (e.g. yagni-rule.md)
 ├── docs/               # Operator-facing documentation
@@ -24,7 +24,7 @@ Han is a Claude Code plugin: a suite of skills and agents for solo (or small-tea
 │   ├── quickstart.md
 │   ├── sizing.md
 │   ├── yagni.md
-│   ├── agents/         # Long-form docs for all 22 agents, plus README
+│   ├── agents/         # Long-form docs for all 23 agents, plus README
 │   ├── skills/         # Long-form docs for all 20 skills, plus README
 │   ├── guidance/       # Contributor-facing authoring guidance
 │   ├── templates/      # Templates and coverage rule for long-form docs
@@ -80,13 +80,13 @@ The plugin is shipped from `plugin/`; documentation lives in `docs/`. Long-form 
 
 ### Agent catalog (`docs/agents/`)
 
-- **[docs/agents/README.md](./docs/agents/README.md).** Index of all 22 agents grouped by role (planning, adversarial review, investigation, architecture, testing, gap/content). Start here when looking for the right sub-agent to dispatch directly.
+- **[docs/agents/README.md](./docs/agents/README.md).** Index of all 23 agents grouped by role (planning, adversarial review, investigation, architecture, testing, gap/content). Start here when looking for the right sub-agent to dispatch directly.
 
-Every agent has a long-form doc under `docs/agents/`. The 22 agents:
+Every agent has a long-form doc under `docs/agents/`. The 23 agents:
 
 Planning & facilitation: `project-manager`, `junior-developer`.
 
-Adversarial reviewers: `adversarial-security-analyst`, `adversarial-validator`, `devops-engineer`, `data-engineer`, `information-architect`, `user-experience-designer`.
+Adversarial reviewers: `adversarial-security-analyst`, `adversarial-validator`, `devops-engineer`, `on-call-engineer`, `data-engineer`, `information-architect`, `user-experience-designer`.
 
 Investigation & evidence: `evidence-based-investigator`, `research-analyst`, `codebase-explorer`, `project-scanner`.
 
@@ -134,4 +134,4 @@ Folder selection rule: if the artifact is the plan, write to `docs/plans/{plan-n
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
 - **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
-- **Counts to verify when editing indexes.** 22 agents in `plugin/agents/`; 20 skills in `plugin/skills/`; 22 long-form agent docs in `docs/agents/`; 20 long-form skill docs in `docs/skills/`.
+- **Counts to verify when editing indexes.** 23 agents in `plugin/agents/`; 20 skills in `plugin/skills/`; 23 long-form agent docs in `docs/agents/`; 20 long-form skill docs in `docs/skills/`.
