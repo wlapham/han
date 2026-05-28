@@ -81,14 +81,18 @@ rewritten into the "No clear winner" form. -->
 - **Confidence:** High / Medium / Low
 - **Remaining Risks:** {single sources relied on, staleness, uncovered scope, and — exploratory mode — how much the recommendation leans on reasoning}
 
-## Artifacts
+## Sources
 
 <!--
-An indexed registry of EVERY information source used that is relevant to the
-results. ALWAYS present, even for a minimal run — never omitted. Each artifact
-is cross-referenced by its ID (A#) from Research Results, Options, and the
-Recommendation, so every conclusion traces to its sources. The Summary stays
-ID-free.
+AT THE VERY BOTTOM. An indexed registry of EVERY information source used that
+is relevant to the results. ALWAYS present, even for a minimal run — never
+omitted. Each entry is cross-referenced by its ID (A#) from Research Results,
+Options, and the Recommendation, so every conclusion traces to its sources.
+The Summary stays ID-free.
+
+Each entry carries the citation pointer (title, link, retrieval date) and the
+structured evaluation (trust class, summary, evidence status) in one place —
+there is no separate bibliography section.
 -->
 
 ### A1: {short title of the source}
@@ -107,17 +111,4 @@ ID-free.
 - **Summary:** ...
 - **Evidence status:** ...
 
-<!-- Add more artifacts as needed. Number in the order discovered. -->
-
-## References
-
-<!--
-AT THE VERY BOTTOM. One line per artifact: the full pointer to the artifact and
-its original source, formatted for citation and end-to-end traceability. This
-section is always present.
--->
-
-- **A1** — {full title}. {full URL or repository location}. {retrieved YYYY-MM-DD, if a web source}.
-- **A2** — {full title}. {full URL or repository location}. {retrieved YYYY-MM-DD, if a web source}.
-
-<!-- One entry per artifact, in artifact-ID order. -->
+<!-- Add more entries as needed. Number in the order discovered. -->

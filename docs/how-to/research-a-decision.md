@@ -13,7 +13,7 @@ A walkthrough for getting from an open-ended question ("which library", "which p
 
 ## What you'll end up with
 
-- A research report with a plain-language summary on top, results with minimal jargon, indexed options (`O1, O2, …`) when applicable, the recommendation and its evidence basis, validation findings (`V1, V2, …`), an indexed Artifacts registry (`A1, A2, …`) of every source, and a References section at the bottom.
+- A research report with a plain-language summary on top, results with minimal jargon, indexed options (`O1, O2, …`) when applicable, the recommendation and its evidence basis, validation findings (`V1, V2, …`), and an indexed Sources registry (`A1, A2, …`) at the bottom with every source's link, retrieval date, trust class, summary, and evidence status all in one entry.
 - An architectural decision record (ADR) capturing the choice, the rejected alternatives, and the reasons. Filed in your project's ADR directory.
 
 When you have both, the decision is researched, validated, and locked in as a single canonical record the team can refer back to.
