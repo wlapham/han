@@ -1,15 +1,17 @@
 ---
 name: han-feedback
 description: >
-  Capture structured feedback on Han skills used in the current session and
-  optionally post it as a GitHub issue to testdouble/han. Use at the end of
-  any session where one or more han: skills ran — to rate a skill run, log
-  what worked and what didn't, or submit observations for maintainers.
-  Produces a dated markdown feedback file under ~/.claude/han-feedback/ and
-  walks through a sensitive-content review before offering to post. Does not
-  review code, investigate bugs, or research options — use code-review,
-  investigate, or research for those. Does not provide feedback on skills
-  from other plugins.
+  Capture structured feedback on the Han skills and agents used in the current
+  session and optionally post it as a GitHub issue to testdouble/han. Works
+  across the whole han.* plugin family: han.core, han.github, han.reporting,
+  han.feedback, and any future han.* plugin. Use at the end of any session
+  where one or more han.* skills or agents ran, to rate a run, log what worked
+  and what didn't, or submit observations for maintainers. Produces a dated
+  markdown feedback file under ~/.claude/han-feedback/ and walks through a
+  sensitive-content review before offering to post. Does not review code,
+  investigate bugs, or research options; use code-review, investigate, or
+  research for those. Does not provide feedback on skills or agents from
+  non-Han plugins.
 allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
 ---
 
@@ -21,16 +23,24 @@ allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
 
 ## Operating Principles
 
-- **Invocations count, not completions.** A skill is considered used if it appeared in the session, regardless of whether it finished or was cancelled. Feedback on a partial run is still feedback.
+- **The whole han.* family is in scope.** Capture skills and agents from every Han plugin (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` plugin). Skills and agents from non-Han plugins are out of scope.
+- **Invocations count, not completions.** A skill or agent is considered used if it appeared in the session, regardless of whether it finished or was cancelled. Feedback on a partial run is still feedback.
+- **Agents count even when a skill dispatched them.** Most Han agents run because a skill dispatched them. Those agents are still in scope; record which ones contributed so the feedback names where specialist value came from.
 - **Conservative defaults on posting.** The feedback directory is user-space. The posting target is a public GitHub repository. Ambiguous confirmation is treated as a stop, not a go.
-- **One file per day per skill set.** Do not overwrite existing feedback for today. If a skill is already covered, skip it.
-- **Compacted sessions limit visibility.** The skill can only see turns present in the context window. If the session was compacted before running this skill, earlier skill invocations may not be visible.
+- **One file per day per run.** Do not overwrite existing feedback for today. If a skill or agent is already covered by a file for today, skip it.
+- **Compacted sessions limit visibility.** The skill can only see turns present in the context window. If the session was compacted before running this skill, earlier invocations may not be visible.
 
-## Step 1: Identify skills used this session
+## Step 1: Identify Han skills and agents used this session
 
-Look back through the conversation for invocations of `han:` prefixed skills. Look for slash-command invocations (like `/han:plan-a-feature`), messages showing a skill launching (like "Launching skill: han:plan-a-feature"), and any output that identifies a specific `han:` skill ran. A skill counts as used if it was invoked, regardless of whether it completed or was cancelled.
+Look back through the conversation for any use of a Han plugin component. A component counts as used if it was invoked, regardless of whether it completed or was cancelled.
 
-If no `han:` invocations are visible in the current context window, ask the user before stopping: "No han: skill invocations are visible in this context window. If you ran skills earlier but the session was compacted, list the skills you used and I will generate feedback for them." If the user confirms none were used, stop without writing any file.
+**Han skills.** Look for invocations of skills namespaced to any `han.*` plugin. The namespace is the plugin name followed by a colon: `han.core:`, `han.github:`, `han.reporting:`, `han.feedback:`, and the same shape for any future `han.*` plugin (treat a bare `han:` prefix as Han too). Watch for slash-command invocations (like `/han.core:plan-a-feature`), messages showing a skill launching (like "Launching skill: han.core:plan-a-feature"), and any output that identifies a specific Han skill ran.
+
+**Han agents.** Look for dispatches of agents from any `han.*` plugin. For example, an `Agent` tool call whose `subagent_type` is `han.core:adversarial-security-analyst`, or skill output naming a Han agent it launched (`evidence-based-investigator`, `project-manager`, `risk-analyst`, and so on). Record each distinct Han agent that ran, whether a skill dispatched it or it was invoked directly.
+
+Build one list of the Han skills used and one list of the Han agents used. Deduplicate each.
+
+If no Han skill or agent invocations are visible in the current context window, ask the user before stopping: "No Han skill or agent invocations are visible in this context window. If you ran Han skills or agents earlier but the session was compacted, list what you used and I will generate feedback for them." If the user confirms none were used, stop without writing any file.
 
 ## Step 2: Create the feedback directory if it does not exist
 
@@ -38,19 +48,20 @@ Check whether `~/.claude/han-feedback/` exists by running `ls ~/.claude/han-feed
 
 ## Step 3: Check for existing feedback today
 
-Run `ls ~/.claude/han-feedback/ 2>/dev/null` and identify any files whose name begins with today's date (from Project Context). A skill that already has a feedback file for today is skipped in this run.
+Run `ls ~/.claude/han-feedback/ 2>/dev/null` and identify any files whose name begins with today's date (from Project Context). A skill or agent that already has a feedback file for today is skipped in this run.
 
-If every qualifying skill already has a feedback file for today, report the existing file paths and stop.
+If everything used in this session already has a feedback file for today, report the existing file paths and stop.
 
 ## Step 4: Determine the filename
 
-Compute the filename as `{TODAY}-{skill-short-names}.md`, where:
+Compute the filename as `{TODAY}-{short-names}.md`, where:
 
-- Each skill's short name is its `han:` prefix stripped (e.g., `han:plan-a-feature` becomes `plan-a-feature`).
-- The short names of skills being processed in this run are joined with hyphens.
+- Each component's short name is its plugin namespace stripped (everything up to and including the colon). For example `han.core:plan-a-feature` becomes `plan-a-feature`, `han.github:post-code-review-to-pr` becomes `post-code-review-to-pr`, and the agent `han.core:risk-analyst` becomes `risk-analyst`.
+- Join the short names of the **skills** being processed in this run with hyphens. Skills name the file because they are the unit of work; the agents are recorded inside the file.
+- When a session used Han agents directly with no Han skill, use the agent short names instead.
 - `{TODAY}` is today's date from Project Context.
 
-Example: a session with `han:plan-a-feature` and `han:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
+Example: a session with `han.core:plan-a-feature` and `han.core:code-review` on 2026-05-29 produces `2026-05-29-plan-a-feature-code-review.md`.
 
 ## Step 5: Read the format reference
 
@@ -62,13 +73,15 @@ If a file is found, read it to confirm the current output structure before writi
 
 Think through the session for each qualifying skill and assess the following.
 
-**What worked well:** Where did the skill do something noticeably better than doing it manually? Where did specialist agents add value? Which findings or decisions from the skill changed the outcome?
+**What worked well:** Where did the skill do something noticeably better than doing it manually? Which dispatched Han agents added value, and how? Which findings or decisions from the skill or its agents changed the outcome?
 
-**What didn't work:** Where did the skill ask a question the evidence could have answered? Where was the output disproportionately long for the decision at hand? Where did you redirect or correct the skill mid-run?
+**What didn't work:** Where did the skill or one of its agents ask a question the evidence could have answered? Where was the output disproportionately long for the decision at hand? Where did you redirect or correct the skill or an agent mid-run?
 
-**Overall:** One paragraph summarizing the skill's fit for this use case.
+**Overall:** One paragraph summarizing the fit for this use case.
 
 **Rating:** Score across the dimensions used in the reference file from Step 5, or adjust dimensions to fit the skill type when no reference file exists.
+
+For a session that used Han agents directly (no skill), assess the agents the same way.
 
 ## Step 7: Write the feedback file
 
@@ -77,7 +90,8 @@ Write the file to `~/.claude/han-feedback/{filename}` using this structure:
 ```markdown
 # Han Feedback — {TODAY}
 
-**Skills used:** `han:{skill-name}`
+**Skills used:** `han.core:{skill-name}`
+**Agents used:** `han.core:{agent-name}`
 **Context:** {one sentence describing what you were doing}
 **Outcome:** {one sentence describing what was produced}
 
@@ -110,6 +124,8 @@ Write the file to `~/.claude/han-feedback/{filename}` using this structure:
 | {dimension} | {N}/5 |
 ```
 
+List every Han skill used on the `**Skills used:**` line and every Han agent used on the `**Agents used:**` line, each with its full plugin namespace (for example `han.github:update-pr-description`, `han.core:risk-analyst`). If no Han agents ran, write `**Agents used:** none`.
+
 Keep it honest and specific. Generic praise or criticism is not useful. Cite concrete moments from the session.
 
 If the write fails, tell the user: "The write failed. The file was being written to `$HOME/.claude/han-feedback/{filename}`. Run `ls ~/.claude/han-feedback/` and delete any file at that path before retrying." Do not proceed to the checklist or posting steps.
@@ -123,7 +139,7 @@ Check that the written file contains content beyond whitespace. If the file is e
 Display the full content of the written file. Then present this checklist and ask the user to confirm, in a single response, that the content contains none of the following:
 
 - Personal identifiers (names, emails, personal details)
-- Internal operational details (team structure, business processes, or organization-specific internal systems — han skill names are fine, they are publicly documented open-source tools)
+- Internal operational details (team structure, business processes, or organization-specific internal systems — Han skill and agent names are fine, they are publicly documented open-source tools)
 - Client-specific information (project names, client work content, proprietary context)
 
 A clear affirmative is "yes", "correct", "looks clean", or a similar unqualified confirmation. A response like "I think so", "probably", "seems fine", or any ambiguous answer is not a clear affirmative — treat it as sensitive content present.
@@ -144,7 +160,7 @@ A clear affirmative is "yes", "go ahead", "post it", or a similar unqualified in
 
 **If yes:**
 
-Extract `{skill-name}` from the `**Skills used:**` field with the `han:` prefix stripped. Extract `{TODAY}` from the feedback filename's date component (not the current clock).
+Build `{skill-name}` for the title from the `**Skills used:**` field with each plugin namespace stripped (everything up to and including the colon); join multiple short names with hyphens. When no Han skill ran, use the stripped names from the `**Agents used:**` field instead. Extract `{TODAY}` from the feedback filename's date component (not the current clock).
 
 Run:
 

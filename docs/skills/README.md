@@ -84,7 +84,7 @@ Skills for turning the work back into something sharable with non-technical stak
 
 The opt-in feedback plugin. It captures observations about the Han suite itself. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.feedback@han`. Depends on `han.core`.
 
-- **[`/han-feedback`](./han-feedback.md).** Capture structured post-session feedback on Han skills you used and optionally post it as a GitHub issue to testdouble/han.
+- **[`/han-feedback`](./han-feedback.md).** Capture structured post-session feedback on the Han skills and agents you used across the whole `han.*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
 
 ---
 

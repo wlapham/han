@@ -7,7 +7,7 @@ Operator documentation for the `risk-analyst` agent in the han plugin. This docu
 ## TL;DR
 
 - **What it does.** Assesses the risk of inaction for architectural findings produced by upstream analysts. Evaluates each finding across four dimensions: likelihood, severity, blast radius, and reversibility.
-- **When to dispatch it.** The architectural analysts (`structural-analyst`, `behavioral-analyst`, `concurrency-analyst`) have produced findings and you need to prioritize them. Always dispatched by `/architectural-analysis` after the three parallel analysts complete. Dispatched by `/architectural-decision-record` for ADR risk scoring.
+- **When to dispatch it.** The architectural analysts (`structural-analyst`, `behavioral-analyst`, `concurrency-analyst`) have produced findings and you need to prioritize them. Always dispatched by `/architectural-analysis` after the three parallel analysts complete. Conditionally dispatched by `/architectural-decision-record` for ADR risk scoring, and by `/plan-a-feature`, `/plan-implementation`, and `/iterative-plan-review` when the plan carries significant blast radius.
 - **What you get back.** Numbered `R#` risk assessments, each cross-referencing upstream findings, with likelihood / severity / blast radius / reversibility ratings and a concrete *what-happens-if-deferred* description.
 
 ## Key concepts

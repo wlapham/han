@@ -7,7 +7,7 @@ Operator documentation for the `software-architect` agent in the han plugin. Thi
 ## TL;DR
 
 - **What it does.** Adversarially synthesizes intra-codebase analysis (structural, behavioral, concurrency, risk findings) into recommended software-architecture changes aligned with SOLID, high cohesion, and loose coupling. Assumes the current module structure is wrong (too coupled, too scattered, missing an abstraction at an infrastructure seam, or over-abstracted with interfaces that have one implementation) until evidence says otherwise.
-- **When to dispatch it.** After the three architectural analysts plus `risk-analyst` have produced findings for a focus area that lives inside a single codebase or bounded context, and you want synthesis into recommended changes with pseudocode sketches.
+- **When to dispatch it.** After the three architectural analysts plus `risk-analyst` have produced findings for a focus area that lives inside a single codebase or bounded context, and you want synthesis into recommended changes with pseudocode sketches. Always dispatched by `/architectural-analysis` (it runs on the synthesis spine at every size). Conditionally dispatched by `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work touches intra-codebase module boundaries or abstractions.
 - **What you get back.** Numbered `A#` recommendations, each cross-referencing the upstream findings it addresses, the SOLID or cohesion/coupling principle it grounds, the recommended change with pseudocode, and the risk if deferred.
 
 ## Key concepts

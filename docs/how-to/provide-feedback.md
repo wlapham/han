@@ -55,7 +55,7 @@ Use this path right after a working session where one or more Han skills ran and
 
     > `/han-feedback`
 
-    The skill looks back through the conversation for `han:` skill invocations, then writes a dated feedback file to `~/.claude/han-feedback/` covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list the skills you used.
+    The skill looks back through the conversation for invocations of any `han.*` plugin's skills and agents (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` plugin), then writes a dated feedback file to `~/.claude/han-feedback/` recording the skills and agents used and covering what worked, what didn't, an overall summary, and a rating. It reads only what is visible in the current context window, so run it while the full session is still in context. If the session was already compacted, the skill asks you to list what you used.
 
     You can prime it with a concrete observation before it writes anything: *"I just finished a session with `/investigate` and it found the root cause faster than I expected"* gives the skill a specific moment to build on. The more specific you are, the more useful the result.
 

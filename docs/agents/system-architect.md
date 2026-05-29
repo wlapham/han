@@ -7,7 +7,7 @@ Operator documentation for the `system-architect` agent in the han plugin. This 
 ## TL;DR
 
 - **What it does.** Adversarially synthesizes boundary-crossing findings into cross-service / bounded-context topology recommendations: context-map relationships, integration patterns, data ownership, failure-domain containment, API-contract evolution across service seams. Assumes the current topology is wrong (bounded contexts leak, integrations are sync-by-default, data ownership is contested, failure domains are uncontained) until evidence says otherwise.
-- **When to dispatch it.** The work crosses a service boundary, a bounded-context seam, or a trust boundary, and you want recommendations at the altitude where the unit of design is a service or context, not a class or module.
+- **When to dispatch it.** The work crosses a service boundary, a bounded-context seam, or a trust boundary, and you want recommendations at the altitude where the unit of design is a service or context, not a class or module. Conditionally dispatched by `/architectural-analysis` (large size, when a system-seam signal is present), `/architectural-decision-record`, `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the work crosses a service or bounded-context boundary.
 - **What you get back.** Numbered `SA#` recommendations, each with the seam it crosses, the relationship type (ACL, conformist, partnership, OHS, and so on), integration style (sync, async event, saga, batch), data ownership, failure-domain containment, and rationale. Plus a current context-map sketch.
 
 ## Key concepts

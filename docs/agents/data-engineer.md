@@ -7,7 +7,7 @@ Operator documentation for the `data-engineer` agent in the han plugin. This doc
 ## TL;DR
 
 - **What it does.** Audits a schema, migration, query, pipeline, or data-access layer against eleven data-engineering protocols.
-- **When to dispatch it.** A schema change, migration, or data-access layer needs a principled review before it ships.
+- **When to dispatch it.** A schema change, migration, or data-access layer needs a principled review before it ships. Conditionally dispatched by `/architectural-analysis`, `/code-review`, `/gap-analysis`, `/investigate`, `/iterative-plan-review`, and `/plan-implementation` when the change or focus area touches data.
 - **What you get back.** A data-engineering findings report with location, principle, and data-level impact per finding, plus P0/P1/P2 sequenced remediations.
 
 ## Key concepts

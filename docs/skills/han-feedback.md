@@ -6,14 +6,16 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han.feedback
 
 ## TL;DR
 
-- **What it does.** Captures structured post-session feedback on Han skills you just used and optionally posts it as a GitHub issue to testdouble/han for maintainers to act on.
-- **When to use it.** At the end of any session where one or more `han:` skills ran — when you have observations about what worked, what didn't, or where the skill surprised you.
-- **What you get back.** A dated markdown feedback file at `~/.claude/han-feedback/{date}-{skill-names}.md`, and (if you confirm) an open GitHub issue at testdouble/han.
+- **What it does.** Captures structured post-session feedback on the Han skills and agents you just used across the whole `han.*` plugin family, and optionally posts it as a GitHub issue to testdouble/han for maintainers to act on.
+- **When to use it.** At the end of any session where one or more `han.*` skills or agents ran — when you have observations about what worked, what didn't, or where a run surprised you.
+- **What you get back.** A dated markdown feedback file at `~/.claude/han-feedback/{date}-{skill-names}.md` recording the skills and agents used, and (if you confirm) an open GitHub issue at testdouble/han.
 
 ## Key concepts
 
-- **Session scope.** The skill works from the current context window. It can only find `han:` invocations visible in the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier invocations may not appear. Run it before compaction to catch everything.
-- **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the skills covered. One file per day per skill set; existing files for today are not overwritten.
+- **Whole-family scope.** The skill captures skills and agents from every Han plugin (`han.core`, `han.github`, `han.reporting`, `han.feedback`, and any future `han.*` plugin). It identifies each by its plugin namespace (the prefix before the colon, like `han.core:` or `han.github:`). Components from non-Han plugins are out of scope.
+- **Agents are captured too.** Most Han agents run because a skill dispatched them. The skill records every Han agent that ran, whether a skill launched it or you dispatched it directly, so the feedback names where specialist value came from.
+- **Session scope.** The skill works from the current context window. It can only find `han.*` invocations visible in the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier invocations may not appear. Run it before compaction to catch everything.
+- **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the skills covered. One file per day per run; existing files for today are not overwritten.
 - **Sensitive-content gate.** Before offering to post, the skill displays the full file and asks you to confirm it contains no personal identifiers, internal operational details, or client-specific information. An ambiguous response stops the posting flow. The posting target is a public GitHub repository.
 - **Rating dimensions.** The rating table adapts to the skill type. When prior feedback files exist, the skill reads the most recently modified one to anchor the format so your feedback collection stays consistent.
 - **Context window limitation.** Invocations from compacted turns are not visible. The skill counts any invocation as used regardless of whether it completed successfully.
@@ -22,38 +24,38 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han.feedback
 
 **Invoke when:**
 
-- You just finished a session that used one or more `han:` skills and have observations worth sharing.
-- A skill run surprised you (better or worse than expected) and you want to log it while it is fresh.
-- A maintainer asked for feedback on a specific skill after a release.
+- You just finished a session that used one or more `han.*` skills or agents and have observations worth sharing.
+- A skill or agent run surprised you (better or worse than expected) and you want to log it while it is fresh.
+- A maintainer asked for feedback on a specific skill or agent after a release.
 
 **Do not invoke for:**
 
 - **Reviewing code or investigating a bug.** Use [`/code-review`](./code-review.md) or [`/investigate`](./investigate.md).
 - **Researching how a skill works or what its options are.** Use [`/research`](./research.md).
-- **Feedback on skills from other plugins.** The skill scans for `han:` prefixed invocations only.
+- **Feedback on components from non-Han plugins.** The skill scans for `han.*` namespaced skills and agents only; skills and agents from third-party plugins are out of scope.
 - **Editing or amending prior feedback.** Open `~/.claude/han-feedback/` and edit the file directly.
 
 ## How to invoke it
 
-Run `/han-feedback` in Claude Code at the end of a session where `han:` skills ran. No arguments are required.
+Run `/han-feedback` in Claude Code at the end of a session where `han.*` skills or agents ran. No arguments are required.
 
 The skill ships in the opt-in `han.feedback` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han.feedback@han` (it pulls `han.core` along the way). See [Choosing a Han plugin](../choosing-a-han-plugin.md) for where it sits in the suite.
 
 Give it:
 
-1. **A session with at least one `han:` skill invocation.** The skill reads the context window; the invocations need to be visible. If the session was compacted, the skill will ask you to list the skills you used.
+1. **A session with at least one `han.*` skill or agent invocation.** The skill reads the context window; the invocations need to be visible. If the session was compacted, the skill will ask you to list what you used.
 2. **A moment to review.** The skill displays the full feedback file and asks for confirmation before posting. Plan for one or two exchanges.
 
 Example prompts:
 
-- `/han-feedback`. *Run at the end of a session that used `/han:plan-a-feature` and `/han:plan-implementation`.*
-- `/han-feedback`. *"I just finished a session with `/han:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
+- `/han-feedback`. *Run at the end of a session that used `/han.core:plan-a-feature` and `/han.core:plan-implementation`.*
+- `/han-feedback`. *"I just finished a session with `/han.core:investigate` and it found the root cause faster than I expected."* — use this framing to prime the skill with a concrete observation before it generates the feedback.
 
 ## What you get back
 
 One feedback file per run:
 
-- **`~/.claude/han-feedback/{date}-{skill-names}.md`** — the feedback file. Contains a `**Skills used:**` header, context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the skill names are the `han:` prefix stripped and joined with hyphens.
+- **`~/.claude/han-feedback/{date}-{skill-names}.md`** — the feedback file. Contains `**Skills used:**` and `**Agents used:**` headers (each listing the components with their full plugin namespace, like `han.core:plan-a-feature` or `han.core:risk-analyst`), context and outcome lines, three sections (What worked well, What didn't work, Overall), and a rating table. The date is today in ISO format; the filename's skill names are the plugin namespace stripped and joined with hyphens.
 - **A GitHub issue URL** (conditional) — if you confirm posting, the skill runs `gh issue create` against testdouble/han and returns the issue URL.
 
 ## How to get the most out of it
