@@ -8,7 +8,7 @@ description: >
   to be installed and authenticated. Does not produce the work-items file itself — use
   plan-work-items to break a plan into work items first. Does not review code or post pull
   request comments — use gh-pr-review for that.
-argument-hint: [path to the work-items.md file]
+argument-hint: [path to work-items.md] [target repo(s), e.g. org/repo] [--label <name> (optional)] [--assignee <user> (optional)]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(gh *), Bash(git *), Bash(find *)
 ---
 
@@ -32,6 +32,8 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 ### 1. Locate the work-items file
 
 If the path is not provided, ask for it. The input is a single `work-items.md` produced by `/plan-work-items`. Read it.
+
+If the user named a target repo (or repos), a label, or an assignee, note them for Steps 2 and 6. By default, issues are created with **no label and no assignee** — only apply a label or assignee when the user explicitly asked for one.
 
 ### 2. Build the SYM→repo map
 
@@ -100,12 +102,14 @@ The source `work-items.md` is not modified by the publish step. The per-repo fil
 
 ### 6. Publish each per-repo file to GitHub
 
-For each per-repo file, publish it by running `${CLAUDE_SKILL_DIR}/scripts/publish-work-items.sh <per-repo-work-items-file> <org>/<target-repo> <plan-folder>`. Pass the per-repo work-items file written in Step 5, the target repo as `<org>/<target-repo>`, and the plan folder that contains the `ui-designs/` subfolder.
+For each per-repo file, publish it by running `${CLAUDE_SKILL_DIR}/scripts/publish-work-items.sh <per-repo-work-items-file> <org>/<target-repo> <plan-folder> [--label <name>] [--assignee <user>]`. Pass the per-repo work-items file written in Step 5, the target repo as `<org>/<target-repo>`, and the plan folder that contains the `ui-designs/` subfolder.
+
+Created issues are unassigned and carry no label by default. Append `--label <name>` and/or `--assignee <user>` only when the user asked for a label or assignee (Step 1). Both flags are optional and may be omitted.
 
 The wrapper runs three idempotent scripts in order:
 
 1. **`scripts/upload-screenshots.sh`** — extracts every `.github/issue-assets/<SYM-N>/<file>.png` URL from the per-repo file, copies the matching PNG from `<plan-folder>/ui-designs/` into the target repo on its default branch via the GitHub Contents API, and verifies each upload. Overwrites existing files cleanly.
-2. **`scripts/create-issues.sh`** — upserts the `ralph` label, then creates one GitHub issue per `## <SYM-N>` slice in file order (blocker-first). Captures each returned issue number and rewrites the heading in place to `## <SYM-N> (#NNN) — <title>`. Skips slices already annotated with `(#NNN)` so partial runs resume cleanly.
+2. **`scripts/create-issues.sh`** — creates one GitHub issue per `## <SYM-N>` slice in file order (blocker-first), unassigned and unlabeled by default. When `--label <name>` is passed, it upserts that label on the repo and applies it to every issue; when `--assignee <user>` is passed, it assigns each issue to that user. Captures each returned issue number and rewrites the heading in place to `## <SYM-N> (#NNN) — <title>`. Skips slices already annotated with `(#NNN)` so partial runs resume cleanly.
 3. **`scripts/link-blockers.sh`** — reads the SYM↔#NNN mapping from the rewritten headings, walks each `**Depends on.**` line, and POSTs `repos/<repo>/issues/<N>/dependencies/blocked_by` once per blocker. Errors out if a blocker SYM is not present in the same file (cross-repo dependencies are forbidden as native links — they belong in the cross-repo work-order prose).
 
 The format invariants the scripts depend on (heading shape, URL scheme, `Depends on` syntax) are documented in [references/issue-template.md](references/issue-template.md). Edits to that template require matching script changes.
