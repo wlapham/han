@@ -1,6 +1,6 @@
 # GitHub release notes format
 
-The release notes body is assembled deterministically. It mirrors the format already used by published Han releases (see `gh release view v2.3.0`): a `## What's Changed` PR list, the release's changelog narrative, then the full-changelog links.
+The release notes body is assembled deterministically. It mirrors the format already used by published Han releases (see `gh release view v2.7.0`): a `## What's Changed` PR list, the release's changelog narrative, then the full-changelog links. The release is named for the parent `han` plugin's version, so the tag and the body title are both `v{parent target}`.
 
 ## Body template
 
@@ -9,14 +9,17 @@ The release notes body is assembled deterministically. It mirrors the format alr
 
 {one line per merged PR, newest merge last}
 
-{the changelog narrative for v{target}: the summary paragraph and every
- ### subsection of the ## v{target} section, EXCLUDING the generated
- "### Pull requests in this release" / "### Commits in this release"
- subsection — that subsection is changelog-only bookkeeping}
+{the changelog narrative for v{parent target}: the summary paragraph and every
+ ### {plugin} v{version} sub-heading (with their #### topic subsections) of the
+ ## v{parent target} section, EXCLUDING the generated "### Pull requests in this
+ release" / "### Commits in this release" subsection — that subsection is
+ changelog-only bookkeeping}
 
 **Full changelog:** {blob link}
 **Full Changelog:** {compare link}
 ```
+
+The narrative carries the per-plugin sub-headings as they appear in `CHANGELOG.md`, so the release notes already show which child plugins changed and their new versions. Do not flatten or regroup them.
 
 If there is no previous release (this is the first tag), omit the `**Full Changelog:**` compare line and keep only the `**Full changelog:**` blob link.
 
@@ -30,30 +33,30 @@ One bullet per merged pull request, sorted by merge time ascending (newest merge
 * {PR title} by @{author login} in {PR url}
 ```
 
-This is the same format GitHub's auto-generated notes use and the same format prior Han releases used. Authors are attributed by GitHub login with a leading `@`.
+This is the same format GitHub's auto-generated notes use and the same format prior Han releases used. Authors are attributed by GitHub login with a leading `@`. The PR list is repo-wide and is not split per plugin.
 
 ## Full-changelog links
 
 **Blob link** points at the `CHANGELOG.md` section for this exact version, pinned to the tag:
 
 ```
-https://github.com/{owner}/{repo}/blob/v{target}/CHANGELOG.md#{anchor}
+https://github.com/{owner}/{repo}/blob/v{parent target}/CHANGELOG.md#{anchor}
 ```
 
-Compute `{anchor}` from the heading text `v{target}`: lowercase it, then delete every character that is not `a-z`, `0-9`, or `-`. Dots are deleted. Examples: `v2.4.0` → `v240`; `v3.0.0` → `v300`; `v2.10.1` → `v2101`.
+Compute `{anchor}` from the heading text `v{parent target}`: lowercase it, then delete every character that is not `a-z`, `0-9`, or `-`. Dots are deleted. Examples: `v3.0.0` → `v300`; `v3.1.0` → `v310`; `v2.10.1` → `v2101`.
 
 **Compare link** is GitHub's standard range link from the previous release tag to this one:
 
 ```
-https://github.com/{owner}/{repo}/compare/{prev tag}...v{target}
+https://github.com/{owner}/{repo}/compare/{prev tag}...v{parent target}
 ```
 
-`{owner}/{repo}` comes from `gh repo view --json nameWithOwner`. `{prev tag}` is the previous released tag (for example `v2.3.0`). Omit the compare link entirely when there is no previous tag.
+`{owner}/{repo}` comes from `gh repo view --json nameWithOwner`. `{prev tag}` is the previous released tag (for example `v2.7.0`). Omit the compare link entirely when there is no previous tag.
 
 ## Publish vs. draft, and idempotency
 
-- **Publish (default):** `gh release create v{target} --title "v{target}" --latest --notes-file {file}`.
+- **Publish (default):** `gh release create v{parent target} --title "v{parent target}" --latest --notes-file {file}`.
 - **Draft (only when explicitly requested):** add `--draft`. Do not pass `--latest` with `--draft`.
-- **Release already exists for the tag:** do not create a second one. Update it in place with `gh release edit v{target} --notes-file {file}` (add `--draft=false` only if the operator asked to publish an existing draft). Report that the release was updated rather than created.
+- **Release already exists for the tag:** do not create a second one. Update it in place with `gh release edit v{parent target} --notes-file {file}` (add `--draft=false` only if the operator asked to publish an existing draft). Report that the release was updated rather than created.
 
 Write the assembled body to a temp file with the Write tool and pass it via `--notes-file`. Do not build the body with shell `echo`/`printf`.

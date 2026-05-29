@@ -1,18 +1,67 @@
 # CHANGELOG.md rules
 
-`CHANGELOG.md` lives at the repository root. The title line is `# Han Release Notes`. Each version is a top-level section that starts with `## v{X.Y.Z}` (newest first, directly under the title), opens with a one-paragraph plain-language summary of the release, then groups the detail under descriptive `###` subsections (for example `### Calibration`, `### Context plumbing`, `### Documentation`), and ends with a `### Deferred (YAGNI)` subsection when work was deliberately cut.
+`CHANGELOG.md` lives at the repository root. The title line is `# Han Release Notes`. Each version is a top-level section that starts with `## v{parent target}` (newest first, directly under the title), where `parent target` is the version of the parent `han` plugin (the version the git tag tracks).
+
+## Per-plugin structure (from v3.0.0 onward)
+
+Han ships as a parent meta-plugin (`han`) plus child plugins (`han.core`, `han.github`, `han.reporting`, and any future `han.*` extension). Each plugin carries its own version. The changelog mirrors that: every change is attributed to the plugin whose directory it touched, never grouped together across plugins.
+
+A release section is laid out as:
+
+```
+## v{parent target}
+
+{one-paragraph plain-language summary of the release. It names the parent's
+ new version and lists every changed or new child with its version, for
+ example: "han 3.1.0 ships a new GitHub skill (han.github 1.1.0) and a fix to
+ the code-review roster (han.core 1.0.1)." han.reporting is unchanged.}
+
+### han v{parent target}
+
+{the suite-level / parent narrative: the restructure itself, repo-root docs,
+ marketplace and meta-plugin changes. Use #### topic subsections when there is
+ more than one distinct thread.}
+
+### han.core v{version}
+
+{only han.core's changes. #### topic subsections as needed.}
+
+### han.github v{version}
+
+{only han.github's changes.}
+
+### Deferred (YAGNI)
+
+{release-level; only when work was deliberately cut. Optional.}
+
+### Pull requests in this release
+
+- {PR title} (#{number}) — @{author login}
+
+Full changelog: {blob link — see release-notes-format.md}
+```
+
+Rules for the per-plugin sub-headings:
+
+- **One `### {plugin name} v{version}` sub-heading per plugin that changed.** The parent (`### han v{parent target}`) always appears, because the parent always bumps. A child appears only when it changed in this release, or when it is newly introduced.
+- **A newly introduced child** gets a sub-heading marked as new, for example `### han.reporting v1.0.0 (new)`, describing what the plugin is and what it ships at introduction. Its version is the established baseline and does not increment for the release that introduces it.
+- **An unchanged child is omitted entirely.** No empty sub-heading.
+- **Topic detail within a plugin uses `####`.** Reserve `###` for plugin sub-headings and the two release-level bookkeeping subsections (`### Deferred (YAGNI)`, `### Pull requests in this release`).
+- **Attribute by directory.** A change to a file under `han.github/` belongs in the `### han.github` section. Repo-root changes that live outside any plugin directory (`docs/`, `README.md`, `CONTRIBUTING.md`) are suite-level and belong in the `### han` section.
+
+Releases before `v3.0.0` predate the split and use the older flat layout (descriptive `###` topic subsections directly under `## v{X.Y.Z}`). Leave those historical sections exactly as they are.
 
 ## Augment vs. generate
 
-Decide by whether a `## v{target}` section already exists:
+Decide by whether a `## v{parent target}` section already exists:
 
-- **Section exists — augment, do not rewrite.** The curated prose is the source of truth. Leave every existing line of that section untouched. Append a single new subsection (see "Generated subsection" below) as the **last** `###` subsection of that version's section — after `### Deferred (YAGNI)` if it is present, and immediately before the next `## v` heading (or end of file).
+- **Section exists — augment, do not rewrite.** The curated prose is the source of truth. Leave every existing line of that section untouched. Append a single new bookkeeping subsection (see "Generated bookkeeping subsection" below) as the **last** `###` subsection of that version's section, immediately before the next `## v` heading (or end of file).
 
-- **Section missing — generate it, then append the subsection.** Dispatch one agent to write the narrative section (summary paragraph + descriptive `###` subsections + a `### Deferred (YAGNI)` subsection when applicable) in the register described below. Insert the new `## v{target}` section directly under the `# Han Release Notes` title, above the previous newest entry. Then append the generated subsection as its last `###` subsection.
+- **Section missing — generate it, then append the subsection.** Dispatch one agent to write the narrative section (summary paragraph + per-plugin `### {plugin} v{version}` sub-headings + a release-level `### Deferred (YAGNI)` subsection when applicable) in the register described below. Insert the new `## v{parent target}` section directly under the `# Han Release Notes` title, above the previous newest entry. Then append the generated bookkeeping subsection as its last `###` subsection.
 
-Never delete or reorder existing version sections. Never edit a version section other than `## v{target}`.
+Never delete or reorder existing version sections. Never edit a version section other than `## v{parent target}`.
 
-## Generated subsection
+## Generated bookkeeping subsection
 
 Heading: `### Pull requests in this release`
 
@@ -21,6 +70,8 @@ Body: one bullet per merged pull request included in this release, newest merge 
 ```
 - {PR title} (#{number}) — @{author login}
 ```
+
+The PR list is repo-wide and appears once per release. It is not split per plugin; per-plugin attribution lives in the narrative sub-headings above it.
 
 When no merged pull requests are found between the previous release and `HEAD` (local-only commits, squash history without PR refs), use this heading and body instead:
 
@@ -46,7 +97,7 @@ Hard constraints from [`docs/writing-voice.md`](../../../../docs/writing-voice.m
 - `use`, never `leverage` or `utilize`.
 - No `just`, no `actually`.
 - None of: "It's worth noting", "Importantly", "delve", "foster", "synergy", "underscore", "pivotal", "showcase", "robust" (as a vague positive), "paradigm shift", "game changer", "Let's dive in", "deep dive".
-- Name skills, agents, files, and flags specifically (`/tdd`, `plugin/skills/code-review/SKILL.md`), never generically.
+- Name skills, agents, files, and flags specifically (`/tdd`, `han.core/skills/code-review/SKILL.md`), never generically.
 - Reference internal paths with backticks. State what changed plainly; do not hedge with "arguably" or "one might say".
 
-The narrative describes what changed and why from the operator's point of view, not a file-by-file diff. Code structure can be summarized; behavior changes (new skills, renamed skills, changed defaults, changed dispatch) must be stated explicitly.
+The narrative describes what changed and why from the operator's point of view, not a file-by-file diff. Code structure can be summarized; behavior changes (new skills, renamed skills, changed defaults, changed dispatch) must be stated explicitly, under the plugin that owns them.
