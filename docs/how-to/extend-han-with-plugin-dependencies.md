@@ -57,7 +57,7 @@ Han is its own worked example. It ships as four plugins in one marketplace, wire
       ]
     }
 
-`han.reporting` is a second layer on top of core, built the same way. It adds the reporting skills (`stakeholder-summary`), which turn a feature specification into a plain-language summary, and it declares core as a dependency for the same reason `han.github` does:
+`han.reporting` is a second layer on top of core, built the same way. It adds the reporting skills (`stakeholder-summary`, which turns a feature specification into a plain-language summary, and `html-summary`, which renders that summary as a single self-contained HTML report), and it declares core as a dependency for the same reason `han.github` does:
 
     {
       "name": "han.reporting",
