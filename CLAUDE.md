@@ -131,7 +131,7 @@ Subdirectories:
 
 - **[docs/guidance/agent-building-guidelines/](./docs/guidance/agent-building-guidelines/).** Agent-authoring rules: domain focus, external files, model selection, graceful degradation, multi-agent economics. Read before creating or significantly editing an agent.
 - **[docs/guidance/skill-building-guidance/](./docs/guidance/skill-building-guidance/).** Skill-authoring rules: description frontmatter, progressive disclosure, context hygiene, dynamic project discovery, bash permissions, script execution, naming conventions, troubleshooting, and more. The single largest body of contributor guidance in the repo.
-- **[docs/guidance/claude-marketplace-and-plugin-configuration/](./docs/guidance/claude-marketplace-and-plugin-configuration/).** Reference for the JSON config formats: `marketplace.json`, `plugin.json`, `monitors.json`, `themes.json`.
+- **[docs/guidance/claude-marketplace-and-plugin-configuration/](./docs/guidance/claude-marketplace-and-plugin-configuration/).** Reference for the JSON config formats: `marketplace.json`, `plugin.json`, `monitors.json`, `themes.json`. Also holds [extending-han-via-plugin-dependencies.md](./docs/guidance/claude-marketplace-and-plugin-configuration/extending-han-via-plugin-dependencies.md), a task-focused how-to for authoring a plugin that depends on Han (both suite-internal and external-marketplace paths), built on Han's own `han.core` / `han.github` / `han` topology. Read when someone wants to extend Han via plugin dependencies.
 - **[docs/guidance/templates/](./docs/guidance/templates/).** Example JSON manifests and a plugin README template.
 - **[docs/guidance/rfcs/](./docs/guidance/rfcs/).** Active RFCs for plugin-system changes.
 

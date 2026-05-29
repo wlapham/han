@@ -67,14 +67,25 @@ Array of message injection channel declarations (Telegram, Slack, Discord).
 
 ## dependencies
 
-Other plugins this plugin requires. Supports plain names or versioned objects:
+Other plugins this plugin requires. Each entry is either a plain plugin name or an object:
 
 ```json
 "dependencies": [
   "helper-lib",
-  { "name": "secrets-vault", "version": "~2.1.0" }
+  { "name": "secrets-vault", "version": "~2.1.0" },
+  { "name": "shared-lib", "marketplace": "other-marketplace" }
 ]
 ```
+
+| Sub-field     | Required | Type   | Description                                                                                   |
+| ------------- | -------- | ------ | --------------------------------------------------------------------------------------------- |
+| `name`        | Yes      | string | The dependency's plugin name. Resolved in the same marketplace as this plugin by default.     |
+| `version`     | No       | string | Semver range (e.g. `~2.1.0`). When omitted, floats to whatever version the marketplace serves. |
+| `marketplace` | No       | string | A different marketplace to resolve from. Blocked unless the installing marketplace allows it.  |
+
+Behavior, in brief: installing a plugin auto-installs its dependencies and reports what it added; enabling a plugin enables its dependencies at the same scope, and a plugin cannot be disabled while another enabled plugin still depends on it. A dependency in another marketplace is refused unless that marketplace appears in the installing marketplace's `allowCrossMarketplaceDependenciesOn` list (see [marketplace.json reference](./marketplace-json-options.md)), and a dependency from a marketplace the user has not added stays unresolved. The full resolution, versioning, and error-handling rules are in the [canonical Claude Code documentation](https://code.claude.com/docs/en/plugin-dependencies).
+
+See also: [Extending Han with Plugin Dependencies](./extending-han-via-plugin-dependencies.md) for a worked, task-focused guide built on Han's own three plugins.
 
 ## Environment Variables
 
