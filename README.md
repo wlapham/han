@@ -42,7 +42,7 @@ Han ships as three plugins: `han.core` (the planning, investigation, review, and
 - [Concepts](./docs/concepts.md). Skill vs. agent, and how they compose. Read once before using the plugin.
 - [Choosing a Han plugin](./docs/choosing-a-han-plugin.md). The full suite vs. core only, the `han.github` dependency on `han.core`, and a quick guide to which one to install.
 - [Quickstart](./docs/quickstart.md). Five paths for five common situations. Each path is a short sequence of skills.
-- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not just the path.
+- [How-to guides](./docs/how-to/README.md). End-to-end recipes for planning a feature, triaging and investigating a bug, and researching a decision. Pick one when you want the full walkthrough, not only the path.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All agents, grouped by role.
 - [Sizing](./docs/sizing.md). The small / medium / large model that decides how many agents the swarming skills dispatch.

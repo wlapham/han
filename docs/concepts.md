@@ -2,7 +2,7 @@
 
 Han is built out of two kinds of things: **skills** and **agents**. If you read this page once before you pick a slash command, the rest of the documentation will make sense.
 
-> See also: [Plugin landing page](../README.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
+> See also: [Plugin landing page](../README.md) · [Choosing a plugin](./choosing-a-han-plugin.md) · [Quickstart](./quickstart.md) · [All skills](./skills/README.md) · [All agents](./agents/README.md)
 
 ## TL;DR
 
@@ -103,7 +103,7 @@ Direct invocation uses the `Agent` tool with `subagent_type: han:{agent-name}` (
 
 ## How Han is packaged
 
-Han ships as three plugins in one marketplace. `han.core` carries the skills and every agent. `han.github` adds the two GitHub-facing skills and depends on `han.core`, so installing it brings the core along. `han` is a meta-plugin with no components of its own that depends on both, so installing it pulls in the whole suite. The practical choice is two options wide: core only, or the full suite. There is no GitHub-only install.
+Han ships as three plugins in one marketplace. `han.core` carries the skills and every agent. `han.github` adds the two GitHub PR skills and depends on `han.core`, so installing it brings the core along. `han` is a meta-plugin with no components of its own that depends on both, so installing it pulls in the whole suite. The practical choice is two options wide: core only, or the full suite. There is no GitHub-only install.
 
 For which one to install and the dependency that surprises people, read [Choosing a Han plugin](./choosing-a-han-plugin.md).
 

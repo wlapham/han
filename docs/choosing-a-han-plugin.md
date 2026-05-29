@@ -4,7 +4,7 @@
 
 > See also: [Plugin landing page](../README.md) · [Concepts](./concepts.md) · [Quickstart](./quickstart.md)
 
-> **Short answer.** Install the full suite with `/plugin install han@han`. That gives you everything: the planning, investigation, review, and documentation skills, every agent, and the GitHub-facing skills. Pick `han.core` instead only when you know you do not want the GitHub skills. There is no GitHub-only option, because the GitHub plugin depends on the core plugin and brings it along.
+> **Short answer.** Install the full suite with `/plugin install han@han`. That gives you everything: the planning, investigation, review, and documentation skills, every agent, and the GitHub PR skills. Pick `han.core` instead only when you know you do not want the GitHub PR skills. There is no GitHub-only option, because the GitHub plugin depends on the core plugin and brings it along.
 
 The rest of this page explains the three plugins, the one dependency that surprises people, and how to pick.
 
@@ -27,7 +27,7 @@ That means **there is no GitHub-only install.** The real choice is only two opti
 - **Core only** (`han.core`): the planning, investigation, review, and documentation skills, plus every agent. No GitHub PR skills.
 - **The full suite** (`han` or `han.github`): all of the above, plus the two GitHub PR skills.
 
-Both `han` and `han.github` land the same skills and agents. The difference is what shows up in your installed plugin list, and which one is built to grow. Installing `han` lists `han` and pulls its dependencies along; installing `han.github` lists `han.github` and `han.core`. Install `han` when you want the full suite, because any future addition to Han arrives as a dependency of the `han` meta-plugin, so you get it automatically on the next update.
+Both `han` and `han.github` land the same skills and agents. The difference is what shows up in your installed plugin list. Installing `han` lists `han` and pulls its dependencies along; installing `han.github` lists `han.github` and `han.core`. Install `han` when you want the full suite: the `han` meta-plugin exists for exactly this, to mean "the whole Han suite" in one command, so it is the clearest way to ask for everything.
 
 ## Which one do you need?
 
@@ -35,8 +35,8 @@ Find the row that matches you and run the command in it. Start with the recommen
 
 | Your situation | Install | Command |
 |----------------|---------|---------|
-| You want everything, or you are not sure yet | **`han` — start here** | `/plugin install han@han` |
-| You review pull requests on GitHub | `han` (the GitHub skills live here) | `/plugin install han@han` |
+| You want everything, or you are not sure yet | **`han` (start here)** | `/plugin install han@han` |
+| You review pull requests on GitHub and want the PR skills | `han` (the full suite includes them) | `/plugin install han@han` |
 | You do not use GitHub PRs and want a leaner install | `han.core` | `/plugin install han.core@han` |
 
 The full `han` suite is the right default for almost everyone. Core-only is the deliberate choice for a reader who knows they do not want the GitHub PR skills, for example because they do not review pull requests on GitHub.
@@ -52,9 +52,11 @@ First add the marketplace, then install the plugin you picked:
 
 Swap the second command for `han.core@han` if you chose core only, or `han.github@han` if you prefer to name the GitHub plugin directly. All three resolve from the same marketplace.
 
+Adding the marketplace makes the Test Double registry visible to Claude Code so it can resolve the plugin by name; that is why it comes first. When the install finishes, Claude Code lists what it added, including any dependencies it pulled in, so you can confirm you got what you expected.
+
 ## Starting with core, adding GitHub later
 
-Choosing `han.core` is not a one-way door. If you start with core only and later decide you want the GitHub PR skills, install `han.github` (or `han`) on top of what you already have. Claude Code sees that `han.core` is already present, adds the GitHub layer, and you have the full suite. You do not need to uninstall or reinstall anything.
+Choosing `han.core` is not a one-way door. If you start with core only and later decide you want the GitHub PR skills, install `han.github` (or `han`) on top of what you already have. Claude Code adds the GitHub layer to the core you already installed, and you have the full suite. You do not need to uninstall or reinstall anything.
 
 ## Related Documentation
 

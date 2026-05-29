@@ -92,3 +92,22 @@ Review team: `junior-developer`, `information-architect` (size: small).
 - F10: README path-picker entry must follow the existing question-form label pattern ("Deciding which plugin to install?") and share vocabulary with the page title — information-architect (IA-003) — User Interactions.
 - F11: Quickstart pointer must appear in the opening frame (before the path list), not in "Where to go next", so a cold-arrival pre-install reader sees it before being told to pick a path — information-architect (IA-004), junior-developer (JD-006) — Primary Flow, User Interactions.
 - F12: Decision-count check — the summary's "6 settled by evidence / 4 by user input" is correct (4 decisions trace to the user's answers: D1, D2, D3, D4; 6 to evidence: D5, D6, D7, D8, D9, D10). No change needed — junior-developer (JD-008) — —.
+
+## Round 2: review of the written documentation
+
+After the documentation itself was written (`docs/choosing-a-han-plugin.md` plus the README, Concepts, Quickstart, and why-solo edits), `information-architect` and `junior-developer` reviewed the real docs for completeness, correctness, consistency, and progressive disclosure. Both confirmed the structure: the dependency fact precedes the decision aid, all six entry points are wired correctly, and no facts contradict each other across the five surfaces. Findings raised and resolved:
+
+### Major (round 2)
+
+- F13: Decision-aid table told readers the GitHub skills "live here" under `han`, contradicting the page's own statement that `han` has no components of its own — information-architect (IA-002), junior-developer (JD-006). Resolved: rephrased the row to "the full suite includes them." Changed in `docs/choosing-a-han-plugin.md` (decision aid).
+- F14: `han.core`'s `plugin.json` (and the matching `marketplace.json` entry) described it as providing "PR descriptions" and "PR code reviews," but those two skills (`update-pr-description`, `gh-pr-review`) live in `han.github`, not `han.core`. The manifest contradicted the new docs — junior-developer (JD-001). Resolved by evidence (filesystem listing of `han.core/skills/` vs `han.github/skills/`): removed the two PR capabilities from both manifest descriptions.
+- F15: The forward-compatibility claim ("any future addition to Han arrives as a dependency of `han`, so you get it automatically on the next update") was an uncited speculative roadmap promise, flagged YAGNI — junior-developer (JD-002). Resolved: reframed the reason to prefer `han` around the meta-plugin's documented purpose ("means the whole Han suite in one command") rather than a forward-looking guarantee.
+
+### Minor (round 2)
+
+- F16: Em-dash in the decision-aid recommendation cell (`han — start here`) violated the no-em-dash voice rule — information-architect (IA-001). Resolved: changed to `han (start here)`. Also fixed a pre-existing em-dash on `quickstart.md` line 57.
+- F17: Concepts "See also" bar omitted the new page while the body linked to it (one-way navigation) — information-architect (IA-003). Resolved: added "Choosing a plugin" to the bar.
+- F18: Vocabulary drift — the GitHub skill set was called "GitHub skills", "GitHub-facing skills", and "GitHub PR skills" across surfaces, including within one sentence — information-architect (IA-005). Resolved: standardized on "GitHub PR skills" on the choosing page and in the Concepts packaging section.
+- F19: README used "just" ("not just the path"), a banned word — information-architect (IA-004). Resolved: changed to "not only the path."
+- F20: Installing section gave no marketplace gloss and no post-install verification signal for a first-time installer — junior-developer (JD-003, JD-004). Resolved: added one sentence explaining what adding the marketplace does and that Claude Code lists what it installed.
+- F21: Composability section asserted internal runtime behavior ("Claude Code sees that `han.core` is already present") that was not verified — junior-developer (JD-005). Resolved: reworded to state the outcome (the GitHub layer is added to the core you already installed) without asserting unverified internals.
