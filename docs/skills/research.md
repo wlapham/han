@@ -101,8 +101,6 @@ The skill dispatches `research-analyst` angles in parallel (one at small, two to
 
 The web reach is what makes it non-duplicative, and it is also the main risk surface, so the skill commits to behavioral controls for it: fetched content is treated as claims, the web-facing angle is isolated from the codebase, web evidence carries a retrieval date, and a claim that drives the recommendation must be corroborated. Those controls came out of an adversarial security review of the spec and are load-bearing, not decoration.
 
-The full design rationale, including why this is a separate skill rather than an expansion of `/investigate`, lives in [`docs/plans/research-skill/`](../plans/research-skill/).
-
 ## Sources
 
 The skill's protocols are grounded in established practice for evidence-based research and adversarial review.
