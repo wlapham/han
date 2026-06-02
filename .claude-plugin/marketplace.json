@@ -11,19 +11,19 @@
       "name": "han",
       "source": "./han",
       "description": "Meta-plugin that installs the bundled Han suite. Has no components of its own; it depends on han.core, han.github, and han.reporting so installing it pulls in all three. Does not bundle the opt-in han.feedback plugin.",
-      "version": "3.0.0"
+      "version": "3.1.0"
     },
     {
       "name": "han.core",
       "source": "./han.core",
       "description": "Evidence-based planning, investigation, and documentation skills for software projects. Includes issue triage, deep-dive investigations with root cause analysis, iterative plan refinement, architectural decision records (ADRs), project and feature documentation, coding standards, code reviews, test planning, and adversarial security vulnerability analysis.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "han.github",
       "source": "./han.github",
       "description": "GitHub-specific extensions to Han. Provides skills to post code reviews as PR comments, update a PR description with a consistent format, and other GitHub-facing workflows.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     },
     {
       "name": "han.reporting",
@@ -35,7 +35,7 @@
       "name": "han.feedback",
       "source": "./han.feedback",
       "description": "Post-session feedback skill for the Han suite. Captures structured observations, ratings, and improvement ideas on the Han skills you ran in a session and optionally posts them as a GitHub issue to testdouble/han. Opt-in: installed on its own, not pulled in by the han meta-plugin.",
-      "version": "1.0.0"
+      "version": "1.1.0"
     }
   ]
 }
