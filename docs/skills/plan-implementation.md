@@ -40,6 +40,7 @@ Operator documentation for the `/plan-implementation` skill in the han plugin. T
 - **Recording an architectural decision that has already been made.** Use `/architectural-decision-record` when the decision is settled and needs to be captured as an ADR.
 - **File-level code review.** Use `/code-review` for correctness, style, and maintainability review of committed or pending code.
 - **Documenting an already-built feature.** Use `/project-documentation` when the feature exists and the team wants documentation.
+- **Contributing a new skill, agent, or documentation file to a plugin.** Follow the repository's `CONTRIBUTING.md` checklist. This skill is sized for shipping software features; a plugin contribution is a conventions-driven file addition, and routing it through the full implementation-planning protocol produces more scaffolding than the change warrants. (Documentation with genuine behavioral complexity, like a multi-surface guide, is still a fit.)
 
 ## How to invoke it
 
@@ -69,10 +70,11 @@ Three cross-referenced files in the same folder as the source specification, plu
   - A **team composition and participation record.** Every specialist the skill engaged, whether they contributed actively or stood down with "no concerns," and a one-line summary of each specialist's input with citation.
   - An **implementation approach** section covering architecture and integration points, data model and persistence, runtime behavior, and external interfaces. Technical details are welcome here (this is the *how* document), all grounded in evidence from the codebase, ADRs, and coding standards.
   - A **decomposition and sequencing** table. The plan broken into work units sized to ship, each with what it delivers, what it depends on, and how it is verified.
-  - A **RAID log.** Risks (with likelihood, severity, blast radius, reversibility, owner, mitigation), Assumptions (with what-changes-if-wrong), Issues (with owner and next step), and Dependencies (with owner and status).
+  - A **RAID log**, when there is anything to track. Risks (with likelihood, severity, blast radius, reversibility, owner, mitigation), Assumptions (with what-changes-if-wrong), Issues (with owner and next step), and Dependencies (with owner and status). Only the sub-tables with entries appear, and a small plan with no risks, assumptions, issues, or dependencies omits the section rather than rendering empty tables.
   - A **testing strategy** grounded in the `test-engineer`'s observable-behavior recommendations (and `edge-case-explorer`'s findings if engaged). Covers test levels, test-doubles posture, and the edge cases requiring coverage.
-  - A **security posture** section (when `adversarial-security-analyst` contributed) with the concrete threat vectors addressed and the mitigations the plan commits to.
-  - An **operational readiness** section (when `devops-engineer` contributed) covering observability signals, SLO touchpoints, feature-flag strategy, rollout and rollback steps, cost posture, and compliance controls.
+  - A **security posture** section (when `adversarial-security-analyst` contributed) with the concrete threat vectors addressed and the mitigations the plan commits to. Omitted entirely when the feature has no threat surface, rather than rendering a "no security concerns" stub.
+  - An **operational readiness** section (when `devops-engineer` contributed) covering observability signals, SLO touchpoints, feature-flag strategy, rollout and rollback steps, cost posture, and compliance controls. Omitted entirely when the change introduces no operational surface.
+  - An **on-call resilience posture** section (when `on-call-engineer` contributed) covering application-source resilience commitments: timeouts and deadlines, retry strategy, idempotency, bulkheads, backpressure, kill switches, graceful degradation, failure-path observability, data integrity, and migration safety. Omitted entirely when the change adds no resilience surface.
   - A **definition of done.** Testable, unambiguous, agreed across specialists.
   - A **specialist handoffs for implementation** list. Which sibling agents should be re-engaged during implementation, when, and with what input.
   - A **remaining open items** list. Questions the project-manager could not resolve through evidence, junior-developer reframing, or user input. Each one names what would resolve it and whether it blocks implementation.

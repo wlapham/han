@@ -82,6 +82,15 @@ ALTITUDE: name and reference config and code artifacts; do not inline their full
 
 ## RAID Log
 
+<!--
+LAZILY CREATED — include only the sub-tables that have at least one real entry,
+and omit the whole RAID Log section when none of the four do. A small plan with
+no tracked risks, assumptions, issues, or dependencies omits this section rather
+than rendering empty tables. Confirm each sub-table is genuinely empty before
+omitting it — omission records the judgment that nothing qualified, not a
+skipped step.
+-->
+
 ### Risks
 
 | ID | Risk | Likelihood | Severity | Blast Radius | Reversibility | Owner | Mitigation |
@@ -117,11 +126,15 @@ ALTITUDE: name and reference config and code artifacts; do not inline their full
 
 ## Security Posture
 
-<!-- If `adversarial-security-analyst` contributed, capture their concrete findings and the mitigations this plan commits to. Name the specific threat vectors addressed; do not paraphrase into vague "we'll be secure" language. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the posture reflects a non-obvious decision. -->
+<!-- LAZILY CREATED — write this section only if `adversarial-security-analyst` contributed findings or the plan commits to a concrete security mitigation. If the feature has no threat surface (no authentication, authorization, PII, untrusted input, or secrets), omit the section entirely rather than writing "no security concerns". Confirm there is genuinely no surface before omitting — omission records that judgment, not a skipped step.
+
+If `adversarial-security-analyst` contributed, capture their concrete findings and the mitigations this plan commits to. Name the specific threat vectors addressed; do not paraphrase into vague "we'll be secure" language. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the posture reflects a non-obvious decision. -->
 
 ## Operational Readiness
 
-<!-- If `devops-engineer` contributed, capture the production-readiness requirements this plan commits to: observability signals, SLO touchpoints, feature-flag strategy, rollout and rollback steps, cost posture, compliance controls. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the posture reflects a non-obvious decision. -->
+<!-- LAZILY CREATED — write this section only if `devops-engineer` contributed or the plan commits to a concrete production-readiness step. If the change introduces no new observability, rollout, flag, scale, or cost concern, omit the section entirely rather than rendering empty bullets. Confirm there is genuinely no operational surface before omitting — omission records that judgment, not a skipped step.
+
+If `devops-engineer` contributed, capture the production-readiness requirements this plan commits to: observability signals, SLO touchpoints, feature-flag strategy, rollout and rollback steps, cost posture, compliance controls. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the posture reflects a non-obvious decision. -->
 
 - **Observability:** <!-- metrics, logs, traces to add; dashboards to touch -->
 - **SLO impact:** …
@@ -132,7 +145,9 @@ ALTITUDE: name and reference config and code artifacts; do not inline their full
 
 ## On-Call Resilience Posture
 
-<!-- If `on-call-engineer` contributed, capture the application-source resilience commitments this plan makes. Each row maps to a named anti-pattern the agent flagged. Application source level only; infrastructure and pipeline concerns live in Operational Readiness above. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the commitment reflects a non-obvious decision. -->
+<!-- LAZILY CREATED — write this section only if `on-call-engineer` contributed or the plan commits to a concrete application-source resilience measure. If the change adds no outbound calls, retries, queues, async paths, or other resilience surface, omit the section entirely rather than rendering empty bullets. Confirm there is genuinely no resilience surface before omitting — omission records that judgment, not a skipped step.
+
+If `on-call-engineer` contributed, capture the application-source resilience commitments this plan makes. Each row maps to a named anti-pattern the agent flagged. Application source level only; infrastructure and pipeline concerns live in Operational Readiness above. Append `([D-N](artifacts/implementation-decision-log.md#...))` links where the commitment reflects a non-obvious decision. -->
 
 - **Timeouts and deadlines:** <!-- which outbound calls get which timeouts; deadline propagation through the chain -->
 - **Retry strategy:** <!-- backoff, jitter, total cap; coordination with retries elsewhere in the chain -->
