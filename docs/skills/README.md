@@ -88,9 +88,10 @@ The opt-in feedback plugin. It captures observations about the Han suite itself.
 
 ## han.atlassian
 
-The opt-in Atlassian plugin. It publishes Han documentation to Confluence through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han.core`.
+The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira through the Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.atlassian@han`. Requires a configured Atlassian MCP server. Depends on `han.core`.
 
 - **[`/confluence-project-documentation`](./confluence-project-documentation.md).** Run `/project-documentation` to write or update feature documentation, then publish it to a user-specified Confluence location after confirmation. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
+- **[`/work-items-to-jira`](./work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are optional overrides. The Jira sibling of `/work-items-to-issues`.
 
 ---
 
@@ -121,6 +122,7 @@ A few common compositions:
 - **Create specs → plan implementation → iterate → break into work items.** `/plan-a-feature` → `/plan-implementation` → `/iterative-plan-review` → `/plan-work-items`.
 - **Plan implementation → break into work items.** `/plan-implementation` → `/plan-work-items`.
 - **Break into work items → publish to GitHub issues.** `/plan-work-items` → `/work-items-to-issues`.
+- **Break into work items → publish to Jira.** `/plan-work-items` → `/work-items-to-jira` (opt-in `han.atlassian` plugin; requires the Atlassian MCP server).
 - **Discover → document → standardize.** `/project-discovery` → `/project-documentation` → `/coding-standard`.
 - **Review locally → post to PR.** `/code-review` → `/post-code-review-to-pr`.
 - **Investigate → iterate on the fix.** `/investigate` → `/iterative-plan-review`.

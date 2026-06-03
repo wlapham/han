@@ -1,6 +1,6 @@
 # han: Project Map
 
-Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as six plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs those three via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), and `han.atlassian` (an opt-in plugin carrying the Confluence documentation skill, which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin).
+Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as six plugins: `han.core` (the skills and agents), `han.github` (GitHub-facing skills), `han.reporting` (reporting and summary skills), `han` (a meta-plugin that installs those three via dependencies), `han.feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han.core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), and `han.atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence documentation and work-items-to-Jira — which depends on `han.core`, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin).
 
 ## Repository layout
 
@@ -33,10 +33,10 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   └── skills/         # Feedback skill directory (han-feedback) with SKILL.md
-├── han.atlassian/      # Opt-in Atlassian plugin: confluence-project-documentation (depends on han.core; requires the Atlassian MCP server; NOT bundled by the han meta-plugin)
+├── han.atlassian/      # Opt-in Atlassian plugin: confluence-project-documentation, work-items-to-jira (depends on han.core; requires the Atlassian MCP server; NOT bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
-│   └── skills/         # Atlassian skill directory (confluence-project-documentation) with SKILL.md
+│   └── skills/         # Atlassian skill directories, each with SKILL.md + references/
 ├── docs/               # Operator-facing documentation
 │   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
@@ -106,6 +106,7 @@ The plugins are shipped from `han.core/`, `han.github/`, `han.reporting/`, `han.
 - **[docs/skills/runbook.md](./docs/skills/runbook.md).** Create or update a runbook for a single operational scenario (alert that has fired, incident, recurring task, known failure mode). Applies a YAGNI preflight that requires real evidence before writing.
 - **[docs/skills/han-feedback.md](./docs/skills/han-feedback.md).** Capture structured post-session feedback on the Han skills and agents used across the whole `han.*` plugin family, and optionally post it as a GitHub issue to testdouble/han.
 - **[docs/skills/confluence-project-documentation.md](./docs/skills/confluence-project-documentation.md).** Run `/project-documentation` to write or update feature documentation, then publish it to a user-specified Confluence location (opt-in `han.atlassian` plugin; requires the Atlassian MCP server).
+- **[docs/skills/work-items-to-jira.md](./docs/skills/work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project, with optional epic, issue type, assignee, and column (opt-in `han.atlassian` plugin; requires the Atlassian MCP server).
 
 ### Agent catalog (`docs/agents/`)
 
