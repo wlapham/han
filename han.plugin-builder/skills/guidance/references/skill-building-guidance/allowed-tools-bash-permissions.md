@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Bash Permission Patterns in `allowed-tools`
@@ -23,19 +22,19 @@ allowed-tools: Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Ba
 ```yaml
 allowed-tools: Bash(gh:*), Bash(git:*)
 ```
-This was a completely invented syntax that doesn't match anything. (commit `c869488`)
+Colon-separated syntax is invented and matches nothing. Use a space before the wildcard.
 
 **Wrong — multiple commands in one `Bash()` declaration:**
 ```yaml
 allowed-tools: Bash(date *, git config *, whoami, ls *, mkdir *, find *)
 ```
-The glob matcher treats the entire contents as a single pattern. Individual commands after the first won't match correctly. (commit `48b1d30`)
+The glob matcher treats the entire contents as a single pattern. Individual commands after the first won't match correctly.
 
 **Fixed:**
 ```yaml
 allowed-tools: Bash(date *), Bash(git config *), Bash(whoami), Bash(mkdir *), Bash(find *)
 ```
-Each command prefix gets its own `Bash()` entry. (commit `917f8c4`)
+Each command prefix gets its own `Bash()` entry.
 
 ## Granularity Rules
 
@@ -50,17 +49,17 @@ allowed-tools: Bash(git branch *), Bash(git diff *)
 ```
 Narrower prefixes prevent auto-approving commands the skill doesn't need (like `git push` or `git reset --hard`).
 
-However, skills that use many git subcommands across their steps (branch, diff, log, config, symbolic-ref, etc.) may use `Bash(git *)` to avoid an unwieldy list of narrow prefixes. Several Han skills use this pattern — see `code-review`, `post-code-review-to-pr`, and `update-pr-description`. The tradeoff is acceptable when the skill's workflow genuinely requires broad git access.
+However, skills that use many git subcommands across their steps (branch, diff, log, config, symbolic-ref, and so on) may use `Bash(git *)` to avoid an unwieldy list of narrow prefixes. A review skill or a PR-description skill that touches most of git is a typical case. The tradeoff is acceptable when the skill's workflow genuinely requires broad git access.
 
 **Too narrow / missing:**
 ```yaml
 allowed-tools: Bash(gh *), Bash(git *)
 ```
-A skill that also uses `find` for file discovery will stall on permission prompts when it tries to run `find`. (commits `44539e4`, `2ade936`)
+A skill that also uses `find` for file discovery will stall on permission prompts when it tries to run `find`, because no listed prefix covers it.
 
 ### Rule: Remove permissions for commands the skill doesn't use
 
-If a skill doesn't actually call a command, don't include it in `allowed-tools`. Several Han skills included `Bash(ls *)` that they never used — cleaned up in commit `b3d41c1`.
+If a skill doesn't actually call a command, don't include it in `allowed-tools`. A stale `Bash(ls *)` entry left over from an earlier draft, for instance, grants approval the skill never needs and should be removed.
 
 ### Rule: Prefer `find` over `ls` — and match `allowed-tools` accordingly
 
@@ -68,7 +67,7 @@ Skills should use `find` for file/directory detection (see [Context Injection Co
 
 ## Common Patterns
 
-Real `allowed-tools` patterns from Han plugin skills:
+Common `allowed-tools` patterns:
 
 | Pattern | What it covers |
 |---------|---------------|

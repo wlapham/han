@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Decomposition
@@ -15,18 +14,18 @@ A skill should do one thing well. When a skill handles too many responsibilities
 A skill should address a single concern. If a skill does both analysis and integration, or both gathering and posting, it's doing too much.
 
 **Before (monolithic):**
-The original `pr-review` skill performed the full code review AND posted it to GitHub. Two fundamentally different concerns:
+Picture a `pr-review` skill that performs the full code review AND posts it to GitHub. Two fundamentally different concerns:
 
 - **Analysis.** Reading code, applying a checklist, generating findings.
 - **Integration.** Calling the GitHub API, handling JSON encoding, managing auth.
 
-Bundling them meant a bug in the GitHub posting logic required debugging the entire review skill, and the code review logic couldn't be reused without GitHub.
+Bundling them means a bug in the GitHub posting logic requires debugging the entire review skill, and the code review logic can't be reused without GitHub.
 
 **After (decomposed):**
-Split into two skills (commit `591d01c`):
+Split into two skills:
 
-- `code-review`. The review itself (analysis only, no GitHub dependency).
-- `gh-pr-review`. GitHub integration that calls `code-review` via the `Skill` tool, then posts results.
+- A review skill. The review itself (analysis only, no GitHub dependency).
+- A GitHub-integration skill that runs the review skill, then posts results.
 
 The review logic is now reusable. GitHub bugs are isolated to the integration skill.
 
@@ -50,17 +49,15 @@ Keep together when:
 If a skill contains large blocks of agent instructions inline in the SKILL.md, extract them into standalone agent files under `agents/`.
 
 **Before (inline agents):**
-The `investigation` skill contained full agent definitions for `evidence-based-investigator` and `adversarial-validator` inline in SKILL.md. Hundreds of lines of protocols mixed with the skill's own steps.
+Picture an investigation skill that contains full agent definitions for an investigator agent and a validator agent inline in SKILL.md. Hundreds of lines of protocols mixed with the skill's own steps.
 
 **After (extracted):**
-Extracted into standalone agent files (commit `ccdad9e`):
+Extract the agents into standalone agent files:
 
 - `agents/evidence-based-investigator.md`
 - `agents/adversarial-validator.md`
 
-The skill now references these agents via the `Agent` tool rather than duplicating their definitions inline.
-
-Similarly, `project-documentation` had `codebase-explorer` and `content-auditor` logic inline, extracted to `agents/codebase-explorer.md` and `agents/content-auditor.md` (commit `31042da`).
+The skill now references these agents via the `Agent` tool rather than duplicating their definitions inline. The same move applies when a documentation skill carries explorer and content-audit logic inline: extract each into its own file under `agents/`.
 
 ## Composition Patterns
 
@@ -70,7 +67,7 @@ Use the `Skill` tool to compose skills. The calling skill orchestrates while the
 
 Two composition patterns exist with different requirements:
 
-- **Orchestration.** Delegating a self-contained task (for example, `post-code-review-to-pr` → `code-review`). Works inline.
+- **Orchestration.** Delegating a self-contained task (for example, a PR-posting skill running a review skill). Works inline.
 - **Data-fetch.** Retrieving specific values for immediate use. Prefer inline discovery (context injection + Read) over forked sub-skill calls to avoid early-exit failures. See `writing-effective-instructions.md` for details.
 
 See [Skill Composition](./skill-composition.md) for the full pattern.
@@ -78,7 +75,7 @@ See [Skill Composition](./skill-composition.md) for the full pattern.
 ```markdown
 ## Step 3: Run Code Review
 
-Use the `Skill` tool to run `code-review` on the current branch.
+Use the `Skill` tool to run the code-review skill on the current branch.
 ```
 
 Add `Skill` to the calling skill's `allowed-tools`:
@@ -94,7 +91,7 @@ Use the `Agent` tool to dispatch extracted agent definitions for specialized sub
 ```markdown
 ## Step 2: Investigate
 
-Use the `Agent` tool with `han.core:evidence-based-investigator` to gather evidence.
+Use the `Agent` tool with `example-plugin:evidence-based-investigator` to gather evidence.
 ```
 
 Add `Agent` to the skill's `allowed-tools`:
@@ -115,4 +112,4 @@ Cross-references:
 
 - [External File References in Agent Definitions](../agent-building-guidelines/agent-external-files.md). Agent file structure constraints.
 - [Skill Composition](./skill-composition.md). Orchestration vs data-fetch composition patterns.
-- [Agent Dispatch Namespacing](./agent-dispatch-namespacing.md). Name a dispatched agent `han.core:agent-name`.
+- [Agent Dispatch Namespacing](./agent-dispatch-namespacing.md). Name a dispatched agent `your-plugin:agent-name`.

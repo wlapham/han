@@ -1,14 +1,11 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
-  - "han.reporting/skills/**/*.md"
-  - "han.feedback/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Frontmatter Fields
 
-This is the inventory of SKILL.md frontmatter fields Claude Code supports, with one-line semantics for each. Han skills use only a handful of them today (`name`, `description`, `allowed-tools`, `paths`, occasionally `argument-hint`), but the platform supports more, and the repo already uses some that no other guidance doc names. Use this as the reference for what is available; the dedicated docs cover the high-traffic fields in depth.
+This is the inventory of SKILL.md frontmatter fields Claude Code supports, with one-line semantics for each. A typical skill uses only a handful of them (`name`, `description`, `allowed-tools`, `paths`, occasionally `argument-hint`), but the platform supports more. Use this as the reference for what is available; the dedicated docs cover the high-traffic fields in depth.
 
 The authoritative source is the Claude Code [Skills documentation](https://code.claude.com/docs/en/skills). When this doc and that page disagree, the official page wins; re-verify before relying on a field's exact behavior.
 
@@ -21,7 +18,7 @@ The authoritative source is the Claude Code [Skills documentation](https://code.
 | `when_to_use` | No | Extra trigger context appended to `description`. Counts toward the 1,536-character combined listing cap. |
 | `argument-hint` | No | Autocomplete hint shown after the slash command, e.g. `[issue-number]`. |
 | `arguments` | No | Named positional arguments for `$name` substitution in the skill body. |
-| `paths` | No | Glob patterns that scope when the skill auto-activates. Han uses this on several guidance and skill docs to bind them to the directories they govern. |
+| `paths` | No | Glob patterns that scope when the skill auto-activates. Use this on guidance and skill docs to bind them to the directories they govern. |
 
 ## Tool permissions
 
@@ -60,7 +57,7 @@ These come from the cross-tool [Agent Skills specification](https://agentskills.
 
 ## Notes that bite
 
-- **The directory name is the command, not `name`.** A skill at `skills/deploy-staging/SKILL.md` produces `/deploy-staging` regardless of the `name` field. Plugin skills are namespaced, e.g. `han.core:code-review`.
+- **The directory name is the command, not `name`.** A skill at `skills/deploy-staging/SKILL.md` produces `/deploy-staging` regardless of the `name` field. Plugin skills are namespaced, e.g. `example-plugin:code-review`.
 - **No XML angle brackets in any frontmatter field.** Frontmatter is injected into the system prompt where `<` and `>` have special meaning. See [Security Restrictions](./security-restrictions.md).
 - **`allowed-tools` is marked experimental at the open-standard level** because cross-tool support varies. In Claude Code it is a stable, fully-supported field.
 

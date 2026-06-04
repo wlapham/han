@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Composition
@@ -19,7 +18,8 @@ exhibited persistent issues that make it unreliable:
 - **Data-fetch sub-skills** using `context: fork` cause the calling skill to
   exit early. The forked sub-skill's output anchors the model after an
   `api_retry` event, bypassing all subsequent workflow steps. This failure mode
-  was observed consistently across 7 skills that called `read-project-config`.
+  has been observed consistently across multiple skills that called a shared
+  config-reading sub-skill.
 - **Orchestration sub-skills** also suffer from inconsistent behavior, with
   the calling skill losing track of its own workflow after the sub-skill
   returns.
@@ -31,8 +31,8 @@ tuning or `context: fork` configuration has reliably resolved them.
 `context: fork` is a documented Claude Code feature (see the [Skills
 documentation](https://code.claude.com/docs/en/skills) and the field inventory
 in [Skill Frontmatter Fields](./skill-frontmatter-fields.md)); the guidance here
-is not that the feature is unsupported, but that Han deliberately avoids it for
-data-fetch sub-skills because the early-exit failure mode above showed up
+is not that the feature is unsupported, but that you should avoid it for
+data-fetch sub-skills because the early-exit failure mode above shows up
 repeatedly in practice. Treat this as a considered choice, not an oversight.
 
 ### Rule: Prefer inline discovery

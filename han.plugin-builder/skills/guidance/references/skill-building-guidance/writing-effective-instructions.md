@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Writing Effective Instructions
@@ -104,7 +103,7 @@ Error handling is especially important for steps that depend on external tools (
 
 ### Rule: Prefer inline discovery over forked data-fetch sub-skills
 
-Data-fetch sub-skills using `context: fork` can cause the calling skill to exit early. This was observed in `code-review`: after `read-project-config` returned "Not found: ..." as a forked sub-skill, an `api_retry` event fired and the calling model treated the sub-skill's output as its final answer — bypassing all subsequent workflow steps. Two fix attempts (explicit "proceed immediately... do not stop here" wording in commit `bdd68fe`, and conventional defaults in commit `69c416b`) both failed. The `context: fork` mechanism plus explicit continuation instructions proved "necessary but not sufficient."
+Data-fetch sub-skills using `context: fork` can cause the calling skill to exit early. This has been observed in practice: after a forked config-reading sub-skill returns "Not found: ...", an `api_retry` event can fire and the calling model treats the sub-skill's output as its final answer, bypassing all subsequent workflow steps. Adding explicit "proceed immediately... do not stop here" wording and conventional defaults does not reliably prevent it. The `context: fork` mechanism plus explicit continuation instructions is necessary but not sufficient.
 
 The solution is to replace forked data-fetch sub-skill calls with inline discovery: use context injection to detect config files, then read and extract values directly in the skill's own step logic. This eliminates the forked sub-skill entirely, avoiding the early-exit failure mode.
 

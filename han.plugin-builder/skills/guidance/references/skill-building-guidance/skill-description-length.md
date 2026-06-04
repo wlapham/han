@@ -1,9 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
-  - "han.reporting/skills/**/*.md"
-  - "han.feedback/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Description Length

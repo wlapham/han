@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # `AskUserQuestion` in Skill `allowed-tools`
@@ -40,16 +39,9 @@ This also affects skills that delegate via the `Skill` tool — the parent skill
 - GitHub Issue #29547 — "AskUserQuestion silently returns empty answers when called inside plugin skills" (closed March 2, 2026; fix noted as "upcoming release" but still reproducing as of March 4)
 - GitHub Issue #9846 — same symptom in an earlier version (v2.0.22). Fixed in v2.0.28 by adding a `requiresUserInteraction()` guard, but that guard only covers the non-allowed-tools path — the `alwaysAllowRules` early return bypasses it entirely.
 
-## Affected Skills
+## Which Skills This Affects
 
-Han plugin skills that use `AskUserQuestion` and their current `allowed-tools` status:
-
-| Skill | `AskUserQuestion` in `allowed-tools`? | Status |
-|-------|---------------------------------------|--------|
-| `post-code-review-to-pr` | No | Removed (commit `dcf36e7`) |
-| `update-pr-description` | No | Removed |
-| `project-documentation` | No | Removed |
-| `investigation` | No | Removed |
+Any skill that calls `AskUserQuestion` to ask the user something interactively. If such a skill lists `AskUserQuestion` in `allowed-tools`, the prompt silently returns empty answers. Audit every skill that asks the user a question and confirm `AskUserQuestion` is absent from its `allowed-tools` line.
 
 ## What Happens Without It
 

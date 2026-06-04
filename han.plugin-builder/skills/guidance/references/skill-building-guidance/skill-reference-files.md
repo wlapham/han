@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Reference Files
@@ -38,7 +37,7 @@ skills/
     owasp-top10.md     # Reference file at skill root
     template.md        # Reference file at skill root
 ```
-Files at the skill directory root may not be properly injected as context for the skill. (commit `85de9bb`)
+Files at the skill directory root may not be properly injected as context for the skill.
 
 **After (correct location):**
 ```
@@ -84,7 +83,7 @@ skills/
       logo.png
 ```
 
-No existing skills in this repository use `assets/` yet, but this convention is established to prevent conflicting patterns from emerging. Use `assets/` when a skill needs to reference files for output generation rather than for Claude's reasoning.
+Use `assets/` when a skill needs to reference files for output generation rather than for Claude's reasoning. Establishing this convention early prevents conflicting patterns from emerging.
 
 ## Skills vs. Agents
 

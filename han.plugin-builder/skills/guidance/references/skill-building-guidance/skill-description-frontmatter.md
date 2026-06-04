@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Skill Description Frontmatter
@@ -74,17 +73,17 @@ Include the words users actually type — synonyms, abbreviations, and common ph
 
 **Before (keyword suffix, `writing-style`):**
 ```yaml
-description: Apply Test Double's brand voice and writing standards when drafting, editing, or revising marketing content, thought leadership pieces, and practitioner-led content. Keywords - draft, edit, write, rewrite, summarize, revise, outline.
+description: Apply your team's brand voice and writing standards when drafting, editing, or revising marketing content, thought leadership pieces, and practitioner-led content. Keywords - draft, edit, write, rewrite, summarize, revise, outline.
 ```
 
 **After (woven prose):**
 ```yaml
 description: >
-  Apply Test Double's brand voice and writing standards when drafting, editing,
+  Apply your team's brand voice and writing standards when drafting, editing,
   revising, rewriting, summarizing, or outlining marketing content, thought
   leadership pieces, and practitioner-led content. Use when writing or polishing
-  any content that should follow Test Double's style guide. Does not handle brand
-  positioning or messaging framework — use brand-messaging for ICP, positioning,
+  any content that should follow your team's style guide. Does not handle brand
+  positioning or messaging framework, use brand-messaging for ICP, positioning,
   and campaign tone.
 ```
 

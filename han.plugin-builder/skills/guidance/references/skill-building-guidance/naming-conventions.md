@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Naming Conventions
@@ -18,17 +17,17 @@ The directory containing the plugin must match the `name` field in its `.claude-
 ```
 research-and-development/
   .claude-plugin/
-    plugin.json    # { "name": "han", ... }
+    plugin.json    # { "name": "example-plugin", ... }
 ```
-The directory was `research-and-development/` but the plugin name was `han`. (commit `578d4da`)
+The directory was `research-and-development/` but the plugin name was `example-plugin`.
 
 **After (matched):**
 ```
-han/
+example-plugin/
   .claude-plugin/
-    plugin.json    # { "name": "han", ... }
+    plugin.json    # { "name": "example-plugin", ... }
 ```
-Renamed the directory to match the plugin name.
+Rename the directory to match the plugin name.
 
 ### Rule: Skill directory names should indicate external dependencies
 
@@ -47,13 +46,13 @@ skills/
   gh-pr-review/       # Clearly requires gh CLI
   update-pr-description/  # Clearly requires gh CLI
 ```
-Renamed to clarify the GitHub dependency. (commit `cedc1f9`)
+Rename to clarify the GitHub dependency.
 
 ### Rule: Avoid skill names that imply the wrong artifact type
 
 Without this rule, skill names using implementation verbs create expectations about what kind of artifact the skill produces. When the actual output differs, users avoid the skill (thinking it does something they don't want) and Claude may generate the wrong output type.
 
-The `write-tests` name implied the skill produces runnable test code; it actually produces a test plan document. This confusion motivated two renames: `test-plan` → `write-tests` (commit `1755b6b`, "renaming for clarity"), then `write-tests` → `test-planning` (commit `ca977e0`, PR #35, "renamed write-tests to test-planning"). The final name names the process/activity rather than an implementation action.
+Consider a skill named `write-tests`. That name implies the skill produces runnable test code, when it actually produces a test plan document. Renaming it to `test-planning` names the process/activity rather than an implementation action, so users and Claude both predict the right output type.
 
 **Before (`write-tests` — implies executable test code):**
 ```

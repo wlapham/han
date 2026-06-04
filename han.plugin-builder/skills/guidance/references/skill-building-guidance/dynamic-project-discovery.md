@@ -1,7 +1,6 @@
 ---
 paths:
-  - "han.core/skills/**/*.md"
-  - "han.github/skills/**/*.md"
+  - "**/skills/**/*.md"
 ---
 
 # Dynamic Project Discovery
@@ -19,20 +18,20 @@ Use `origin/HEAD` or `git symbolic-ref --short refs/remotes/origin/HEAD` to disc
 git log main..HEAD --oneline
 git diff main...HEAD
 ```
-Hardcoded `main` broke immediately on repos with `develop`, `master`, or other default branches. (commit `f043634`)
+Hardcoded `main` breaks immediately on repos whose default is `develop`, `master`, or any other branch name.
 
 **After (dynamic):**
 ```
 git log origin/HEAD..HEAD --oneline
 git diff origin/HEAD...HEAD
 ```
-Using `origin/HEAD` works regardless of the default branch name. (commit `09a44aa`)
+Using `origin/HEAD` works regardless of the default branch name.
 
 For context injection commands, use:
 ```
 - default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
 ```
-This injects the actual default branch name at skill load time. (commit `917f8c4`)
+This injects the actual default branch name at skill load time.
 
 ### Rule: Use `which` for tool availability, not `--version`
 
@@ -42,7 +41,7 @@ Check tool availability with `which {command}` in the Pre-requisites section.
 ```
 - gh CLI: !`gh --version`
 ```
-Two problems: (1) returns a verbose version string the skill doesn't need, and (2) if `gh` isn't installed, the non-zero exit code can cause the skill to fail before it can inform the user gracefully. (commit `917f8c4`)
+Two problems: (1) it returns a verbose version string the skill doesn't need, and (2) if `gh` isn't installed, the non-zero exit code can cause the skill to fail before it can inform the user gracefully.
 
 **After (correct):**
 ```
