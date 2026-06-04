@@ -6,11 +6,12 @@ description: >
   work-items file into Jira tickets, publish work items as Jira issues, or create
   implementation tickets that can be worked on and tracked in Jira. Requires a configured
   Atlassian MCP server and a target Jira project (or board). Defaults to creating each
-  slice as a Story, unassigned, in the backlog; an epic, a different issue type, an
-  assignee, and a target column are all optional overrides. Does not produce the
-  work-items file itself — use plan-work-items to break a plan into work items first.
-  Does not post to GitHub — use work-items-to-issues for GitHub issues.
-argument-hint: [path to work-items.md] [--project <KEY> or --board <name>] [--epic <KEY> (optional)] [--type <issue type, default Story>] [--assignee <accountId/email> (optional)] [--column <name, default Backlog>]
+  slice as a Story, unassigned, in the backlog; an optional parent (an epic, so each item
+  becomes a standard issue under it, or a story, so each item becomes a subtask under it),
+  a different issue type, an assignee, and a target column are all optional overrides. Does
+  not produce the work-items file itself — use plan-work-items to break a plan into work
+  items first. Does not post to GitHub — use work-items-to-issues for GitHub issues.
+argument-hint: [path to work-items.md] [--project <KEY> or --board <name>] [--parent <KEY> epic or story (optional; --epic is a deprecated alias)] [--type <issue type, default Story>] [--assignee <accountId/email> (optional)] [--column <name, default Backlog>]
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *), mcp__claude_ai_Atlassian__getAccessibleAtlassianResources, mcp__claude_ai_Atlassian__atlassianUserInfo, mcp__claude_ai_Atlassian__getVisibleJiraProjects, mcp__claude_ai_Atlassian__getJiraProjectIssueTypesMetadata, mcp__claude_ai_Atlassian__lookupJiraAccountId, mcp__claude_ai_Atlassian__createJiraIssue, mcp__claude_ai_Atlassian__editJiraIssue, mcp__claude_ai_Atlassian__getJiraIssue, mcp__claude_ai_Atlassian__getTransitionsForJiraIssue, mcp__claude_ai_Atlassian__transitionJiraIssue, mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql
 ---
 
@@ -26,6 +27,7 @@ The breakdown work — drafting slices, assigning symbolic IDs, specifying depen
 - **Dependencies are within-file only.** Every SYM named in a `Depends on` line must resolve to another slice in the same file. A `Depends on` that names an unknown SYM is a format error to surface for repair.
 - **Symbolic-ID prefixes:** accept whatever the input uses. Any uppercase prefix shape is valid (`W-N`, `V2-N`, `EV-N`, …); the prefix has no effect on Jira placement.
 - **Defaults:** issue type `Story`, no assignee, reporter taken from the Atlassian MCP identity, and the project's initial status (Backlog). Each is overridable per run; nothing is assigned or moved unless asked.
+- **Parenting is optional and determines the child issue type.** `--parent <KEY>` accepts an epic or a standard issue (a story, task, or bug). Under an **epic**, each item is a standard issue (default `Story`). Under a **story** (any standard issue), each item is a **subtask** (default the project's subtask issue type). You cannot parent under a subtask. `--epic <KEY>` is a deprecated alias for `--parent`; it resolves the same way regardless of the named issue's actual type.
 - **Every slice ticket MUST carry the reference artifacts an implementer needs** — API/event contracts, design references, schema docs, runbooks, ADRs, coding standards. Tickets that consume an HTTP endpoint or event payload MUST reference the contract section that defines it. Full include/exclude list in [references/reference-artifact-inventory.md](references/reference-artifact-inventory.md).
 - **NEVER include process artifacts in ticket descriptions.** Excluded: iteration histories, decision logs, review findings, team findings, facilitation summaries, gap analyses, and anything under an `artifacts/` subfolder of the plan that is not a contract or design reference.
 - **No screenshot upload or image embedding.** Design references are carried as links, not uploaded into Jira. See [references/jira-ticket-template.md](references/jira-ticket-template.md).
@@ -47,8 +49,8 @@ If the path is not provided, ask for it. The input is a single `work-items.md` p
 Read these from the arguments and conversation; do not guess defaults the user did not ask for:
 
 - **Target project or board** — `--project <KEY>` (e.g., `ACME`) or `--board <name/URL>`. **Required.** If absent, ask for it in Step 3.
-- **Epic** — `--epic <KEY>` (e.g., `ACME-12`) or an epic URL. Optional. When present, every created ticket is parented to this epic.
-- **Issue type** — `--type <name>`. Optional; defaults to `Story`.
+- **Parent** — `--parent <KEY>` (an epic like `ACME-12`, or a story / standard issue like `ACME-34`) or an issue URL. Optional. When present, every created ticket is parented to it. `--epic <KEY>` is accepted as a deprecated alias for the same option; if both are given and name different keys, stop and ask which one. The parent's hierarchy level decides the child issue type (resolved in Step 3): standard issues under an epic, subtasks under a story.
+- **Issue type** — `--type <name>`. Optional; defaults to `Story` at the project top level or under an epic, and to the project's subtask issue type when the parent is a story.
 - **Assignee** — `--assignee <accountId or email>`. Optional; defaults to unassigned.
 - **Column** — `--column <name>`. Optional; defaults to the project's initial status (Backlog).
 
@@ -57,8 +59,13 @@ Read these from the arguments and conversation; do not guess defaults the user d
 Using the cloud ID from Step 0, resolve everything concretely now so failures surface before any ticket is created:
 
 - **Project (required).** If given a project key, confirm it with `mcp__claude_ai_Atlassian__getVisibleJiraProjects`. If given a board, resolve it to its underlying project (list projects and match; if a board maps to more than one project or is ambiguous, ask the user which project to use). If no project or board was provided, ask for one — do not proceed without a project key.
-- **Issue type.** Call `mcp__claude_ai_Atlassian__getJiraProjectIssueTypesMetadata` for the project and confirm the chosen type (default `Story`) exists. If `Story` is not an available type in this project, surface the available types and ask the user to pick one.
-- **Epic (optional).** If an epic was named, fetch it with `mcp__claude_ai_Atlassian__getJiraIssue` to confirm it exists, is in the target project, and is an epic. Record its key as the parent for every ticket.
+- **Parent (optional).** If a parent was named (`--parent`, or the deprecated `--epic`), fetch it with `mcp__claude_ai_Atlassian__getJiraIssue` to confirm it exists and is in the target project, then read its issue type's hierarchy level to decide the child mode:
+  - **Epic** (an epic-type issue, hierarchy level above standard) → children are **standard-level issues**; the effective default issue type is `Story`.
+  - **Standard issue** (Story, Task, Bug — hierarchy level 0) → children must be **subtasks**; the effective default issue type is the project's subtask type (resolved in the next bullet).
+  - **Subtask** → **stop**: a subtask cannot have children. Tell the user to name an epic or a standard issue instead.
+
+  Record the parent's key and which child mode applies.
+- **Issue type.** Call `mcp__claude_ai_Atlassian__getJiraProjectIssueTypesMetadata` for the project. Determine the effective default from the parent mode above (no parent or epic parent → `Story`; story parent → the project's subtask issue type, the one flagged as a subtask in the metadata). Then confirm the chosen type — the `--type` override when given, otherwise the effective default — both **exists** in the project and sits at the **correct hierarchy level** for the parent: under a story it must be a subtask type, otherwise it must be a standard (non-subtask) type. If the chosen type is missing or at the wrong level, surface the available types at the correct level and ask the user to pick one. If a story parent is named but the project exposes no subtask type, stop and tell the user subtasks are not enabled in this project.
 - **Assignee (optional).** If an assignee was named, resolve it to an account ID with `mcp__claude_ai_Atlassian__lookupJiraAccountId`. If unset, leave tickets unassigned.
 - **Column (optional).** If a column was named, hold it for Step 8. Resolve the matching status when you transition (Step 8), since transitions are per-issue.
 
@@ -89,7 +96,7 @@ Then give the user three actions: **Continue with fills** (apply the repairs to 
 
 Creating Jira tickets writes to a shared system, so confirm before doing it. Present a summary and wait for an explicit yes:
 
-- **Destination:** the Jira site, the target project (key and name), the epic (if any), the issue type, the assignee (or "unassigned"), and the target column (or "Backlog (default)").
+- **Destination:** the Jira site, the target project (key and name), the parent (if any, named as the epic or story it is and what each item becomes under it — a standard issue or a subtask), the issue type, the assignee (or "unassigned"), and the target column (or "Backlog (default)").
 - **The tickets to create:** a table of every slice that does not already carry a `(<KEY>)` annotation.
 
 | SYM | Summary (ticket title) | Depends on |
@@ -104,10 +111,10 @@ State the total count and that reporter will be the authenticated Atlassian user
 Walk the slices in file order (blocker-first, as authored). Skip any slice whose heading already carries a `(<KEY>)` annotation so a re-run resumes cleanly. For each remaining slice, call `mcp__claude_ai_Atlassian__createJiraIssue` with:
 
 - the cloud ID and target **project key**,
-- **issue type** = the resolved type (default `Story`),
+- **issue type** = the type resolved in Step 3 (default `Story` at the top level or under an epic; the project's subtask type when the parent is a story),
 - **summary** = the slice title (the text after `— ` in the heading),
 - **description** = the rendered slice body (everything below the heading: Summary, Description, any notes, References, Tests, Acceptance criteria). Pass it as Markdown; if the create tool requires ADF, convert it. Confirm the expected format against the tool's input schema.
-- **parent** = the epic key, when an epic was resolved (Step 3). Use the field the project's create metadata exposes for epic membership; if `parent` is rejected, surface the legacy "Epic Link" field requirement rather than dropping the epic silently.
+- **parent** = the resolved parent key, when a parent was resolved (Step 3) — an epic for standard-issue children, or a story for subtask children. Use the `parent` field the project's create metadata exposes; for a subtask, Jira requires `parent`. If `parent` is rejected for an epic in a company-managed project, surface the legacy "Epic Link" field requirement rather than dropping the parent silently.
 - **assignee** = the resolved account ID only when the user provided one; otherwise omit it (unassigned).
 - **reporter:** never set it. Jira records the authenticated MCP user as reporter.
 
@@ -130,4 +137,4 @@ When the user named a `--column`, transition each created ticket toward the matc
 
 ### 9. Report
 
-Summarize: the project and epic (if any), the issue type used, the assignee (or unassigned), and the column. List every created ticket as `<SYM-N> — <KEY>` with its URL, the count of dependency links made (and whether they are native Jira links or description references), and any slices skipped because they already carried a key. If any step failed, report the error and confirm the source `work-items.md` annotations reflect exactly which tickets were created.
+Summarize: the project and parent (if any, named as the epic or story it is), the issue type used (noting "subtask" when items were nested under a story), the assignee (or unassigned), and the column. List every created ticket as `<SYM-N> — <KEY>` with its URL, the count of dependency links made (and whether they are native Jira links or description references), and any slices skipped because they already carried a key. If any step failed, report the error and confirm the source `work-items.md` annotations reflect exactly which tickets were created.
