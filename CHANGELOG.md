@@ -1,5 +1,32 @@
 # Han Release Notes
 
+## v3.2.0
+
+This release introduces two new opt-in child plugins to the Han suite and patches `han.core`. The parent `han` plugin moves to 3.2.0. `han.core` moves to 1.1.1. Two new plugins join the suite at 1.0.0: `han.atlassian` and `han.plugin-builder`. `han.github` (1.1.0), `han.reporting` (1.0.0), and `han.feedback` (1.1.0) are unchanged.
+
+### han v3.2.0
+
+The contributor authoring guidance moved out of `docs/guidance/` into `han.plugin-builder/skills/guidance/references/`, which is why the docs tree shows large deletions. The Han-specific contributor docs that are not general authoring guidance, such as `docs/semantic-versioning.md`, moved up into `docs/` directly. A full doc sweep synced the `docs/skills/` and `docs/agents/` long-form docs with their sources, and new operator-facing skill docs were added for the new plugins' skills: `docs/skills/markdown-to-confluence.md`, `docs/skills/project-documentation-to-confluence.md`, and `docs/skills/work-items-to-jira.md`, with `docs/skills/README.md` updated to match. Two research reports landed under `docs/research/`: `guidance-currency-review.md` and `guidance-update-plan.md`. Hardcoded plugin, skill, and agent counts were removed from the living docs, including `docs/concepts.md` and the README. `.claude-plugin/marketplace.json` carries the version bumps and the two new plugin entries.
+
+### han.core v1.1.1
+
+Author and reviewer attribution was removed from the output templates of `/architectural-decision-record`, `/coding-standard`, and `/project-documentation`. The generated documents no longer carry `Authors` or `Reviewers` metadata blocks, the skills no longer prompt for author information, and the now-unused `git config user.name` and `whoami` context injection, along with the matching `Bash(git config *)` and `Bash(whoami)` permissions, were dropped from those three `SKILL.md` files. `/iterative-plan-review` got minor tweaks to its reference files `iteration-checklist.md` and `review-iteration-history-template.md`.
+
+### han.atlassian v1.0.0 (new)
+
+A new opt-in, Atlassian-facing plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #49. It depends on `han.core` and requires a configured Atlassian MCP server. The `han` meta-plugin does not bundle it; install it on its own. It ships three skills. `markdown-to-confluence` publishes a local Markdown file to a user-specified Confluence page. `project-documentation-to-confluence` runs the core `/project-documentation` skill and then publishes the result to Confluence. `work-items-to-jira` creates one Jira ticket per slice from a work-items file and supports nesting items under an epic or a story via `--parent`; it ships the reference files `jira-ticket-template.md`, `reference-artifact-inventory.md`, and `work-items-file-format.md`. The two publish skills offer a live, draft, or local-only choice.
+
+### han.plugin-builder v1.0.0 (new)
+
+A new opt-in, dependency-free plugin from [@mxriverlynn](https://github.com/mxriverlynn) in #50 that packages the contributor guidance for building Claude Code skills, agents, and plugins. The `han` meta-plugin does not bundle it; install it on its own. It ships the `guidance` skill, which answers authoring questions and, when run with `init`, vendors the full guidance set into a repo at `.claude/plugin-building-guidance/` and writes a path-scoped rule index at `.claude/rules/plugin-building-guidance.md` so the right guidance surfaces while editing skill and agent files. The guidance body (skill-building guidance, agent-building guidelines, the marketplace and plugin configuration reference, and templates) moved here out of `docs/guidance/` and was generalized to be repo-agnostic.
+
+### Pull requests in this release
+
+- Add han.plugin-builder plugin and skills for plugin building guidance (#50) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Create han.atlassian plugin with first skills (#49) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v3.2.0/CHANGELOG.md#v320
+
 ## v3.1.0
 
 This release ships behavior and documentation updates across the Han suite, driven by planning-protocol feedback and a fix to how the swarming skills dispatch agents. The parent `han` plugin moves to 3.1.0. Three child plugins change: `han.core` to 1.1.0 (planning, review, and documentation skill updates plus the agent-dispatch namespacing fix), `han.github` to 1.1.0 (`/update-pr-description` template conformance), and `han.feedback` to 1.1.0 (named default rating dimensions). `han.reporting` is unchanged at 1.0.0.
