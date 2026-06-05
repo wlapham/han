@@ -70,6 +70,7 @@ Files on disk plus issues on GitHub:
 - **Review the map before you confirm.** The skill pauses and shows you the item-to-repo table before it writes or creates anything. This is the moment to catch a misrouted item.
 - **Let the evidence-based repair run.** When a format check fails, the skill proposes a fix with its source. Continue with the fills when they look right, correct them when they do not, or stop and edit the file by hand.
 - **Re-run after a partial failure.** The pipeline is idempotent. Items already created are skipped and uploads overwrite in place, so a re-run resumes where it stopped.
+- **Merge the assets PR on a protected repo.** When the target repo's default branch is protected, the screenshots are committed to an `issue-assets/<feature-slug>` branch and opened as a pull request instead of pushed directly, and the skill surfaces that PR URL to you. The issues are created right away, but their inline designs stay broken until that assets PR merges, so merging it is the follow-up that finishes the publish.
 
 ## YAGNI (when applicable)
 
