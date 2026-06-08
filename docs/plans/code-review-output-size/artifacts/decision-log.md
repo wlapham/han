@@ -10,7 +10,7 @@ history, rationale, evidence, and rejected alternatives for each decision.
 ## Trivial decisions
 
 - D1: Scope — output document only — The feature changes only what the generated review document contains and how it is structured, not the skill's source files; trimming `SKILL.md`, the `references/` files, or the long-form doc for their own size is explicitly out of scope (covered by issue #51) (considered widening to source-file size; rejected because issue #57 explicitly carves that out as #51's territory). — Referenced in spec: Outcome, Out of Scope.
-- D9: Self-consistency and analysis behavior unchanged — What the review analyzes, which agents it dispatches, the severity rubric, and the self-consistency tension check are untouched; only the emitted document's shape and redundancy change. — Referenced in spec: Out of Scope, Edge Cases and Failure Modes.
+- D9: Self-consistency and analysis behavior unchanged — What the review analyzes, which agents it dispatches, the severity rubric, the self-consistency tension check, and YAGNI's categorically non-corrective status are untouched; only the emitted document's shape and redundancy change. — Referenced in spec: Primary Flow, Out of Scope, Edge Cases and Failure Modes.
 - D10: Long-form doc consistency — The operator-facing long-form documentation that describes the review document's structure is updated for accuracy against the new structure, not trimmed for its own size. — Referenced in spec: Coordinations.
 
 ## Full decisions
@@ -25,7 +25,7 @@ history, rationale, evidence, and rejected alternatives for each decision.
   - A fixed word/line target for a representative review — rejected because it is brittle to finding count and exploit-path length and does not generalize across reviews.
   - Both a structural bar and a numeric target — rejected because the numeric target adds a brittle gate with no benefit over the structural one.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F3, F14
 - **Dependent decisions:** D3, D5, D7, D8
 - **Referenced in spec:** Outcome.
 
@@ -39,8 +39,8 @@ history, rationale, evidence, and rejected alternatives for each decision.
   - Keep the full block + table row only and remove the Security Improvement Summary entirely — rejected because the user chose to retain a collapsed one-paragraph summary as an actionable remediation pointer.
   - Drop only the critical-severity cross-reference and keep the three-subsection summary minus its prevention subsection — rejected because the remaining two subsections still restate the findings; a single paragraph is leaner.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** D4
+- **Driven by findings:** F1, F6
+- **Dependent decisions:** D4, D11, D12
 - **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes.
 
 ### D4: Merge recommendation covers security
@@ -52,8 +52,8 @@ history, rationale, evidence, and rejected alternatives for each decision.
 - **Rejected alternatives:**
   - Leave the recommendation keyed only to the 🔴/🟡/🔵 sections — rejected because a critical security finding would then never raise the recommendation above its non-security severity, understating merge risk.
 - **Linked technical notes:** —
-- **Driven by findings:** —
-- **Dependent decisions:** —
+- **Driven by findings:** F4
+- **Dependent decisions:** D12
 - **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes.
 
 ### D5: What's Good optional
@@ -86,14 +86,16 @@ history, rationale, evidence, and rejected alternatives for each decision.
 ### D7: Finding-block condensing
 
 - **Question:** Each finding block repeats `[Category]` and `file:line` already shown in the Review Summary table, and each YAGNI finding carries three sub-bullets (Why YAGNI / Simpler form / Reopen-keep-when). What is condensed?
-- **Decision:** Drop the `[Category]` label from each finding block — category lives in the summary table. Keep the `file:line` reference in each finding block as the actionable jump anchor. Condense each YAGNI finding from three sub-bullets to one finding line plus a single reopen-trigger clause.
-- **Rationale:** Category is a scanning aid that belongs in the index (table), not repeated on every block. `file:line` is where the developer acts, so it stays on the block even though the table also lists it — the table is the scannable index, the block is the actionable home. The three YAGNI sub-bullets restate the same advisory; the team needs the finding and the reopen trigger to act, which is the minimum.
-- **Evidence:** User input (finding-blocks question; user selected drop-`[Category]`, keep `file:line`, condense YAGNI). Issue #57 flags the `[Category]`/`file:line` repetition and the three YAGNI sub-bullets. Current template repeats `**[{Category}]** \`{file:line}\`` on each block and lists three YAGNI sub-bullets (`references/template.md`).
+- **Decision:** Keep the `file:line` reference in each finding block as the actionable jump anchor. Condense each YAGNI finding from three sub-bullets to one finding line plus a single reopen-trigger clause. Drop the `[Category]` label from a finding block only when the category is generic and already conveyed by the table and the task-ID prefix (logic, performance, clarity, and similar); keep a category cue when it names content a standalone reader needs and the task ID does not supply — an ADR violation that names the specific record, a standards violation that names the specific standard, or a security finding.
+- **Rationale:** `file:line` is where the developer acts, so it stays on the block even though the table also lists it — the table is the scannable index, the block is the actionable home. The three YAGNI sub-bullets restate the same advisory; the finding line plus reopen trigger is the minimum the team needs to act. For categories, the original blanket drop assumed every reader has the table in view, but the PR-posting path renders each block as a standalone GitHub comment with no table present (F7). For generic categories the table and task-ID prefix are enough; for ADR and standards violations the category string names the specific document being violated — that is decision-relevant content, not redundant labeling — so it is retained.
+- **Evidence:** User input (finding-blocks question; user selected drop-`[Category]`, keep `file:line`, condense YAGNI — then, on the escalation of F7, selected keeping content-bearing categories). Issue #57 flags the `[Category]`/`file:line` repetition and the three YAGNI sub-bullets. Current template repeats `**[{Category}]** \`{file:line}\`` on each block and lists three YAGNI sub-bullets (`references/template.md`). The PR-posting consumer renders blocks as standalone comments (`han.github/skills/post-code-review-to-pr/SKILL.md`).
 - **Rejected alternatives:**
   - Remove `file:line` from the block and rely on the table — rejected because the block is where the developer acts; forcing a cross-reference to the table to find the location adds friction.
   - Keep all three YAGNI sub-bullets — rejected because they restate one advisory; the finding line plus reopen trigger is the minimum the team needs to act.
+  - Drop `[Category]` from every block (the initial direction before F7) — rejected because a standalone / PR-comment reader loses the document-naming content carried by ADR and standards categories.
+  - Keep `[Category]` on every block — rejected because generic categories are already conveyed by the table and task-ID prefix; repeating them is the redundancy the issue targets.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F7
 - **Dependent decisions:** —
 - **Referenced in spec:** Primary Flow.
 
@@ -106,6 +108,33 @@ history, rationale, evidence, and rejected alternatives for each decision.
 - **Rejected alternatives:**
   - Keep rendering empty sections with placeholder text — rejected because it is filler that grows the document independent of findings, contrary to the success criterion.
 - **Linked technical notes:** —
-- **Driven by findings:** —
+- **Driven by findings:** F10
 - **Dependent decisions:** —
 - **Referenced in spec:** Outcome, Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes.
+
+### D11: Security row tier in summary table
+
+- **Question:** Once the critical-severity cross-reference is dropped (D3), the summary table is the only severity-ordered index of a security finding, but the table's Category cell shows an OWASP code, not a tier. How does a reader scanning the table tell a security finding's severity?
+- **Decision:** The summary table shows a security finding's severity tier inline on its row (for example, `SEC-001 (Critical)`). No dedicated Severity column is added: corrective rows already carry the tier in their task-ID prefix (CRIT-/WARN-/SUGG-), so a column would duplicate that for every corrective finding. The tier is surfaced only where the task ID does not already encode it — the security rows.
+- **Rationale:** The de-duplication removes the security finding from the 🔴 Critical list, so the table must independently communicate "this row blocks merge" or it fails the role the spec assigns it (the complete at-a-glance index). Showing the tier on security rows only preserves findability without reintroducing redundancy on corrective rows or adding bulk to every row.
+- **Evidence:** User input (escalation of finding F6; user chose "tier on security rows only" over a full Severity column or no table change). Finding F6 / information-architect IA-001 established the findability gap. The full security block already carries a `Severity:` field (`references/template.md`); D11 surfaces that tier in the index.
+- **Rejected alternatives:**
+  - Add a dedicated Severity column to every row — rejected because it duplicates the tier already in corrective task-ID prefixes, adding a cell to every row against the shrink goal.
+  - No table change; rely on severity ordering plus the Review Recommendation — rejected because ordering is not a visible label and forces the reader to trust the one-line recommendation without being able to verify a blocker from the index.
+- **Linked technical notes:** —
+- **Driven by findings:** F6
+- **Dependent decisions:** —
+- **Referenced in spec:** Primary Flow, Alternate Flows and States, Edge Cases and Failure Modes.
+
+### D12: Generation and verification rules in scope
+
+- **Question:** The output structure is governed not only by the document template but by the skill's review-assembly step and its structural verification rules. Are those rules in scope, given D1 frames the feature as "output document only"?
+- **Decision:** The skill's generation step and structural verification rules are in scope and change in lockstep with the new structure. Specifically: the generation step stops emitting empty sections (it previously instructed "include all sections even when empty"); the verification rules drop the mandate that each security finding carry a critical-severity cross-reference; a verification rule is added that when any security finding exists the Review Recommendation reflects the highest security severity; the table-completeness rule is scoped to corrective and security findings while the existing rule keeping YAGNI findings out of the table is preserved; and a check confirms lazy sections render only when populated.
+- **Rationale:** The assembly step and verification rules are what actually produce and gate the document — they are output-behavior drivers, not the skill's analysis behavior. Changing the template without them would leave the skill flagging compliant output as invalid (the cross-reference rule) or contradicting itself (the "include all sections" instruction). The issue itself names these as levers that must change together with the template. This is the in-scope counterpart to D1: D1 excludes trimming the source files for their own size; D12 includes editing the rules that define the output.
+- **Evidence:** Issue #57 states "changing the output means changing these plus the matching `SKILL.md` Step 9.1 verification rules so they stay consistent." Findings F1, F2, F4, and F13 (junior-developer F1/F2/F4/F8; information-architect IA-002/IA-007) each identified a specific rule that conflicts with the new structure. Current `SKILL.md` Step 8 instructs "include all sections even when empty"; Step 9.1 rule 9 mandates the cross-reference; rule 5 governs table completeness; rule 12 keeps YAGNI out of the table.
+- **Rejected alternatives:**
+  - Treat only the template as in scope and leave the rules unchanged — rejected because the verification rules would then fail or contradict every compliant review, and the assembly step would still force empty sections.
+- **Linked technical notes:** —
+- **Driven by findings:** F1, F2, F4, F13
+- **Dependent decisions:** —
+- **Referenced in spec:** Coordinations.
