@@ -1,3 +1,5 @@
+**Size-based demotion (applies to every category below).** Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3, the authoritative home for size-based severity rules. The bands in each category define what each severity means; Step 3.3 governs which findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity. The per-category bands below do not restate this rule.
+
 ### Processing test-engineer results
 
 For each test plan item (T1, T2, ...) from the test-engineer, assign category **[Testing: Coverage Gap]** and classify severity:
@@ -6,8 +8,6 @@ For each test plan item (T1, T2, ...) from the test-engineer, assign category **
 - **WARN**: Coverage gap for business logic, error handling paths, or integration points.
 - **SUGG**: Low-priority gap where brittleness risk is high or the code path is unlikely to regress.
 
-Size-based demotion is governed by the calibration directive in [SKILL.md](../SKILL.md) Step 3.3, which is the authoritative home for size-based severity rules. The bands above define what each severity means in this category; Step 3.3 governs which findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
-
 ### Processing edge-case-explorer results
 
 For each edge case item (EC1, EC2, ...) from the edge-case-explorer, assign category **[Testing: Edge Case]** and classify severity:
@@ -15,8 +15,6 @@ For each edge case item (EC1, EC2, ...) from the edge-case-explorer, assign cate
 - **CRIT**: Critical or High priority edge cases — likely AND severe AND not handled or tested. Especially those involving security, data corruption, or data isolation.
 - **WARN**: Medium priority edge cases (plausible with moderate impact, or partially handled but untested).
 - **SUGG**: Low priority edge cases (unlikely or low-impact).
-
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which edge cases escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
 
 ### Processing adversarial-security-analyst results
 
@@ -39,8 +37,6 @@ For each structural finding (S1, S2, ...) from the structural-analyst, assign ca
 - **WARN**: New coupling across seams, duplication with an existing utility, a leaky abstraction, or an unjustified interface with one implementation.
 - **SUGG**: Cohesion or naming-level structural smells the reader can live with until a broader refactor.
 
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which structural findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
-
 ### Processing behavioral-analyst results
 
 For each behavioral finding (B1, B2, ...) from the behavioral-analyst, assign category **[Behavior]** and classify severity:
@@ -49,8 +45,6 @@ For each behavioral finding (B1, B2, ...) from the behavioral-analyst, assign ca
 - **WARN**: Error propagation gap that only surfaces under failure modes, state-management coupling that makes the change brittle, or boundary assumption not matched by the caller.
 - **SUGG**: Data-flow clarity issue — the code works, but the pathway is hard to trace.
 
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which behavioral findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
-
 ### Processing concurrency-analyst results (only if dispatched)
 
 For each concurrency finding (C1, C2, ...) from the concurrency-analyst, assign category **[Concurrency]** and classify severity:
@@ -58,8 +52,6 @@ For each concurrency finding (C1, C2, ...) from the concurrency-analyst, assign 
 - **CRIT**: Race condition on authentication, billing, data isolation, or any path where interleaving produces wrong data. Also CRIT for demonstrable deadlock or lock-ordering reversal.
 - **WARN**: Shared-resource contention under realistic load, async error path that swallows failures, or missing cancellation/timeout handling on a long-running task.
 - **SUGG**: Concurrency hazard that is theoretically possible but requires implausible interleaving, or an async pattern that should use a stronger primitive.
-
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which concurrency findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
 
 ### Processing data-engineer results (only if dispatched)
 
@@ -71,8 +63,6 @@ For each data-engineer finding (D1, D2, ...), assign category **[Data]** and cla
 
 Reject findings that violate the calibration directive — particularly multi-instance / replay concerns where the storage primitive is naturally idempotent (e.g., flagging `CREATE INDEX IF NOT EXISTS` as a critical concurrent-deploy hazard). When in doubt about whether a finding survives the directive, demote one severity level.
 
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which data findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
-
 ### Processing devops-engineer results (only if dispatched)
 
 For each devops-engineer finding (DV1, DV2, ...), assign category **[DevOps]** and classify severity:
@@ -82,8 +72,6 @@ For each devops-engineer finding (DV1, DV2, ...), assign category **[DevOps]** a
 - **SUGG**: Operational ergonomics — improved alerting, log-line shape, dashboard coverage — for code paths the change touches.
 
 Reject findings that violate the calibration directive — particularly hypothetical scale problems for workloads the project does not currently have. Demote one severity level when in doubt.
-
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which devops findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
 
 ### Processing on-call-engineer results (only if dispatched)
 
@@ -96,8 +84,6 @@ For each on-call-engineer finding (OCE1, OCE2, ...), assign category **[On-Call]
 Reject findings that cross the hard boundary into `devops-engineer` territory (Dockerfile, IaC, manifest, pipeline file, observability platform config, alert rule, dashboard, runbook-as-document). If a finding can only be expressed in those files, it belongs to DV-series, not OCE-series.
 
 Apply the agent's own tone-anti-pattern sweep as a classification check: a finding that reads as sugarcoated criticism, thin blame, tourist citation, or bibliographic empathy should be either rewritten or omitted before being carried into the rollup.
-
-Size-based demotion is governed by [SKILL.md](../SKILL.md) Step 3.3 (the authoritative home). The bands above define each severity; Step 3.3 governs which on-call findings escalate to those bands at the change's size (read from Step 3.1). When uncertain, prefer the lower severity.
 
 ### Processing junior-developer results
 
