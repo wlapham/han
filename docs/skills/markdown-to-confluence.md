@@ -84,6 +84,7 @@ The skill walks a short, deterministic process:
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). The skill that generates documentation and hands the file to this one. Use it when the doc needs to be written first.
+- [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md). The skill that builds a feature spec and its companion artifacts, then hands each file to this one as a page tree. Use it when a plan needs to be written first.
 - [`/work-items-to-jira`](./work-items-to-jira.md). The other `han.atlassian` skill, for publishing work items to Jira.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md). Why `han.atlassian` is installed separately from the bundled suite, and what it requires.
 - [`SKILL.md` for /markdown-to-confluence](../../han.atlassian/skills/markdown-to-confluence/SKILL.md). The internal process definition.
