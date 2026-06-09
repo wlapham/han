@@ -17,7 +17,7 @@ Operator documentation for the `/markdown-to-confluence` skill in the opt-in `ha
 - **You must provide the location.** The skill does not search Confluence for the right page. A real Confluence instance is large and full of duplicate and similarly-named pages, so guessing the destination is unreliable. You name the place; the skill publishes there.
 - **Two location forms.** Give it a Confluence page URL (to update that page, or to create a child page under it), or a space (key or name) plus an optional parent page. The skill resolves whichever you provide.
 - **Draft by default.** The publish mode controls whether the page goes live or is saved as an unpublished draft. If a caller passes the mode explicitly, the skill uses it without asking. Invoked on its own with no mode, it defaults to a draft so nothing goes live unintentionally.
-- **Markdown posts directly.** The Atlassian Confluence MCP tools accept Markdown, so the document publishes as-is with no manual conversion to Confluence storage format.
+- **Markdown posts directly.** The Atlassian Confluence MCP tools accept Markdown, so the document publishes as-is with no manual conversion to Confluence storage format. A file may also carry embedded Confluence storage macros mixed into the Markdown — for example, the title-based page-link macros that [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md) writes into its cross-page links before handing the file over. The skill posts those verbatim too; it never strips or rewrites the content it is given.
 
 ## When to use it
 
@@ -84,6 +84,7 @@ The skill walks a short, deterministic process:
 - [Plugin landing page](../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/project-documentation-to-confluence`](./project-documentation-to-confluence.md). The skill that generates documentation and hands the file to this one. Use it when the doc needs to be written first.
+- [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md). The skill that builds a feature spec and its companion artifacts, then hands each file to this one as a page tree. Use it when a plan needs to be written first.
 - [`/work-items-to-jira`](./work-items-to-jira.md). The other `han.atlassian` skill, for publishing work items to Jira.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md). Why `han.atlassian` is installed separately from the bundled suite, and what it requires.
 - [`SKILL.md` for /markdown-to-confluence](../../han.atlassian/skills/markdown-to-confluence/SKILL.md). The internal process definition.

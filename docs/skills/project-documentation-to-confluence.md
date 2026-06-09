@@ -91,6 +91,7 @@ The skill walks a short, deterministic five-step process:
 - [Skills Index](./README.md). All skills, grouped by purpose.
 - [`/project-documentation`](./project-documentation.md). The core skill this one runs to produce the documentation. Use it directly for local-only documentation.
 - [`/markdown-to-confluence`](./markdown-to-confluence.md). The publisher this skill hands the file to. Use it directly to publish any existing markdown file to Confluence.
+- [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md). The sibling that plans and publishes a new feature specification to Confluence, rather than documenting one that already exists.
 - [`/project-discovery`](./project-discovery.md). Run first so the documentation pass finds the docs directory and stack language.
 - [Choosing a Han plugin](../choosing-a-han-plugin.md). Why `han.atlassian` is installed separately from the bundled suite, and what it requires.
 - [`SKILL.md` for /project-documentation-to-confluence](../../han.atlassian/skills/project-documentation-to-confluence/SKILL.md). The internal process definition.
