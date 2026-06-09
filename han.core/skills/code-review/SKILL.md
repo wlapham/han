@@ -27,7 +27,7 @@ Severity calibration is governed by **Step 3.3** (the authoritative home for siz
 
 **Project pattern deference:** A pattern that differs from general best practices but is consistent within the project is not a review finding. Only flag deviations from the project's own conventions.
 
-**YAGNI findings are a separate, non-correcting class.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (Pass 1 runs the evidence test from [../../references/yagni-rule.md](../../references/yagni-rule.md) Gate 1; Pass 2 matches against the named anti-patterns) to every change in the diff. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Each YAGNI finding records (a) the failing evidence type from Pass 1, (b) the matched anti-pattern from Pass 2, and (c) the simpler form considered. Severity calibration (the directive in Step 3.3, the authoritative home) does NOT apply to YAGNI; these findings are surfaced regardless of change size and are advisory, not corrective.
+**YAGNI findings are a separate, non-correcting class.** Apply the two-pass YAGNI procedure documented in [`references/review-checklist.md`](references/review-checklist.md) (the canonical home for the procedure and the (a)/(b)/(c) recording requirement) to every change in the diff. **YAGNI findings are listed in their own `### 🟡 YAGNI` section, separate from Critical / Warning / Suggestion**, and **do not appear under CRIT / WARN / SUGG**. The YAGNI section opens with this exact statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* Severity calibration (the directive in Step 3.3, the authoritative home) does NOT apply to YAGNI; these findings are surfaced regardless of change size and are advisory, not corrective.
 
 **Automated tool boundary:** If the project has a linter or formatter, trust it. Only flag style issues that automated tools can't catch.
 
@@ -206,11 +206,11 @@ Launch all selected agents **in parallel** using the `Agent` tool with `run_in_b
 
 Substitute the values of `$focus_areas` (bound at Step 1) and `$branch_context` (bound at Step 1.5) literally. Do not paraphrase or summarize either binding inside the prompt.
 
-**Per-agent dispatcher directives.** Add the following directive to each named agent's prompt in addition to the shared blocks above. Other agents do not receive these directives.
+**Per-agent dispatcher directives.** Add the following directive to each named agent's prompt in addition to the shared blocks above. Other agents do not receive these directives. These directives are the `/code-review` skill's tailoring; none modifies the agent's general behavior outside `/code-review`.
 
-- **`han.core:structural-analyst` and `han.core:behavioral-analyst`.** Add: *"Default the severity of every finding you raise to SUGG. Escalate to WARN only when the change actively introduces or worsens the issue described, and to CRIT only when the issue is critical irrespective of who introduced it. A false positive at SUGG is cheaper than a missed real issue; a false positive at WARN erodes trust."* This dispatcher directive is the `/code-review` skill's tailoring; it does not modify the agent's general behavior outside `/code-review`.
-- **`han.core:junior-developer`.** Add: *"Outward reads (adjacent code, callers) are for context only; findings must concern code on the scoped file list above. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. Otherwise, omit the finding."* This dispatcher directive is the `/code-review` skill's tailoring; it does not modify the agent's general behavior outside `/code-review`.
-- **`han.core:edge-case-explorer`.** Add: *"Findings must ultimately trace to a failure mode in code on the scoped file list above, even when callers outside the file list provide the evidence for that failure mode. Read callers as evidence per your Protocol 1, but the failure-mode target of every finding stays on the file list."* This narrower wording preserves the agent's caller-read protocol; it is the `/code-review` skill's tailoring and does not modify the agent's general behavior outside `/code-review`.
+- **`han.core:structural-analyst` and `han.core:behavioral-analyst`.** Add: *"Default the severity of every finding you raise to SUGG. Escalate to WARN only when the change actively introduces or worsens the issue described, and to CRIT only when the issue is critical irrespective of who introduced it. A false positive at SUGG is cheaper than a missed real issue; a false positive at WARN erodes trust."*
+- **`han.core:junior-developer`.** Add: *"Outward reads (adjacent code, callers) are for context only; findings must concern code on the scoped file list above. A finding about code outside the file list is permitted only when it directly demonstrates that the changed code on the file list cannot be safely interpreted without the out-of-scope context. Otherwise, omit the finding."*
+- **`han.core:edge-case-explorer`.** Add: *"Findings must ultimately trace to a failure mode in code on the scoped file list above, even when callers outside the file list provide the evidence for that failure mode. Read callers as evidence per your Protocol 1, but the failure-mode target of every finding stays on the file list."* This narrower wording preserves the agent's caller-read protocol.
 
 Domain-specific prompts (the `{size}`, `{N}`, `{change summary}`, `{file list}`, and `{branch}` placeholders are filled from earlier steps):
 
@@ -354,7 +354,9 @@ If the han.core:test-engineer produced Deferred/Skipped items, include them as a
 
 ## Step 8: Generate Review Output
 
-Use the template at [template.md](references/template.md) for the output structure. Include all sections even when empty — the template shows the empty-state text for each. Include the Security Improvement Summary verbatim from the agent.
+Use the template at [template.md](references/template.md) for the output structure. **Render a section only when it has content** — never emit a heading followed by empty-state placeholder text. The Review Summary table and the Review Recommendation are always present; every other section (Critical, Warnings, Suggestions, YAGNI, Security Vulnerabilities, Remediation, What's Good) appears only when it has at least one item. When more than one section is present, keep them in the fixed order the template defines and never vary it. A clean review is the table's no-issues row plus an approval recommendation, and nothing else.
+
+Each finding's prose appears exactly once — in its finding block, or in its full security block. The Review Summary table row is an index entry, not a second copy of the prose; a `Tension with …` pointer note is a pointer, not prose. For security findings, render one full `SEC-###` block per finding and a single short Remediation note (see [agent-finding-classification.md](references/agent-finding-classification.md)); do not add a per-finding cross-reference under Critical. Render the **What's Good** section only when there is a specific, substantive positive worth recording — omit it when there is nothing substantive to say rather than forcing generic praise.
 
 ## Step 9: Verify Review Output
 
@@ -379,13 +381,18 @@ Then verify:
 2. Agent findings from every dispatched agent (testing, edge-case, structural, behavioral, concurrency, data, devops, han.core:junior-developer) have valid task IDs continuing from manual review IDs. Findings from agents that were not dispatched in Step 3 must not appear.
 3. Agent findings have valid `file_path:line_number` references
 4. Deferred tests note is present if the han.core:test-engineer produced skipped items
-5. The Review Summary table includes every finding and matches the detailed sections
+5. The Review Summary table includes every corrective finding (CRIT/WARN/SUGG) and every security finding, and matches the sections that are present. YAGNI findings are excluded from the table (see rule 12). For findings whose block omits the category, the table is the only place that category appears.
 6. All `file_path:line_number` references point to real files from the file list determined in Step 1
 7. SEC-### IDs are sequential starting at SEC-001
 8. Every SEC-### finding has an `EXPLOIT:` field populated
-9. Every SEC-### finding has a corresponding CRIT-### cross-reference in `### 🔴 Critical`
+9. Security findings are NOT cross-referenced in `### 🔴 Critical`. Instead, when any SEC-### finding exists, the Review Recommendation reflects the highest severity across all findings including the security findings' own severities (a Critical-severity security finding yields a do-not-merge recommendation)
 10. Junior-developer findings that overlap with a specialist agent's finding reference the specialist finding instead of duplicating it
 11. The review output is the COMPLETE and FINAL response. Do not append a trailing summary, commentary, sign-off, or follow-up message after the review. The structured review document IS the deliverable — nothing follows it.
-12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement: *"These findings will not be corrected unless explicitly requested. They are documented so the team can decide consciously whether to keep, simplify, or defer the items."* YAGNI findings appear ONLY in this section — they are not duplicated under CRIT/WARN/SUGG and are not included in the Review Summary table.
+12. The `### 🟡 YAGNI` section, when present, opens with the verbatim statement defined in Review Constraints, and YAGNI findings appear ONLY in this section — not duplicated under CRIT/WARN/SUGG and not in the Review Summary table.
 13. Any `Tension with {other-task-id}:` notes added by Step 9.0 appear on both members of each contradictory pair.
+14. No section is rendered empty, and present sections appear in the template's fixed order, per Step 8. The only always-present elements are the Review Summary table and the Review Recommendation.
+15. Each security finding's severity tier is shown inline in its Review Summary table row (e.g., `SEC-001 (Critical)`), since its task ID does not encode a tier.
+16. Finding blocks omit the `[Category]` label for generic categories (already carried by the table and the task-ID prefix) and keep it only for content-bearing categories — ADR violations (naming the record), standards violations (naming the standard), and security. The `file_path:line_number` reference remains on every block.
+17. When proven security vulnerabilities exist, exactly one Remediation note follows the SEC-### blocks and references the SEC-### IDs without restating the finding descriptions. When there are no security findings, neither the Security Vulnerabilities section nor the Remediation note is rendered.
+18. The `### ✅ What's Good` section is rendered only when a specific, substantive positive exists; it is omitted entirely rather than filled with generic praise.
 
