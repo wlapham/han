@@ -196,7 +196,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 | A48 | tdd enforcement limitation | `docs/skills/han.coding/tdd.md:87-91` | n/a | codebase | The plugin model cannot physically enforce observed-X-before-Y; discipline plus shown evidence | corroborated by A41 |
 | A49 | GitHub issue #52 | https://github.com/testdouble/han/issues/52 | 2026-06-10 | provided | Triaged feature request for a refactor skill; open questions on scope; no documented friction | single source (the request itself) |
 
-### A21: arXiv 2411.04444, LLMs in Automated Refactoring — recommendation-bearing
+### A21: arXiv 2411.04444, LLMs in Automated Refactoring (recommendation-bearing)
 
 - **Link / location:** https://arxiv.org/html/2411.04444v1
 - **Retrieved:** 2026-06-10
@@ -204,7 +204,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 - **Summary:** Studies GPT-4o and Gemini 1.5 Pro on 180 refactoring opportunities across 5 Java projects. Generic prompts identify 15.6% of opportunities; naming the refactoring type and subcategory raises that to 86.7%. About 8% of solutions are unsafe, and behavior-changing semantic bugs make up 81.8% of those. The detect-and-reapply pattern (LLM identifies, IDE executes) eliminated every unsafe case. This is the strongest single source for the named-target and dual-oracle design elements.
 - **Evidence status:** corroborated by A25, A26 in direction
 
-### A22: arXiv 2511.04824, Agentic Refactoring field study — recommendation-bearing
+### A22: arXiv 2511.04824, Agentic Refactoring field study (recommendation-bearing)
 
 - **Link / location:** https://arxiv.org/html/2511.04824v1
 - **Retrieved:** 2026-06-10
@@ -212,7 +212,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 - **Summary:** Analyzes 14,998 commits from 1,613 Java repositories. Agents favor low-level operations over design changes, produce no significant smell reduction despite maintainability framing, and tangle 53.9% of refactorings into commits with no declared refactoring intent. The strongest field evidence that unguided agent refactoring does not deliver structural improvement, motivating the named-target and refactor-only-commit constraints.
 - **Evidence status:** tangling figure single source after V6; low-level bias consistent with A25
 
-### A24: arXiv 2511.03153, RefAgent — recommendation-bearing
+### A24: arXiv 2511.03153, RefAgent (recommendation-bearing)
 
 - **Link / location:** https://arxiv.org/html/2511.03153v1
 - **Retrieved:** 2026-06-10
@@ -220,7 +220,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 - **Summary:** A planner/generator/compiler/tester pipeline reaching a 90% median unit-test pass rate and 50-53.5% smell reduction across 8 Apache Java projects, significantly outperforming single-agent baselines. The strongest evidence for separating planning from execution and for incremental compile-and-test feedback gates.
 - **Evidence status:** corroborated by A21, A26 on feedback loops; A28, A33, A35 on plan-then-execute
 
-### A41: tdd refactor step — recommendation-bearing
+### A41: tdd refactor step (recommendation-bearing)
 
 - **Link / location:** `han.coding/skills/tdd/SKILL.md:189-209`
 - **Retrieved:** n/a
@@ -228,7 +228,7 @@ Validation added O5 to the options and rejected it on its merits, demoted A23 to
 - **Summary:** The suite's only existing refactoring automation. Non-skippable, runs only on green, scoped to the code the current red-green cycle touched, applies coding standards and ADRs, defers speculative abstraction. Defines the boundary the new skill must respect and the enforcement style (shown evidence, stop rules) it should reuse.
 - **Evidence status:** corroborated by A42, A48
 
-### A43 and A44: review skills' scope — recommendation-bearing
+### A43 and A44: review skills' scope (recommendation-bearing)
 
 - **Link / location:** `han.core/skills/code-review/SKILL.md`, `han.core/skills/architectural-analysis/SKILL.md`, `han.core/agents/software-architect.md`
 - **Retrieved:** n/a
