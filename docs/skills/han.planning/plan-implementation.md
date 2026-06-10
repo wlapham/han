@@ -51,6 +51,7 @@ Give it:
 1. **The source specification.** A path to a `feature-specification.md` file is the preferred input. If no path is given, the skill searches documentation roots (`docs/features/`, `docs/plans/`, plus anything the project-discovery reference names) and asks which spec to use if multiple candidates exist. If no spec exists, the skill tells you to run `/plan-a-feature` first.
 2. **Any additional implementation context, optional.** A deadline, a compliance constraint, a named incident the plan must address, a strategic bet driving the feature: any of this sharpens the facilitation. The skill reads the codebase, ADRs, and coding standards automatically.
 3. **Team composition, optional.** If you already know which specialists should be in the room (*"include devops-engineer and data-engineer"*), say so. The skill always includes `project-manager` and `junior-developer`. Other specialists are chosen to match what the feature touches unless you override.
+4. **A size, optional.** Pass `small`, `medium`, or `large` as the first argument to override the skill's automatic sizing and set the team cap directly. Left off, the skill classifies the size from what the feature touches. See Sizing below.
 
 Example prompts that work well:
 
