@@ -134,4 +134,4 @@ URL: https://growing-object-oriented-software.com/
 - [`/plan-a-feature`](../han.core/plan-a-feature.md). Specify behavior first; the spec becomes the test list `/tdd` builds from.
 - [`/code-review`](../han.coding/code-review.md). Run it on the branch once the list is empty. TDD produces self-testing code; it does not replace review.
 - [`/coding-standard`](../han.coding/coding-standard.md) and [`/architectural-decision-record`](../han.core/architectural-decision-record.md). The standards and ADRs `/tdd` applies in green and refactor come from here.
-- [Skill building guidance](../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.
+- [Skill building guidance](../../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The progressive disclosure, description frontmatter, and bash-permission rules this skill follows.
