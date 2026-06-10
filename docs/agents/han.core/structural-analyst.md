@@ -91,7 +91,7 @@ URL: https://martinfowler.com/books/refactoring.html
 - [`concurrency-analyst`](./concurrency-analyst.md). Sibling analyst for concurrency hazards.
 - [`risk-analyst`](./risk-analyst.md). Consumes this agent's findings for risk prioritization.
 - [`software-architect`](./software-architect.md). Synthesizes findings into intra-codebase recommendations.
-- [`/architectural-analysis`](../../skills/han.core/architectural-analysis.md). Always dispatches this agent.
+- [`/architectural-analysis`](../../skills/han.coding/architectural-analysis.md). Always dispatches this agent.
 - [`/code-review`](../../skills/han.coding/code-review.md). Conditionally dispatches this agent when the change touches module boundaries.
 - [`/plan-a-feature`](../../skills/han.core/plan-a-feature.md). Dispatches this agent as an opt-in specialist, included on request.
 - [`/iterative-plan-review`](../../skills/han.core/iterative-plan-review.md). Conditionally dispatches this agent when the review covers module boundaries, coupling, or dependency direction.

@@ -32,7 +32,7 @@ Operator documentation for the `/post-code-review-to-pr` skill in the han plugin
 - **Local code review without touching GitHub.** Use [`/code-review`](../han.coding/code-review.md).
 - **Updating the PR description.** Use [`/update-pr-description`](./update-pr-description.md).
 - **Bug investigation.** Use [`/investigate`](../han.coding/investigate.md).
-- **Architectural analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md).
+- **Architectural analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md).
 
 ## How to invoke it
 

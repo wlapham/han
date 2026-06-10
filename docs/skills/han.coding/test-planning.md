@@ -35,7 +35,7 @@ Operator documentation for the `/test-planning` skill in the han plugin. This do
 - **Full code review.** Use [`/code-review`](./code-review.md) for correctness, testing, and compliance.
 - **Iterating on an existing test plan.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for multi-pass refinement of a written plan.
 - **Writing test code.** This skill produces a plan only. Write the tests separately.
-- **Architectural testability analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md) for structural testability concerns.
+- **Architectural testability analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for structural testability concerns.
 
 ## How to invoke it
 
@@ -125,7 +125,7 @@ URL: https://www.wiley.com/en-us/Testing+Computer+Software%2C+2nd+Edition-p-9780
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule this skill applies before committing items. The two gates, the acceptable-evidence list, the named anti-patterns, and the deferral format.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/code-review`](./code-review.md). Dispatches the same agents plus `adversarial-security-analyst`. Use when you want correctness findings too.
-- [`/architectural-analysis`](../han.core/architectural-analysis.md). For structural testability concerns.
+- [`/architectural-analysis`](../han.coding/architectural-analysis.md). For structural testability concerns.
 - [`/iterative-plan-review`](../han.core/iterative-plan-review.md). Use to stress-test an already-written test plan.
 - [`test-engineer`](../../agents/han.core/test-engineer.md), [`edge-case-explorer`](../../agents/han.core/edge-case-explorer.md). Always dispatched.
 - [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md). Dispatched when the file list touches async, threads, or shared state.

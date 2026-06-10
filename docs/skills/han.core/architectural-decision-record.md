@@ -126,7 +126,7 @@ URL: https://www.thoughtworks.com/radar/techniques/lightweight-architecture-deci
 - [Evidence](../../evidence.md). The companion rule the skill applies to the ADR's citations: trust classes, the corroboration gate for web sources, and the no-evidence label.
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/coding-standard`](../han.coding/coding-standard.md). For rules that come out of a decision. Link the standard to the ADR.
-- [`/architectural-analysis`](./architectural-analysis.md). Often produces decisions worth recording as ADRs.
+- [`/architectural-analysis`](../han.coding/architectural-analysis.md). Often produces decisions worth recording as ADRs.
 - [`/project-documentation`](./project-documentation.md). For feature docs that reference the ADR.
 - [`codebase-explorer`](../../agents/han.core/codebase-explorer.md). Dispatched in create-new mode for context discovery.
 - [`software-architect`](../../agents/han.core/software-architect.md), [`system-architect`](../../agents/han.core/system-architect.md). One of the two reviews the proposed decision; pick by whether the decision is intra-codebase or cross-service.

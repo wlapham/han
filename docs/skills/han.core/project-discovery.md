@@ -30,7 +30,7 @@ Operator documentation for the `/project-discovery` skill in the han plugin. Thi
 **Do not invoke for:**
 
 - **Feature or system documentation.** Use [`/project-documentation`](./project-documentation.md) for describing how a specific feature works.
-- **Architectural assessment.** Use [`/architectural-analysis`](./architectural-analysis.md) for coupling, data flow, and SOLID.
+- **Architectural assessment.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, and SOLID.
 - **Investigating why a skill found or did not find a config value.** That is a discovery bug. Re-run this skill.
 
 ## How to invoke it

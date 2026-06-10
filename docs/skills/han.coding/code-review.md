@@ -39,7 +39,7 @@ Operator documentation for the `/code-review` skill in the han plugin. This docu
 **Do not invoke for:**
 
 - **Posting the review to a GitHub PR.** Use [`/post-code-review-to-pr`](../han.github/post-code-review-to-pr.md). It delegates to this skill and then posts the review as PR comments.
-- **Architectural analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
+- **Architectural analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment across a module.
 - **Bug investigation.** Use [`/investigate`](./investigate.md) to find a root cause with evidence and adversarial validation.
 - **Test planning in isolation.** Use [`/test-planning`](./test-planning.md) when you want a prioritized test plan without a full correctness review.
 - **Plan review.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for reviewing a work plan, not code.
@@ -177,7 +177,7 @@ URL: https://itrevolution.com/product/accelerate/
 - [Skills Index](../README.md). All skills, grouped by purpose.
 - [`/post-code-review-to-pr`](../han.github/post-code-review-to-pr.md). Wraps this skill and posts the review to a GitHub PR.
 - [`/investigate`](./investigate.md). Next step when a CRIT finding hides a bug whose root cause needs deeper analysis.
-- [`/architectural-analysis`](../han.core/architectural-analysis.md). Run alongside when the change touches module boundaries.
+- [`/architectural-analysis`](../han.coding/architectural-analysis.md). Run alongside when the change touches module boundaries.
 - [Sizing](../../sizing.md). The cross-skill sizing model. Explains the small / medium / large bands, the default-to-small rule, and the `$size` override.
 - [`junior-developer`](../../agents/han.core/junior-developer.md), [`adversarial-security-analyst`](../../agents/han.core/adversarial-security-analyst.md). The two agents this skill always dispatches.
 - [`test-engineer`](../../agents/han.core/test-engineer.md), [`edge-case-explorer`](../../agents/han.core/edge-case-explorer.md), [`structural-analyst`](../../agents/han.core/structural-analyst.md), [`behavioral-analyst`](../../agents/han.core/behavioral-analyst.md), [`concurrency-analyst`](../../agents/han.core/concurrency-analyst.md). Conditional dispatches that join the roster when their signal appears in the file list.

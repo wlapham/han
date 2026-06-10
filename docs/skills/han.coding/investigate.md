@@ -31,7 +31,7 @@ Operator documentation for the `/investigate` skill in the han plugin. This docu
 **Do not invoke for:**
 
 - **Code review.** Use [`/code-review`](./code-review.md) for a correctness, testing, and compliance audit of a branch.
-- **Architectural analysis.** Use [`/architectural-analysis`](../han.core/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
+- **Architectural analysis.** Use [`/architectural-analysis`](../han.coding/architectural-analysis.md) for coupling, data flow, concurrency, and SOLID assessment of a module.
 - **Test planning.** Use [`/test-planning`](./test-planning.md) when the gap is coverage, not a bug.
 - **Plan review.** Use [`/iterative-plan-review`](../han.core/iterative-plan-review.md) for multi-pass review of an existing plan.
 - **Open-ended research.** Use [`/research`](../han.core/research.md) when nothing is broken and you want options, prior art, or how something works before committing to a direction.
