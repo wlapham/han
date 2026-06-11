@@ -24,6 +24,7 @@ allowed-tools: Read, Glob, Grep, Agent
 - Add one or more specialist analysts **in parallel with** the investigators when the bug type calls for it (concurrency, data flow across boundaries, database or query behavior). Specialist analysts find root causes generalists miss.
 - The `han.core:adversarial-validator` agent handles all three validation strategies (challenge evidence, challenge fix, challenge assumptions) internally.
 - Apply the evidence rule from [../../references/evidence-rule.md](../../references/evidence-rule.md) to every finding. Codebase findings (file path, line number, log line, test output) carry the trust-class label "codebase" and stand on their citation. Web-source context (RFCs, vendor docs, Stack Overflow, blog posts) carries the trust-class label "web" and is subject to the corroboration gate when it drives the proposed fix. When the investigation hits a point where no evidence at any tier resolves a question, label the no-evidence state rather than guessing.
+- Lazy-create the output sections. Include a section in the plan file only when the investigation produced meaningful content for it; omit any section that would be empty, and keep the sections that remain in the template's order. Never emit a heading with placeholder or "N/A" content.
 
 # Investigate
 
@@ -59,7 +60,7 @@ Resolve project config: read CLAUDE.md's `## Project Discovery` section for docs
 
 Design a fix that **directly addresses the root cause** from Step 2 — fix the underlying problem, not symptoms. Then fill in the remaining sections of [template.md](./references/template.md) in the plan file:
 
-1. **Coding Standards Reference** — for each applicable standard, document what the standard is, where it was found (file path, ADR number, or "inferred from surrounding code"), and which files or changes it governs. If none were found, note that explicitly and document inferred patterns.
+1. **Coding Standards Reference** — for each standard, convention, ADR, or pattern inferred from surrounding code that governs the fix, document what it is, where it was found (file path, ADR number, or "inferred from surrounding code"), and which files or changes it governs. If nothing governs the fix, omit the section per the lazy-create rule.
 2. **Planned Fix** — write a one-sentence summary, then for each file that needs to change: full path from repo root, what will be modified/added/removed, which evidence items (E1, E2, ...) justify the change, which coding standards apply, and implementation specifics (new function signatures, changed logic, updated tests).
 
 ## Step 4: Validation (CRITICAL)

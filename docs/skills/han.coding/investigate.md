@@ -56,7 +56,7 @@ Example prompts:
 
 ## What you get back
 
-An investigation plan file, plus an in-channel summary. The plan leads with the bottom line and keeps the supporting detail near the end, so it reads conclusion-first. It covers, in order:
+An investigation plan file, plus an in-channel summary. The plan leads with the bottom line and keeps the supporting detail near the end, so it reads conclusion-first. Sections appear only when the investigation produced meaningful content for them; one that would be empty is omitted, and the rest keep the order below. So a given report covers some or all of, in order:
 
 - **Summary.** One sentence each for root cause, fix, why correct, validation outcome, remaining risks. Up top so a reader gets the verdict before the backing detail.
 - **Problem Statement.** Symptoms, expected behavior, conditions under which it occurs, impact.
