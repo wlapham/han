@@ -3,7 +3,7 @@
 <!-- Section rule: include a section only when this investigation produced meaningful content for it. Omit any section (its heading and body) that would otherwise be empty or "N/A", and keep the sections that remain in the order shown below. Sections marked CONDITIONAL are the ones most often omitted, but the rule applies to every section. -->
 
 <!-- One-line orientation: what this report is and the decision it asks for. -->
-<!-- E.g. "Investigation report — read the Summary, then approve the Planned Fix or push back." -->
+<!-- E.g. "Investigation report. Read the Summary, then approve the Planned Fix or push back." -->
 
 ## Summary
 

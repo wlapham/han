@@ -71,9 +71,9 @@ When counter-evidence is found, document it as a validation finding (V1, V2, ...
 
 After all validation is complete, incorporate the `han.core:adversarial-validator` agents' Confidence Assessment and Remaining Risks into the plan.
 
-## Step 5: Final Summary and User Review
+## Step 5: Summary and User Review
 
-Add the final summary to the plan file with one sentence each for: root cause (what caused the problem), fix (what the planned changes will do), why correct (reference the strongest evidence), validation outcome (what validation confirmed or changed), and remaining risks (reference the Confidence Assessment).
+Add the **Summary** section at the top of the plan file with one sentence each for: root cause (what caused the problem), fix (what the planned changes will do), why correct (reference the strongest evidence), validation outcome (what validation confirmed or changed), and remaining risks (reference the Confidence Assessment).
 
 Present the plan file to the user for approval. The user can approve the plan (triggering implementation) or provide feedback for revisions.
 
