@@ -68,7 +68,7 @@ plugin remaining installed.
    guidance-only `plugin-guidance` skill (whose `references/` directory is the
    single in-repo copy of the guidance documents), `plugin-skill-builder`, and
    `plugin-agent-builder` (with their names, cross-references, and guidance paths
-   rewritten to that vendored copy) — and writes the path-scoped rule index at
+   rewritten to that vendored copy). It then writes the path-scoped rule index at
    `.claude/rules/plugin-building-guidance.md`. Capture its output.
 2. Report to the user what was written: the three vendored skills, the total
    file count, the rule index path, and the `paths:` globs. Explain that the
