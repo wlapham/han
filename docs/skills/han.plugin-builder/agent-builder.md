@@ -31,7 +31,7 @@ Operator documentation for the `/agent-builder` skill in the opt-in `han.plugin-
 **Do not invoke for:**
 
 - **Building a skill or slash command.** Use [`/skill-builder`](./skill-builder.md) instead.
-- **Reading the rules without building anything.** Use [`/guidance`](./guidance.md) to serve the relevant guidance, or `/guidance init` to vendor it into a repo.
+- **Reading the rules without building anything.** Use [`/guidance`](./guidance.md) to serve the relevant guidance, or `/guidance init` to vendor the plugin-building skills (including this one) into a repo.
 - **A deterministic, flowchartable process.** That is a skill, not an agent; the skill will stop and redirect you to [`/skill-builder`](./skill-builder.md).
 
 ## How to invoke it
@@ -101,5 +101,5 @@ URL: https://research.google/blog/towards-a-science-of-scaling-agent-systems-whe
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the skill applies to the agent it builds.
 - [`/skill-builder`](./skill-builder.md). The sibling builder for skills; reach for it when the work is a flowchartable process rather than a judgment layer.
-- [`/guidance`](./guidance.md). Serves and vendors the same authoring guidance this skill applies; use it when you want the rules, not a finished agent.
+- [`/guidance`](./guidance.md). Serves the same authoring guidance this skill applies, and its `init` vendors this skill (with `guidance` and `skill-builder`) into a repo; use it when you want the rules, not a finished agent.
 - [Agent-building guidance](../../../han.plugin-builder/skills/guidance/references/agent-building-guidelines/). The rules the skill's interview and review enforce, readable directly.
