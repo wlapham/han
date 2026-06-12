@@ -30,7 +30,7 @@ Operator documentation for the `/skill-builder` skill in the opt-in `han.plugin-
 **Do not invoke for:**
 
 - **Building an agent or subagent.** Use [`/agent-builder`](./agent-builder.md) instead.
-- **Reading the rules without building anything.** Use [`/guidance`](./guidance.md) to serve the relevant guidance, or `/guidance init` to vendor it into a repo.
+- **Reading the rules without building anything.** Use [`/guidance`](./guidance.md) to serve the relevant guidance, or `/guidance init` to vendor the plugin-building skills (including this one) into a repo.
 - **Restructuring or reviewing an existing skill's code.** This skill authors a new skill; it is not a code-review or refactor tool.
 
 ## How to invoke it
@@ -94,5 +94,5 @@ URL: https://www.anthropic.com/engineering/building-effective-agents
 - [Plugin landing page](../../../README.md). The front door. Start here if you arrived from outside the docs tree.
 - [YAGNI](../../yagni.md). The evidence-based "You Aren't Gonna Need It" rule the skill applies to the artifact it builds.
 - [`/agent-builder`](./agent-builder.md). The sibling builder for agents; reach for it when the work is a judgment layer rather than a flowchartable process.
-- [`/guidance`](./guidance.md). Serves and vendors the same authoring guidance this skill applies; use it when you want the rules, not a finished skill.
+- [`/guidance`](./guidance.md). Serves the same authoring guidance this skill applies, and its `init` vendors this skill (with `guidance` and `agent-builder`) into a repo; use it when you want the rules, not a finished skill.
 - [Skill-building guidance](../../../han.plugin-builder/skills/guidance/references/skill-building-guidance/). The rules the skill's interview and review enforce, readable directly.
