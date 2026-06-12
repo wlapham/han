@@ -4,16 +4,22 @@
 # index that surfaces the guidance while editing skill and agent files. Run from
 # the repository root.
 #
+# The vendored skills are renamed with a "plugin-" prefix so they never collide
+# with this plugin's own slash commands if the plugin is also installed.
+#
 # Effects (all inside the current working directory):
-#   .claude/skills/guidance/        <- guidance-only skill + its references/ (the
-#                                      single vendored copy of the guidance docs)
-#   .claude/skills/skill-builder/   <- the skill-builder skill, guidance paths
-#                                      rewritten to the vendored location
-#   .claude/skills/agent-builder/   <- the agent-builder skill, same rewrite
+#   .claude/skills/plugin-guidance/        <- guidance-only skill + its
+#                                             references/ (the single vendored
+#                                             copy of the guidance docs)
+#   .claude/skills/plugin-skill-builder/   <- the skill-builder skill, names and
+#                                             guidance paths rewritten
+#   .claude/skills/plugin-agent-builder/   <- the agent-builder skill, same
 #   .claude/rules/plugin-building-guidance.md   <- the path-scoped rule index
 #
 # Re-running refreshes every vendored skill and regenerates the rule index; this
-# is what the skill's update mode invokes to refresh an existing install.
+# is what the skill's update mode invokes to refresh an existing install. The
+# rewrites are idempotent because each run starts from a fresh copy of the
+# bare-named plugin source.
 set -euo pipefail
 
 # Resolve this skill's own directory so the source skills, references, and assets
@@ -35,36 +41,51 @@ done
 SKILLS_DEST=".claude/skills"
 RULE=".claude/rules/plugin-building-guidance.md"
 
-# The vendored builder skills can no longer resolve ${CLAUDE_PLUGIN_ROOT} (it is
-# only set when the plugin is installed), so their guidance paths are rewritten
-# to point at the vendored guidance skill, repo-root-relative.
-OLD_PATH='${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/'
-NEW_PATH='.claude/skills/guidance/references/'
+# Rewrite a vendored SKILL.md in place to the "plugin-" prefixed, no-dependency
+# form. The literals "skill-builder" / "agent-builder" are safe to replace
+# wholesale: they do not collide with the "skill-building-guidance" /
+# "agent-building-guidelines" directory names, which diverge at "building". The
+# guidance command reference ("use guidance.") and the guidance docs path
+# (${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/, only set when the plugin is
+# installed) are retargeted at the renamed, vendored guidance skill.
+rewrite_skill() {
+  file="$1"
+  tmp="$(mktemp)"
+  sed \
+    -e 's|${CLAUDE_PLUGIN_ROOT}/skills/guidance/references/|.claude/skills/plugin-guidance/references/|g' \
+    -e 's|^name: guidance$|name: plugin-guidance|' \
+    -e 's|skill-builder|plugin-skill-builder|g' \
+    -e 's|agent-builder|plugin-agent-builder|g' \
+    -e 's|use guidance\.|use plugin-guidance.|g' \
+    "$file" > "$tmp"
+  mv "$tmp" "$file"
+}
 
 # 1. Vendor the guidance skill: the guidance-only SKILL.md plus its references/,
 #    which is the single in-repo copy of the guidance documents everything else
 #    points at.
-rm -rf "$SKILLS_DEST/guidance"
-mkdir -p "$SKILLS_DEST/guidance"
-cp "$PORTABLE_SKILL" "$SKILLS_DEST/guidance/SKILL.md"
-cp -R "$SRC_REFERENCES" "$SKILLS_DEST/guidance/references"
+rm -rf "$SKILLS_DEST/plugin-guidance"
+mkdir -p "$SKILLS_DEST/plugin-guidance"
+cp "$PORTABLE_SKILL" "$SKILLS_DEST/plugin-guidance/SKILL.md"
+cp -R "$SRC_REFERENCES" "$SKILLS_DEST/plugin-guidance/references"
+rewrite_skill "$SKILLS_DEST/plugin-guidance/SKILL.md"
 
-# 2. Vendor each builder skill, rewriting the guidance path in its SKILL.md.
+# 2. Vendor each builder skill under its prefixed name, rewriting names, the
+#    cross-references between the skills, and the guidance path in its SKILL.md.
 for builder in skill-builder agent-builder; do
   src="$PLUGIN_SKILLS_DIR/$builder"
   if [ ! -d "$src" ]; then
     echo "error: builder skill source not found at $src" >&2
     exit 1
   fi
-  rm -rf "$SKILLS_DEST/$builder"
-  mkdir -p "$SKILLS_DEST/$builder"
-  cp -R "$src"/. "$SKILLS_DEST/$builder"/
-  tmp="$(mktemp)"
-  sed "s|${OLD_PATH}|${NEW_PATH}|g" "$SKILLS_DEST/$builder/SKILL.md" > "$tmp"
-  mv "$tmp" "$SKILLS_DEST/$builder/SKILL.md"
+  dest="$SKILLS_DEST/plugin-$builder"
+  rm -rf "$dest"
+  mkdir -p "$dest"
+  cp -R "$src"/. "$dest"/
+  rewrite_skill "$dest/SKILL.md"
 done
 
-COPIED=$(find "$SKILLS_DEST/guidance" "$SKILLS_DEST/skill-builder" "$SKILLS_DEST/agent-builder" -type f | wc -l | tr -d ' ')
+COPIED=$(find "$SKILLS_DEST/plugin-guidance" "$SKILLS_DEST/plugin-skill-builder" "$SKILLS_DEST/plugin-agent-builder" -type f | wc -l | tr -d ' ')
 
 # 3. Cover both the agent and skill layouts. Standard repos put agents under
 #    */agents/ and skills under */skills/ (including .claude/agents and
@@ -86,7 +107,7 @@ mkdir -p "$(dirname "$RULE")"
 } > "$RULE"
 
 # 5. Report.
-echo "Vendored 3 skill(s) (guidance, skill-builder, agent-builder) into $SKILLS_DEST"
+echo "Vendored 3 skill(s) (plugin-guidance, plugin-skill-builder, plugin-agent-builder) into $SKILLS_DEST"
 echo "Copied $COPIED file(s) total"
 echo "Wrote rule index $RULE with paths:"
 printf '%s' "$paths_block"
