@@ -93,6 +93,7 @@ A unified report presented in-channel, rendered from [`references/architectural-
 - **Security Analysis** *(when the security signal fires).* Verbatim `adversarial-security-analyst` output. `SEC-###` findings, each with a demonstrated exploit path or CVE reference.
 - **Data-Engineering Analysis** *(when the data signal fires).* Verbatim `data-engineer` output on schema, migrations, access patterns, and data contracts.
 - **DevOps Readiness** *(when the DevOps signal fires).* Verbatim `devops-engineer` output. `DOR-###` findings on operability, rollout, observability, and scale.
+- **On-Call Resilience** *(when the on-call signal fires).* Verbatim `on-call-engineer` output. `OCE-###` findings at the application source line, naming the code-level resilience anti-pattern, the production failure mode it leads to, and the impact. Application source only; infrastructure and pipeline concerns live in DevOps Readiness.
 - **Codebase Map** *(large, unfamiliar areas).* Verbatim `codebase-explorer` output: the discovery map the analysts and architects worked from.
 - **Risk Assessment.** Verbatim `risk-analyst` output. `R#` items scoring the `S`/`B`/`C` findings by likelihood, severity, blast radius, and reversibility.
 - **Software-Architecture Recommendations.** Verbatim `software-architect` output. `A#` recommendations aligned with high cohesion, loose coupling, and SOLID, with pseudocode sketches, each tracing back to the findings that drove it.

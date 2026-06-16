@@ -96,6 +96,12 @@ The opt-in Atlassian plugin. It publishes Han artifacts to Confluence and Jira t
 - **[`/plan-a-feature-to-confluence`](./han.atlassian/plan-a-feature-to-confluence.md).** Run `/plan-a-feature` to build a feature specification in a temporary folder, show it for review, then publish it to a user-specified Confluence location with `/markdown-to-confluence` after confirmation: the spec as a parent page and each companion artifact (decision log, team findings, technical notes) as a child page beneath it. Requires the user to name the destination (a page URL, or a space plus parent page); it does not search Confluence for the right place.
 - **[`/work-items-to-jira`](./han.atlassian/work-items-to-jira.md).** Create one Jira ticket per slice from a `/plan-work-items` work-items file, in a single target project. Defaults to a Story, unassigned, in the backlog, with the reporter taken from the Atlassian MCP identity; epic parenting, issue type, assignee, and target column are optional overrides. The Jira sibling of `/work-items-to-issues`.
 
+## han.linear
+
+The opt-in Linear plugin. It publishes Han work items to Linear through the Linear MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.linear@han`. Requires a configured Linear MCP server. Depends on `han.core`.
+
+- **[`/work-items-to-linear`](./han.linear/work-items-to-linear.md).** Create one Linear issue per slice from a `/plan-work-items` work-items file, in a single target team. Reads the team's real workflow states, labels, Projects, and members and resolves every option against them before creating anything; defaults each issue to the team's initial state, unassigned, and uncategorized, with optional state, labels, assignee, parent (sub-issue), and Project. Links within-file `Depends on` lines as native Linear "blocked by" relations. The Linear sibling of `/work-items-to-jira` and `/work-items-to-issues`.
+
 ## han.plugin-builder
 
 The opt-in plugin-building plugin. It carries the authoring guidance for skills, agents, and plugins, plus two interview-driven builders that author a new component from scratch and review it against that guidance. It depends on nothing, and the `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.plugin-builder@han`.
@@ -103,14 +109,6 @@ The opt-in plugin-building plugin. It carries the authoring guidance for skills,
 - **[`/guidance`](./han.plugin-builder/guidance.md).** Serve the authoritative guidance for building skills, agents, and plugins, or vendor all three plugin-building skills into the current repository's `.claude/skills/` under a `plugin-` prefix (`plugin-guidance`, `plugin-skill-builder`, `plugin-agent-builder`) plus a path-scoped rule index (`/guidance init`) so the skills run and the guidance surfaces with no dependency on the plugin (`/guidance update` refreshes a vendored copy).
 - **[`/skill-builder`](./han.plugin-builder/skill-builder.md).** Build a new skill from scratch through an evidence-based interview that walks the skill's design tree decision-by-decision, then review the finished files against the plugin-building guidance and apply every fix.
 - **[`/agent-builder`](./han.plugin-builder/agent-builder.md).** Build a new agent from scratch through an evidence-based interview that walks the agent's design tree decision-by-decision, then review the finished self-contained agent file against the plugin-building guidance and apply every fix.
-
----
-
-## han.linear
-
-The opt-in Linear plugin. It publishes Han work items to Linear through the Linear MCP server. The `han` meta-plugin does not bundle it; install it on its own with `/plugin install han.linear@han`. Requires a configured Linear MCP server. Depends on `han.core`.
-
-- **[`/work-items-to-linear`](./han.linear/work-items-to-linear.md).** Create one Linear issue per slice from a `/plan-work-items` work-items file, in a single target team. Reads the team's real workflow states, labels, Projects, and members and resolves every option against them before creating anything; defaults each issue to the team's initial state, unassigned, and uncategorized, with optional state, labels, assignee, parent (sub-issue), and Project. Links within-file `Depends on` lines as native Linear "blocked by" relations. The Linear sibling of `/work-items-to-jira` and `/work-items-to-issues`.
 
 ---
 

@@ -77,8 +77,8 @@ codex plugin add han-github@han
 codex plugin add han-reporting@han
 ```
 
-Install `han-feedback`, `han-atlassian`, or `han-plugin-builder` separately
-when you want those opt-in packages.
+Install `han-feedback`, `han-atlassian`, `han-linear`, or `han-plugin-builder`
+separately when you want those opt-in packages.
 
 ## Documentation
 
