@@ -145,5 +145,6 @@ URL: https://www.oreilly.com/library/view/design-patterns-elements/0201633612/
 - [`risk-analyst`](./risk-analyst.md). The agent that prioritizes analyst findings. Its assessments are part of this agent's input.
 - [`/architectural-analysis`](../../skills/han-coding/architectural-analysis.md). The skill that dispatches this agent as its final synthesis step.
 - [`/plan-implementation`](../../skills/han-planning/plan-implementation.md). The skill that includes this agent in its roster for feature implementation planning.
+- [`/architectural-decision-record`](../../skills/han-core/architectural-decision-record.md), [`/gap-analysis`](../../skills/han-core/gap-analysis.md), [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md), [`/plan-a-feature`](../../skills/han-planning/plan-a-feature.md). The other skills that conditionally dispatch this agent when the work touches intra-codebase module boundaries or abstractions.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise domain vocabulary and named anti-patterns.
 - [agent-model-selection.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md). Rationale for the `opus` model tier.

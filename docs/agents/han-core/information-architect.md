@@ -54,7 +54,7 @@ Dispatch via the `Agent` tool with `subagent_type: han-core:information-architec
 
 Example prompts that work well:
 
-- *"Audit the docs in `plugins/han/docs/` and the plugin README. Primary audience is a solo engineer who is new to the plugin and arrives from the marketplace listing. Focus on orientation and progressive disclosure."*
+- *"Audit the docs in `docs/` and the plugin README. Primary audience is a solo engineer who is new to the plugin and arrives from the marketplace listing. Focus on orientation and progressive disclosure."*
 - *"Review `docs/features/` for consistency. Audiences: feature authors writing new specs, implementers reading an existing spec, and a project manager looking up decisions. Tell us where topic types are mixed."*
 - *"Audit `README.md` at the repo root for a first-time reader landing from a GitHub search. Are the first 100 lines the right first 100 lines?"*
 

@@ -63,7 +63,7 @@ Thin prompts (*"audit the database"*) still work but produce more Open Questions
 
 ## What you get back
 
-- A summary in the tool-call response: a 1–3 sentence data-engineering posture, a severity count table (Blocks correctness / Degrades operations / Operational friction / Polish), an Open Questions count, and the path to the full report.
+- A summary in the tool-call response: a 1–3 sentence data-engineering posture, a severity count table (Blocks correctness / Degrades operations / Operational friction / Polish / YAGNI candidate), an Open Questions count, and the path to the full report.
 - A full report on disk with: scope, data context, question log (Answered / Assumed / Open), assumptions, open questions, numbered DATA-### findings tied to data-engineering principles and locations, and a Data Engineering Improvement Summary that sequences shipping vs. improving with explicit P0/P1/P2 steps and an expand-and-contract path for every destructive remediation.
 
 Every finding is traceable to a data-engineering principle (a normal form, a Codd rule, a dimensional-modeling pattern, an ACID property, an isolation-level guarantee, an index-strategy rule, a CAP / PACELC trade-off, a named access failure, a named migration anti-pattern, or a named governance failure), a concrete location in the repo, and a question in the log. If something is not traceable, the agent is instructed to drop it.

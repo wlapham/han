@@ -61,7 +61,7 @@ Thin prompts (*"audit the infra"*) still work but produce more Open Questions an
 
 ## What you get back
 
-- A summary in the tool-call response: a 1–3 sentence readiness posture, a severity count table (Blocks rollout / Degrades reliability / Operational friction / Polish), an Open Questions count, and the path to the full report.
+- A summary in the tool-call response: a 1–3 sentence readiness posture, a severity count table (Blocks rollout / Degrades reliability / Operational friction / Polish / YAGNI candidate), an Open Questions count, and the path to the full report.
 - A full report on disk with: scope, production context, question log (Answered / Assumed / Open), assumptions, open questions, numbered findings tied to operational principles and locations, and a DevOps Improvement Summary that sequences shipping vs. improving with explicit P0/P1/P2 steps.
 
 Every finding is traceable to an operational principle (DORA key, Twelve-Factor factor, Four Golden Signal, SLO policy, AWS Well-Architected practice, SLSA level, or a named failure mode), a concrete location in the repo, and a question in the log. If something is not traceable, the agent is instructed to drop it.

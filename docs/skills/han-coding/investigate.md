@@ -45,7 +45,7 @@ Give it:
 
 1. **The symptom.** What you observed: the error message, the unexpected value, the failed deploy, the intermittent timeout. A concrete observation collapses the initial search space.
 2. **The reproduction context, if known.** Environment, branch, specific user account, specific data, specific time. The skill does not need a full reproduction (it can investigate from a single observation), but the more context you give, the faster the angles converge.
-3. **An output path, optional.** The skill writes the investigation plan to a file. Default lives under `~/.claude/plans/` if no path is given.
+3. **An output path, optional.** The skill writes the investigation plan to a file. Name a path to control where it lands; otherwise the skill proposes one and writes the plan there.
 
 Example prompts:
 

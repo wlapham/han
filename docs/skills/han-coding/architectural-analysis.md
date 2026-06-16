@@ -65,7 +65,7 @@ Size sets how many specialists join the spine and how aggressively each agent ca
 | Size | Scope signals | Roster |
 |---|---|---|
 | **Small** *(default)* | A single module or directory. No security, data, DevOps, or system-seam signal. Concurrency may or may not be present. | The spine (`structural-analyst`, `behavioral-analyst`, then `risk-analyst`, then `software-architect`) plus `concurrency-analyst` when concurrency primitives are present. 3–4 agents. Analysts escalate only the clearest high-impact findings. |
-| **Medium** | Two or three adjacent subsystems, or exactly one cross-cutting concern (one auth surface, one data contract, or one operational surface). | The spine plus one or two of `adversarial-security-analyst` / `data-engineer` / `devops-engineer` whose signals fire, plus `concurrency-analyst` when present. 4–6 agents. Analysts surface high- and medium-impact findings. |
+| **Medium** | Two or three adjacent subsystems, or exactly one cross-cutting concern (one auth surface, one data contract, or one operational surface). | The spine plus one or two of `adversarial-security-analyst` / `data-engineer` / `devops-engineer` / `on-call-engineer` whose signals fire, plus `concurrency-analyst` when present. 4–6 agents. Analysts surface high- and medium-impact findings. |
 | **Large** | More than roughly a dozen files across multiple subsystems, two or more cross-cutting concerns together, a cross-service or bounded-context seam, or you explicitly request it. | The spine plus every signalled specialist, `codebase-explorer` when the area is large and unfamiliar, and `system-architect` when a system-seam signal is present. 6–9 agents. Analysts surface the full finding set. |
 
 How the size is chosen:

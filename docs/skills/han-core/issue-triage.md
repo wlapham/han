@@ -130,33 +130,33 @@ Output:
 ```md
 # Uploads fail intermittently.
 
-# Issue Type
+## Issue Type
 
 Bug
 
-# Reported Behavior
+## Reported Behavior
 
 Uploads fail sometimes.
 
-# Expected Behavior
+## Expected Behavior
 
 Unknown
 
-# Missing Information
+## Missing Information
 
 - Reproduction steps
 - Environment details (OS, browser, version)
 - User-impact scope
 
-# Severity
+## Severity
 
 Unknown
 
-# Reproducibility
+## Reproducibility
 
 Intermittent
 
-# Recommended Next Step
+## Recommended Next Step
 
 "Clarify with reporter before proceeding"
 ```

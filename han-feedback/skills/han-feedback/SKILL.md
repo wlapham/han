@@ -18,7 +18,7 @@ allowed-tools: Read, Write, Bash(ls *), Bash(mkdir *), Bash(gh *), Bash(date *)
 
 ## Operating Principles
 
-- **The whole han-* family is in scope.** Capture skills and agents from every Han plugin (`han-core`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin). Skills and agents from non-Han plugins are out of scope.
+- **The whole han-* family is in scope.** Capture skills and agents from every Han plugin (`han-core`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin). Skills and agents from non-Han plugins are out of scope.
 - **Invocations count, not completions.** A skill or agent is considered used if it appeared in the session, regardless of whether it finished or was cancelled. Feedback on a partial run is still feedback.
 - **Agents count even when a skill dispatched them.** Most Han agents run because a skill dispatched them. Those agents are still in scope; record which ones contributed so the feedback names where specialist value came from.
 - **Conservative defaults on posting.** The feedback directory is user-space. The posting target is a public GitHub repository. Ambiguous confirmation is treated as a stop, not a go.

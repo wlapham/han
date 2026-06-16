@@ -12,7 +12,7 @@ Operator documentation for the `/han-feedback` skill in the opt-in `han-feedback
 
 ## Key concepts
 
-- **Whole-family scope.** The skill captures skills and agents from every Han plugin (`han-core`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin). It identifies each by its plugin namespace (the prefix before the colon, like `han-core:` or `han-github:`). Components from non-Han plugins are out of scope.
+- **Whole-family scope.** The skill captures skills and agents from every Han plugin (`han-core`, `han-planning`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, and any future `han-*` plugin). It identifies each by its plugin namespace (the prefix before the colon, like `han-core:` or `han-github:`). Components from non-Han plugins are out of scope.
 - **Agents are captured too.** Most Han agents run because a skill dispatched them. The skill records every Han agent that ran, whether a skill launched it or you dispatched it directly, so the feedback names where specialist value came from.
 - **Session scope.** The skill works from the current context window. It can only find `han-*` invocations visible in the conversation at the time you run it. If the session was compacted before you run `/han-feedback`, earlier invocations may not appear. Run it before compaction to catch everything.
 - **Feedback file.** A plain markdown file written to `~/.claude/han-feedback/`. The filename encodes the date and the skills covered. One file per day per run; existing files for today are not overwritten.

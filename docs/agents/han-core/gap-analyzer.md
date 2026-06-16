@@ -103,4 +103,5 @@ URL: https://standards.ieee.org/ieee/829/3787/
 - [`content-auditor`](./content-auditor.md). Sibling for before-and-after content preservation (different problem).
 - [`/gap-analysis`](../../skills/han-core/gap-analysis.md). Always dispatches this agent.
 - [`/plan-a-feature`](../../skills/han-planning/plan-a-feature.md). Dispatches this agent to compare a draft spec against a PRD or reference spec.
+- [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md). Dispatches this agent to compare the plan under review against its source spec or PRD.
 - [Evidence](../../evidence.md). The canonical evidence rule the agent reads at runtime. Trust classes for evidence pairs, the corroboration gate for single-source web claims, and the no-evidence label for silent desired-state evidence.
