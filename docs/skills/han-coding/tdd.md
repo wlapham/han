@@ -31,7 +31,7 @@ Operator documentation for the `/tdd` skill in the han plugin. This document hel
 - **Producing a test plan without writing code.** Use [`/test-planning`](../han-coding/test-planning.md) instead. It analyzes coverage gaps and prioritizes what to test; it does not implement.
 - **Reviewing or auditing code that already exists.** Use [`/code-review`](../han-coding/code-review.md) instead.
 - **Deciding what a feature should do.** Use [`/plan-a-feature`](../han-planning/plan-a-feature.md) to specify behavior first, then bring the spec here.
-- **Finding the root cause of a bug.** Use [`/investigate`](../han-coding/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd`.
+- **Finding the root cause of a bug.** Use [`/investigate`](../han-coding/investigate.md). Once you have a fix in mind, you can drive it back in through `/tdd` — the regression test asserts the desired correct behavior (red until the fix lands), not that the bug's error is raised.
 - **Restructuring existing code outside a TDD cycle.** Use [`/refactor`](./refactor.md). The refactor step inside `/tdd` cleans up only what the current red-green cycle touched; restructuring code that predates the cycle is its sibling's job.
 
 ## How to invoke it
