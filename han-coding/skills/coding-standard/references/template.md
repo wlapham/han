@@ -80,7 +80,8 @@ paths:
 ```
 
 **Project references:**
-- `path/to/implementation` — {brief note on what this file demonstrates}
+
+- `path/to/file`, `{stable anchor}` — {brief note on what this example demonstrates}
 
 ### {Cross-Cutting Guideline Name}
 
@@ -102,8 +103,8 @@ paths:
 ...
 
 **Project references:**
-- `path/to/implementation-a` — {brief note}
-- `path/to/implementation-b` — {brief note}
+- `path/to/file-a`, `{stable anchor}` — {brief note on what this example demonstrates}
+- `path/to/file-b`, `{stable anchor}` — {brief note on what this example demonstrates}
 
 ## Additional Resources
 

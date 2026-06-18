@@ -92,15 +92,16 @@ If no accepted evidence applies, recommend deferring the standard with the trigg
 
 Skip these agents when the user has already provided full Correct-usage examples and conflicting-pattern evidence. Otherwise, launch both in parallel — one finds what the codebase already does, the other checks what the project has already documented. Include the topic, scope, and docs/coding-standards directories from Step 3.
 
-1. **Launch han-core:codebase-explorer agent (implementation patterns)** — prompt: "Explore the codebase for existing implementations related to {topic} across {scope}. Return: concrete file paths and line ranges that illustrate the convention in practice (Correct-usage candidates), file paths that violate or contradict the convention (What-to-avoid candidates), and any places where the convention is applied inconsistently across the codebase. Focus on real files; do not invent examples."
+1. **Launch han-core:codebase-explorer agent (implementation patterns)** — prompt: "Explore the codebase for existing implementations related to {topic} across {scope}. Return concrete places that illustrate the convention in practice (Correct-usage candidates), places that violate or contradict the convention (What-to-avoid candidates), and any places where the convention is applied inconsistently across the codebase. For each place, return a file path, a line range, and one or more greppable durable anchors — read `${CLAUDE_SKILL_DIR}/references/durable-references.md` and follow its Rules 1 and 2 to derive them; where Rule 2 reaches escalation, return the place flagged for engineer review instead of an anchor. Focus on real files; do not invent examples."
 
-2. **Launch han-core:codebase-explorer agent (standards and ADRs)** — prompt: "Explore {docs-directory} and {coding-standards-directory} for existing coding standards, ADRs, or project docs that touch {topic} across {scope}. Return: any standards or ADRs that already cover this topic (in full or in part), cross-references that the new standard will need to link, and any contradictions between existing docs that the new standard will need to resolve or cite."
+2. **Launch han-core:codebase-explorer agent (standards and ADRs)** — prompt: "Explore {docs-directory} and {coding-standards-directory} for existing coding standards, ADRs, or project docs that touch {topic} across {scope}. Return: any standards or ADRs that already cover this topic (in full or in part), cross-references that the new standard will need to link — each as a document path plus a stable section heading — and any contradictions between existing docs that the new standard will need to resolve or cite."
 
-After both agents complete, merge their findings into a context block with:
-- **Correct-usage candidates** (file:line references) for Step 6
-- **What-to-avoid candidates** (file:line references) for Step 6
+After both agents complete, merge their findings into a context block:
+- **Correct-usage candidates** — durable anchor(s), plus the line range (Step 6 drops it unless a house style keeps it) — for Step 6
+- **What-to-avoid candidates** — same pairing — for Step 6
+- **Flagged candidates** — places the rule could not cleanly anchor, carried as engineer-review items for Step 6; no reference is emitted for one without engineer input
 - **Inconsistency notes** — areas where the convention is applied unevenly (these become Rationale material, not examples)
-- **Existing-doc cross-references** for Step 7
+- **Existing-doc cross-references** (document path plus stable section heading) for Step 7
 
 ## Step 5: Convert Source Document (skip if creating new or updating)
 
@@ -113,6 +114,8 @@ When converting an existing document into a coding standard:
 
 ## Step 6: Write the Coding Standard
 
+Read the **durable-reference rule** in [durable-references.md](./references/durable-references.md) and apply it throughout this step — this is the rule's **authoring mode** — all rules apply. For any candidate Step 4 flagged for engineer review — or any example you cannot cleanly anchor yourself — surface it to the engineer with a recommended resolution rather than emitting a coarse or anchorless reference; do not silently resolve it.
+
 1. Copy the template from [template.md](./references/template.md)
 2. **File name:** `{top-level}[-{second-level}]-{hyphenated-name}.md` — a one- or two-level hierarchy prefix followed by the standard's specific name. The hierarchy must come from the taxonomy discovered in Step 3.5, never invented or hardcoded.
    - **Top-level (required):** the highest-level grouping the standard belongs to (e.g., `svelte`, `rails`, `postgres`, `api`). Reuse an existing top-level prefix from Step 3.5 when one fits; only introduce a new top-level when no existing prefix applies, and prefer one that matches a language, framework, or subsystem already named in CLAUDE.md or project-discovery.md.
@@ -122,7 +125,7 @@ When converting an existing document into a coding standard:
 3. **Location:** place in the directory determined in Step 3
 4. **Fill in metadata:**
    - **Status**: per Step 1 mode (`proposed` for new, `accepted` for converted)
-   - **Applies To**: free-text matching the project's terminology
+   - **Applies To**: a membership criterion for entities governed by this standard, per durable-reference Rule 3.
    - **Date Created / Last Updated**: current date and time
 5. **Propose the `paths:` glob list and get user approval.** The `paths:` field in the YAML frontmatter is the canonical declaration of which file globs the standard governs. Step 7 uses each glob to route the new standard into one or more per-file-type **index files** under `.claude/rules/coding-standards/` — the standard itself is never loaded directly as a path-scoped rule. The index files are what Claude Code loads via [Claude Code path-scoped rules](https://code.claude.com/docs/en/memory), and they then point Claude at this standard on demand. Cross-cutting standards whose `paths:` span multiple file-type buckets get listed in each matching index.
    - **Build the candidate list** from the Applies To text and Scope section of this standard, intersected with the project file-type globs discovered in Step 3.6. Scope a glob no broader than the standard actually governs — if the standard applies only to Svelte stores, prefer `src/**/stores/**/*.ts` over `**/*.ts`.
@@ -237,12 +240,13 @@ Read back the coding standard file and confirm:
 1. All metadata fields are filled in (no `{placeholder}` values remain)
 2. Template structure from [template.md](./references/template.md) was followed
 3. YAML frontmatter is present at the top of the file with a `paths:` list, every glob is double-quoted, and the frontmatter closes with `---` before the `# {Title}` heading. When updating an existing standard, confirm no pre-existing frontmatter keys were stripped.
-4. **Index-file membership.** The standard is listed in every index file under `.claude/rules/coding-standards/` whose `paths:` overlaps the standard's `paths:`, and is **not** listed in any index file whose `paths:` does not overlap. For each index file the standard was added to, confirm: the file's `paths:` frontmatter still parses; every pre-existing entry is still present (none were dropped while editing); the instruction paragraph between the heading and `## Available standards` is unchanged from the template (verbatim); the new entry's relative link resolves to the canonical standard file; the new entry's description is 1-3 sentences and names both what the standard covers and when a reader should pull the full file. In update-mode, additionally confirm the standard's entry was removed from any index file whose `paths:` no longer overlaps.
-5. `CLAUDE.md` (or `AGENTS.md`) was **not** given a new enumerated entry for this standard. If a pointer paragraph was added because none existed, confirm it appears exactly once and that its wording describes the per-file-type index-file mechanism (not the prior one-symlink-per-standard mechanism).
-6. Code examples reference real files that exist (verify with Glob) — cross-check against the Correct-usage candidates returned in Step 4
-7. "What to avoid" examples are distinct from "Correct usage" examples
-8. If converting (Step 5): confirm source document was handled (deleted or updated with link)
-9. Confirm agent configuration file references are correct
-10. Confirm each of the six Adoption-Bias Audit checks (Step 8) has a cited satisfying section in the final draft, or that the failing check produced an applied revision
-11. Confirm actionable edits from Step 9 were applied, or that any skipped edits were surfaced to the user
-12. If any issues are found, fix them
+4. The document follows the **durable-reference rule** in [durable-references.md](./references/durable-references.md) — apply its authoring mode at verification and flag any citation you cannot re-anchor for the engineer.
+5. **Index-file membership.** The standard is listed in every index file under `.claude/rules/coding-standards/` whose `paths:` overlaps the standard's `paths:`, and is **not** listed in any index file whose `paths:` does not overlap. For each index file the standard was added to, confirm: the file's `paths:` frontmatter still parses; every pre-existing entry is still present (none were dropped while editing); the instruction paragraph between the heading and `## Available standards` is unchanged from the template (verbatim); the new entry's relative link resolves to the canonical standard file; the new entry's description is 1-3 sentences, names both what the standard covers and when a reader should pull the full file, follows durable-reference Rule 3. In update-mode, additionally confirm the standard's entry was removed from any index file whose `paths:` no longer overlaps.
+6. `CLAUDE.md` (or `AGENTS.md`) was **not** given a new enumerated entry for this standard. If a pointer paragraph was added because none existed, confirm it appears exactly once and that its wording describes the per-file-type index-file mechanism (not the prior one-symlink-per-standard mechanism).
+7. Code examples reference real files that exist (verify with Glob) — cross-check against the Correct-usage candidates returned in Step 4
+8. "What to avoid" examples are distinct from "Correct usage" examples
+9. If converting (Step 5): confirm source document was handled (deleted or updated with link)
+10. Confirm agent configuration file references are correct
+11. Confirm each of the six Adoption-Bias Audit checks (Step 8) has a cited satisfying section in the final draft, or that the failing check produced an applied revision
+12. Confirm actionable edits from Step 9 were applied, or that any skipped edits were surfaced to the user
+13. If any issues are found, fix them
