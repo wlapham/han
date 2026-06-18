@@ -6,7 +6,7 @@ Operator documentation for the `/project-discovery` skill in the han plugin. Thi
 
 ## TL;DR
 
-- **What it does.** Scans the repository for languages, frameworks, tooling, and documentation structure, and writes a static reference other skills consume.
+- **What it does.** Scans the repository for languages, frameworks, tooling, configuration, and documentation structure, and writes a static reference other skills consume.
 - **When to use it.** Before using any other han skill on a new project, or after a major stack change (new framework, new build tool, moved docs).
 - **What you get back.** `docs/project-discovery.md` with everything the plugin needs to know about your repo, plus a short `## Project Discovery` section added to `CLAUDE.md`.
 

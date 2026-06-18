@@ -40,7 +40,7 @@ Operator documentation for the `/plan-a-feature-to-confluence` skill in the opt-
 
 Run `/plan-a-feature-to-confluence` in Claude Code.
 
-The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han-atlassian@han` (it pulls `han-core` along the way), and make sure the Atlassian MCP server is configured and authenticated. See [Choosing a Han plugin](../../choosing-a-han-plugin.md) for where it sits in the suite.
+The skill ships in the opt-in `han-atlassian` plugin, which the `han` meta-plugin does not bundle. Install it on its own first with `/plugin install han-atlassian@han` (it pulls `han-core`, `han-planning`, and `han-coding` along the way), and make sure the Atlassian MCP server is configured and authenticated. See [Choosing a Han plugin](../../choosing-a-han-plugin.md) for where it sits in the suite.
 
 Give it:
 
