@@ -91,9 +91,9 @@ named home." If it is much larger than the snippet the reference is actually abo
 - **Coarse → precise.** "Module A registers hooks, discovered by module B" — citing whole files
   A and B bundles unrelated behavior. Narrow to the in-scope anchors: "A: hooks `H1` and `H2`
   registered via the `@register` decorator; B: `get_hooks`."
-- **Behavior-paired reference.** "`wiki/update.ts`, function `updatePageContent` — see how it
-  uses `onTransactionSuccess` to trigger FTS re-indexing only when the page was successfully
-  committed to the database."
+- **Behavior-paired reference.** "`payments/refund.ts`, function `issueRefund` — see how it
+  uses `onTransactionSuccess` to emit the `refund.issued` event only after the refund row is
+  durably committed to the database."
 
 ## Rule 3: State applicability as a membership criterion, not a roster
 
@@ -109,10 +109,27 @@ A concrete list may remain only when its named examples are structurally distinc
 different case shapes — not when they are simply the complete current set named as a sample.
 Mark any surviving list non-exhaustive ("e.g., …") and strip the temporal word from it.
 
-## Rule 4: Remove temporal phrasing
+## Rule 4: Remove temporal phrasing or references to "current state"
 
 **Authoring mode only — research produces no committed prose to clean.** Remove snapshot-in-time
 phrasing that pins the document to "right now." The words "today", "currently", "now",
-"existing", "as of this writing", and "the current set of" are illustrative examples of it, not
-an exhaustive list — the rule is that any phrasing pinning the document to a momentary roster or
-moment is removed. Lead with the timeless criterion (Rule 3) instead.
+"existing", "as of this writing", "the current set of", "already", "still", "pre-existing",
+"legacy", "older", "no longer", "so far", "for now", and "in this version" are illustrative examples
+of it, not an exhaustive list — the rule is that any phrasing pinning the document to a momentary
+roster or moment is removed. Lead with the timeless criterion (Rule 3) instead.
+
+Two idioms produce most leaks; check for both explicitly, because both read as natural prose and
+slip past a word scan:
+
+- **The known-offender aside.** A standard often points at a real violating construct as its
+  "What to avoid" example or migration target, then narrates it by its momentary backlog status —
+  "one pre-existing item … tracked for rework". The durable-anchor citation is correct (Rule 1);
+  the status narration is the pin. State the timeless property of the construct instead: cite it
+  by its anchor and say what it *is* ("`X` does Y, which violates this standard"), not where it sits
+  on a cleanup queue. Whether it has been fixed yet is not the standard's concern.
+- **The roadmap or version reference.** A coding standard states a rule that holds across every
+  version and rollout phase; it is not itself versioned. A roadmap or version state must not enter
+  the standard at all — neither restated inline ("for now we only ship X") nor used to condition
+  the rule ("until phase 2, do Y"). Strip it and state the rule unconditionally. Linking a durable
+  decision doc or ADR to explain *why the rule exists* is fine and durable; letting
+  the *current rollout state* that doc describes appear in or condition the rule is the pin.
