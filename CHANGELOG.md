@@ -1,5 +1,32 @@
 # Han Release Notes
 
+## v4.3.1
+
+han 4.3.1 removes the Claude-specific model overrides from the four planning skills so they run on hosts with their own model namespaces (han-planning 2.0.2), and clarifies the agent-model-selection guidance so the overrides are not reintroduced (han-plugin-builder 2.0.1). `han-core`, `han-coding`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-linear` are unchanged.
+
+### han v4.3.1
+
+The suite-level work is documentation. The cost sections of the four planning long-form docs (`docs/skills/han-planning/plan-a-feature.md`, `docs/skills/han-planning/plan-implementation.md`, `docs/skills/han-planning/plan-a-phased-build.md`, `docs/skills/han-planning/plan-work-items.md`) were updated to match the model-override removal below. `docs/research/issue-78-model-specifier-portability.md` was added as the research backing that change. `CLAUDE.md` and `CONTRIBUTING.md` corrected the `han-linear` layout label and documented `han-atlassian` and `han-linear` in the contributor guide.
+
+### han-planning v2.0.2
+
+The four planning skills (`plan-a-feature`, `plan-implementation`, `plan-a-phased-build`, `plan-work-items`) pinned every dispatched sub-agent to `model: "sonnet"`. That tier name is Claude-specific and is not valid on hosts with their own model namespace, so the planning skills failed before useful work began. The blanket "all sub-agents run on sonnet" operating principle and all 11 per-dispatch model overrides across the four `SKILL.md` files were removed. Each dispatched agent now runs on its own frontmatter tier on Claude Code, or the host default elsewhere. This also restores the deliberate `opus` promotion of `junior-developer`, `information-architect`, and `user-experience-designer` that the overrides were silently undoing. Implements option O1 from `docs/research/issue-78-model-specifier-portability.md`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #86.
+
+### han-plugin-builder v2.0.1
+
+The `agent-model-selection.md` guidance (`han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-model-selection.md`) now clarifies that the "always set model explicitly" rule scopes to agent definition files only, not to skill dispatch, so the planning-skill overrides are not reintroduced. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #86.
+
+### Issues closed in this release
+
+- Han Feedback: han-feedback (2026-06-17) (#78) — opened by [@oppegard](https://github.com/oppegard); fixed in #86 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- Docs/sweep sizing and dispatch fixes (#85) — [@mxriverlynn](https://github.com/mxriverlynn)
+- Remove Claude-specific model overrides from planning skills (#78) (#86) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.3.1/CHANGELOG.md#v431
+
 ## v4.3.0
 
 han 4.3.0 teaches the `coding-standard` skill to cite code by durable, greppable anchors instead of volatile `file:line` references (han-coding 2.3.0), and applies a one-line wording fix to `gap-analysis` (han-core 2.0.2). `han-planning`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, `han-linear`, and `han-plugin-builder` are unchanged.
