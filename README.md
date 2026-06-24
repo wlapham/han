@@ -28,7 +28,7 @@ Han's positioning and what it does not bring to the table.
 
 ## Installation
 
-## Claude Code
+### Claude Code
 
 Add the Test Double skills marketplace to Claude Code, then install the plugin:
 
