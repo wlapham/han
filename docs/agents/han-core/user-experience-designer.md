@@ -6,7 +6,7 @@ Operator documentation for the `user-experience-designer` agent in the han plugi
 
 ## TL;DR
 
-- **What it does.** Audits a feature, screen, or flow for usability problems grounded in established UX principles.
+- **What it does.** Audits a feature, screen, or flow for usability and interaction problems grounded in established UX principles.
 - **When to dispatch it.** A UI surface needs a principled usability review independent of code correctness: before ship, after a recurring usability complaint, or during a structural redesign. Conditionally dispatched by `/gap-analysis`, `/iterative-plan-review`, `/plan-a-feature`, and `/plan-implementation` when the spec or plan touches user-facing flows, UI, interaction, or accessibility.
 - **What you get back.** A UX findings report with every finding tied to a specific UI location, a named UX principle, and a user-impact statement.
 

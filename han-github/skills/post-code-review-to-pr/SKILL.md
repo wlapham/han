@@ -8,7 +8,7 @@ description: >
   code-review instead. Does not write or update PR descriptions — use
   update-pr-description for that.
 argument-hint: "[optional context about the PR or areas to focus on]"
-allowed-tools: Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Grep, Glob, Skill, Agent
+allowed-tools: Bash(jq *), Bash(gh *), Bash(git *), Bash(make *), Bash(npm *), Read, Write, Grep, Glob, Skill, Agent
 ---
 
 When running a PR code review, follow the process outlined here.

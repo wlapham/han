@@ -35,6 +35,7 @@ Operator documentation for the `/project-documentation-to-confluence` skill in t
 - **Architectural decisions.** Use [`/architectural-decision-record`](../han-core/architectural-decision-record.md).
 - **Coding conventions.** Use [`/coding-standard`](../han-coding/coding-standard.md).
 - **Runbooks for operational scenarios.** Use [`/runbook`](../han-core/runbook.md).
+- **Planning or specifying a new feature.** Use [`/plan-a-feature-to-confluence`](./plan-a-feature-to-confluence.md). This skill documents a feature that already exists; that one specs a feature before it is built and publishes the spec.
 
 ## How to invoke it
 

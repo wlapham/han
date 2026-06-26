@@ -26,7 +26,7 @@ Han is a Claude Code plugin suite for solo (or small-team) product engineers. It
 │   │   └── plugin.json
 │   ├── skills/         # Planning skill directories, each with SKILL.md + references/
 │   └── references/     # Cross-skill reference files vendored for han-planning skills (yagni-rule.md, evidence-rule.md)
-├── han-coding/         # Coding plugin: tdd, refactor, code-review, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-core; bundled by the han meta-plugin)
+├── han-coding/         # Coding plugin: tdd, refactor, code-review, code-overview, architectural-analysis, test-planning, investigate, coding-standard (the skills for working in code; depends on han-core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)

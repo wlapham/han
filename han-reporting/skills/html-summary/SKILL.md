@@ -7,6 +7,8 @@ description: >
   stakeholder summary, executive summary, or business summary into an HTML report, generate an
   HTML version of a summary doc, or produce a shareable HTML file from a summary markdown.
   Produces an HTML sibling file only; does not publish anything.
+argument-hint: "[path to stakeholder-summary.md]"
+allowed-tools: Read, Write
 ---
 
 # HTML Summary

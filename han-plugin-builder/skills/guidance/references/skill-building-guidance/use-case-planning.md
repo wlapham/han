@@ -34,19 +34,19 @@ This skill was built without thinking about *who* would use it or *how*. The des
 Use Case 1: Document an existing feature
 - **Trigger:** "Document how the authentication system works"
 - **Steps:** Discover project structure, trace the feature through code, write documentation
-- **Tools:** Read, Grep, Glob, Agent (a codebase-exploration agent)
+- **Tools:** Read, Grep, Glob, Agent (a codebase-explorer agent)
 - **Domain knowledge:** Documentation templates, section structure conventions
 
 Use Case 2: Update outdated documentation
 - **Trigger:** "Update the API docs — the endpoints changed last sprint"
 - **Steps:** Find existing docs, compare against current code, update with changes
-- **Tools:** Read, Grep, Glob, Agent (a content-audit agent)
+- **Tools:** Read, Grep, Glob, Agent (a content-auditor agent)
 - **Domain knowledge:** How to identify stale sections, change detection patterns
 
 Use Case 3: Create documentation for a new component
 - **Trigger:** "Write docs for the new payment service"
 - **Steps:** Scan component structure, identify public interfaces, generate documentation
-- **Tools:** Read, Grep, Glob, Agent (a codebase-exploration agent)
+- **Tools:** Read, Grep, Glob, Agent (a codebase-explorer agent)
 - **Domain knowledge:** Component documentation template, API documentation conventions
 
 ### Rule: Each use case answers four questions
@@ -94,7 +94,7 @@ Given: A repository with an authentication system
 When: User says "Document how the authentication system works"
 Then:
   - Skill triggers (not a sibling like a coding-standard or ADR skill)
-  - The codebase-exploration agent discovers auth-related files
+  - The codebase-explorer agent discovers auth-related files
   - Output follows documentation template from references/
   - All public interfaces are documented
   - No fabricated details (only documents what exists in code)

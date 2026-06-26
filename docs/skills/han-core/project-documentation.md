@@ -58,10 +58,10 @@ Example prompts:
 
 A feature doc under the project's documentation root plus integration:
 
-- **`docs/{feature-name}.md`.** The feature doc, following the template at [`references/template.md`](../../../han-core/skills/project-documentation/references/template.md). The doc leads with behavior: a plain-language Summary, an Architecture diagram, a How It Works overview, and Primary Flows that narrate the main paths step by step. Reference detail (data model, core types, constants, implementation notes, API endpoints, components) sits below under a `## Technical Reference` region for the reader who needs it. Template sections marked CONDITIONAL are omitted when they do not apply.
+- **`docs/{feature-name}.md`.** The feature doc, following the template at [`references/template.md`](../../../han-core/skills/project-documentation/references/template.md). The doc leads with behavior: a plain-language Summary, an Architecture diagram, a How It Works overview, and Primary Flows that narrate the main paths step by step. Diagrams (Architecture, any Primary Flow, and the Component Hierarchy) are rendered as Mermaid, not ASCII. Reference detail (data model, core types, constants, implementation notes, API endpoints, components) sits below under a `## Technical Reference` region for the reader who needs it. Template sections marked CONDITIONAL are omitted when they do not apply.
 - **Behavioral overview first.** A reader who only needs to understand what the feature does and how it behaves can stop after Primary Flows and never read the Technical Reference.
 - **Absolute file paths** from the repo root.
-- **Reference code as pointers and short snippets.** Technical Reference points to the file and function and shows a short snippet only where the source is non-obvious, rather than reproducing long source blocks.
+- **Reference code as pointers and short snippets.** Technical Reference points to the file and function and shows a short snippet only where the source is non-obvious, rather than reproducing long (10-30 line) source blocks; it links to the source instead.
 - **Language-specific code fences** matching the project's actual language.
 - **`CLAUDE.md` / `AGENTS.md` reference.** A line added in the section most relevant to the feature.
 - **Bidirectional cross-references** to related docs.
