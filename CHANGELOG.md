@@ -1,5 +1,39 @@
 # Han Release Notes
 
+## v4.3.3
+
+han 4.3.3 is a fix that wraps `argument-hint` frontmatter values in double quotes so YAML parses them as strings instead of misreading the bracket and flag syntax. The fix lands in `han-core` (2.0.3), `han-coding` (2.3.2), `han-github` (2.1.1), and `han-linear` (1.0.1). `han-planning`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-plugin-builder` are unchanged.
+
+### han v4.3.3
+
+The suite-level work is the per-plugin version syncs in `.claude-plugin/marketplace.json` for this release.
+
+### han-core v2.0.3
+
+Quoted the `argument-hint` frontmatter value in four skills so YAML reads it as a string: `han-core/skills/architectural-decision-record/SKILL.md`, `han-core/skills/project-discovery/SKILL.md`, `han-core/skills/project-documentation/SKILL.md`, and `han-core/skills/runbook/SKILL.md`. For example, `argument-hint: [topic ...]` became `argument-hint: "[topic ...]"`. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #91, closing an issue reported by [@eddroid](https://github.com/eddroid).
+
+### han-coding v2.3.2
+
+Quoted the `argument-hint` frontmatter value in `han-coding/skills/coding-standard/SKILL.md` so YAML reads it as a string. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #91.
+
+### han-github v2.1.1
+
+Quoted the `argument-hint` frontmatter value in `han-github/skills/post-code-review-to-pr/SKILL.md` and `han-github/skills/update-pr-description/SKILL.md` so YAML reads it as a string. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #91.
+
+### han-linear v1.0.1
+
+Quoted the `argument-hint` frontmatter value in `han-linear/skills/work-items-to-linear/SKILL.md` so YAML reads it as a string. Contributed by [@mxriverlynn](https://github.com/mxriverlynn) in #91.
+
+### Issues closed in this release
+
+- Copilot wants quotes around `argument-hint` (#90) — opened by [@eddroid](https://github.com/eddroid); fixed in #91 by [@mxriverlynn](https://github.com/mxriverlynn)
+
+### Pull requests in this release
+
+- fix #90: quote argument-hint values so YAML parses them as strings (#91) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.3.3/CHANGELOG.md#v433
+
 ## v4.3.2
 
 han 4.3.2 re-focuses the `code-overview` skill around why code exists and adds an adversarial accuracy-validation pass to it (han-coding 2.3.1), and adds two how-to guides plus the research backing one of them to the suite documentation. `han-core`, `han-planning`, `han-github`, `han-reporting`, `han-feedback`, `han-atlassian`, and `han-linear` are unchanged.
