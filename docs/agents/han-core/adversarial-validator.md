@@ -7,7 +7,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 ## TL;DR
 
 - **What it does.** Assumes investigation evidence is wrong and the planned fix will fail. Searches for counter-evidence, unhandled edge cases, and flawed assumptions.
-- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate` and by `/research` (the adversarial-validation step at the end of every research pass). Required by `/gap-analysis` swarms at every size (which run by default) and by `/iterative-plan-review` team mode. Also dispatched by `/code-overview`, where it re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix.
+- **When to dispatch it.** An investigation has produced a root cause and a fix plan, and you want the analysis adversarially validated before code lands. Always dispatched by `/investigate` and by `/research` (the adversarial-validation step at the end of every research pass). Required by `/gap-analysis` swarms at every size (which run by default) and by `/iterative-plan-review` team mode. Also dispatched by `/code-overview`, where it re-reads the code to verify a drafted overview's claims for accuracy rather than to validate a fix, and by `/code-review`, where it re-reads the change at Step 7.4 to confirm, demote, or drop each finding on the consolidated finding list.
 - **What you get back.** Numbered `V#` validation items, each with a strategy, hypothesis, investigation steps, result (Confirmed / Refuted / Partially Refuted), and an impact statement. Plus a confidence assessment and remaining risks.
 
 ## Key concepts
@@ -27,6 +27,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 - A gap analysis has produced gaps with claimed evidence and you want each gap challenged for confirmability. `/gap-analysis` dispatches this agent by default at every swarm size.
 - An iterative plan review is in team mode and you want the plan's assumptions attacked. `/iterative-plan-review` dispatches this agent in team mode.
 - A code overview has been drafted and you want its claims checked against the code before a reader trusts them. `/code-overview` dispatches this agent to validate the overview's accuracy, the stated *why* most of all, never to judge the code's quality.
+- A code review has produced a finding list and you want each finding re-attacked against the code before a human reads it. `/code-review` dispatches this agent at Step 7.4 to confirm, demote, or (with concrete counter-evidence) drop each finding, judging the finding's reasoning against the change rather than trusting the producing agent.
 - A team member has proposed a fix or change and you want a second adversarial opinion before merging.
 - A high-stakes incident response is winding down and you want to confirm the post-mortem's root cause and remediation hold up under challenge.
 
@@ -34,7 +35,7 @@ Operator documentation for the `adversarial-validator` agent in the han plugin. 
 
 - Discovering the root cause in the first place. Use `evidence-based-investigator` or `/investigate`.
 - Drafting a fix or plan. Use `/plan-implementation` or write the plan yourself; this agent validates plans, it does not write them.
-- Code review. Use `/code-review` for correctness, style, and compliance. The validator focuses on whether the *reasoning* holds, not whether the code is clean.
+- Performing the code review itself. Use `/code-review` for correctness, style, and compliance; it dispatches this validator internally at Step 7.4 to re-check its finding list, but the validator judges whether a finding's *reasoning* holds against the code, not whether the code is clean.
 - Architectural assessment. Use `/architectural-analysis`. The validator does not synthesize architectural recommendations.
 - Self-evaluation of an agent's own output. The validator must run against another agent's output, not its own.
 
@@ -105,5 +106,6 @@ URL: https://en.wikipedia.org/wiki/Red_team
 - [`/gap-analysis`](../../skills/han-core/gap-analysis.md). Required swarm role at every size. The swarm runs by default.
 - [`/iterative-plan-review`](../../skills/han-planning/iterative-plan-review.md). Dispatches this agent in team mode.
 - [`/code-overview`](../../skills/han-coding/code-overview.md). Dispatches this agent to validate a drafted overview's accuracy against the code before the reader sees it.
+- [`/code-review`](../../skills/han-coding/code-review.md). Dispatches this agent at Step 7.4 to re-attack the consolidated finding list against the code, confirming, demoting, or dropping each finding before a human reads the review.
 - [agent-domain-focus.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/agent-domain-focus.md). Why the agent uses precise falsification vocabulary and named anti-patterns.
 - [multi-agent-economics.md](../../../han-plugin-builder/skills/guidance/references/agent-building-guidelines/multi-agent-economics.md). Why this agent is the canonical second-opinion pattern across the plugin.
