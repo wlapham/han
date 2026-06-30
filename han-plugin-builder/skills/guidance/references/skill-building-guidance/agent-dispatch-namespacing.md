@@ -82,7 +82,7 @@ inside a coordinator agent can name the specialists a facilitating skill should
 bring in, and the skill performs the qualified dispatch. The rules above govern
 the skills and any documented invocation example.
 
-When an agent does need the `Agent` tool, that is a documented exception (see
+When an agent does need the `Agent` tool, that is a deliberate exception (see
 [External File References in Agent Definitions](../agent-building-guidelines/agent-external-files.md)),
 and its dispatches still follow the `your-plugin:agent-name` namespacing rules
 above.

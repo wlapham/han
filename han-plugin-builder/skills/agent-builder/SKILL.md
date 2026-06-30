@@ -125,8 +125,8 @@ before its parent is settled.
    synthesis and judgment, `sonnet` for structured procedures, `haiku` for fast
    lookups, `inherit` only when matching the session is intentional)? What
    `tools` does it need, defaulting to no `Agent` tool, since dispatch flows
-   from skills to agents, and carrying it only when a concrete need is
-   documented?
+   from skills to agents, and carrying it only when the agent's own protocol
+   dispatches sub-agents?
 5. **Body structure** — What inlined protocol, checklist, and reference content
    does the agent need to do its job, given it cannot use external files? Where
    does graceful-degradation wording belong?
@@ -209,8 +209,9 @@ fixing them. Cover at minimum:
    and the file relies on no field plugins ignore.
 7. **Tool set** (`agent-dispatch-namespacing.md`, `agent-external-files.md`) —
    the agent defaults to no `Agent` tool, since dispatch flows from skills to
-   agents; if it carries the `Agent` tool, the agent records why that exception
-   is necessary. The `tools` allowlist is the minimum the work needs.
+   agents; it carries the `Agent` tool only when its own protocol dispatches
+   sub-agents. The `tools` allowlist is the minimum the work needs, each tool
+   present only if the body uses it.
 8. **Graceful degradation** (`agent-building-guidelines/graceful-degradation.md`)
    — every tool-dependent step checks availability inline and notes the
    limitation when the tool is absent.
