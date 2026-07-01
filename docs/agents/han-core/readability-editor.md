@@ -48,9 +48,9 @@ Example prompts:
 
 The draft, rewritten in place (or returned inline when the deliverable is conversational), plus a short report:
 
-- **Rubric verdict** — one line per criterion (main point first, descriptive headings, one idea per paragraph, sentence length, common words / no blocklisted words, progressive disclosure): pass, or what was changed to make it pass.
-- **Fact-preservation ledger** — confirmation that every claim, quantity, named entity, and stated condition survived; any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
-- **Untouched regions** — the non-prose regions left unchanged.
+- **Rubric verdict.** One line per criterion (main point first, descriptive headings, one idea per paragraph, sentence length, common words / no blocklisted words, progressive disclosure): pass, or what was changed to make it pass.
+- **Fact-preservation ledger.** Confirmation that every claim, quantity, named entity, and stated condition survived. Any fact that could not be preserved while satisfying a criterion is named, with a note that the fact was kept.
+- **Untouched regions.** The non-prose regions left unchanged.
 
 ## How to get the most out of it
 
