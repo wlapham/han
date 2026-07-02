@@ -2,6 +2,15 @@
 
 Han is a Claude Code plugin suite for solo (or small-team) product engineers. It packages evidence-based planning, deep code review, investigation, and documentation workflows into deterministic slash commands that dispatch specialist sub-agents to do the judgment-heavy work. The suite ships as a family of plugins: `han-core` (the research, analysis, documentation, and operations skills plus all the agents the rest of the suite dispatches), `han-planning` (the planning skills you reach for before implementation: specifying with `plan-a-feature`, planning the build with `plan-implementation`, sequencing it with `plan-a-phased-build`, breaking it into work with `plan-work-items`, and stress-testing plans with `iterative-plan-review`; depends on `han-core` and is bundled by the `han` meta-plugin), `han-coding` (the coding skills you reach for while working in code: writing it with `tdd` and `refactor`, plus reviewing, overviewing, analyzing, testing, investigating, and standardizing it with `code-review`, `code-overview`, `architectural-analysis`, `test-planning`, `investigate`, and `coding-standard`; depends on `han-core` and is bundled by the `han` meta-plugin), `han-github` (GitHub-facing skills), `han-reporting` (reporting and summary skills), `han` (a meta-plugin that installs `han-core`, `han-planning`, `han-coding`, `han-github`, and `han-reporting` via dependencies), `han-feedback` (an opt-in plugin carrying the post-session feedback skill, which depends on `han-core` but is deliberately *not* bundled by the `han` meta-plugin, so it is installed separately), `han-atlassian` (an opt-in plugin carrying the Atlassian skills — Confluence publishing and work-items-to-Jira — which depends on `han-core`, `han-planning`, and `han-coding` because its wrapper skills run skills from each, requires a configured Atlassian MCP server, and is likewise *not* bundled by the `han` meta-plugin), `han-linear` (an opt-in plugin carrying the work-items-to-Linear skill, which depends on `han-core`, requires a configured Linear MCP server, and is likewise *not* bundled by the `han` meta-plugin), and `han-plugin-builder` (an opt-in plugin carrying the guidance for building skills and plugins, plus the interview-driven `skill-builder` and `agent-builder` skills that author a new skill or agent from scratch and review it against that guidance; it depends on nothing and is also deliberately *not* bundled by the `han` meta-plugin).
 
+## Creating skills, agents, or other plugin aspects
+
+All skill creation, agent definitions, and other plugin assets must use the appropriate [han-plugin-builder guidance](./han-plugin-builder/skills/guidance/) markdown files,
+and / or the appropriate han-plugin-builder skill:
+
+* `/han-plugin-builder:skill-builder` for building skills
+* `/han-plugin-builder:agent-builder` for building agents
+* `/han-plugin-builder:guidance` for all other plugin aspects
+
 ## Repository layout
 
 ```
