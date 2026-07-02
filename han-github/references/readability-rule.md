@@ -37,7 +37,7 @@ The length rules are qualitative for drafting and have one concrete anchor for t
 
 ## The vocabulary blocklist
 
-For word-level rules, use the existing writing-voice blocklist in [`docs/writing-voice.md`](../../docs/writing-voice.md) (its "Avoided words and phrases" and "AI slop to avoid" sections). That blocklist is authoritative for the words it covers. A skill that keeps its own word list retains it only for the domain-specific terms the shared list does not cover, layered on top rather than duplicating it. The shared list wins on any word both cover.
+For word-level rules, use the existing writing-voice blocklist in [`writing-voice.md`](./writing-voice.md) (its "Avoided words and phrases" and "AI slop to avoid" sections). That blocklist is authoritative for the words it covers. A skill that keeps its own word list retains it only for the domain-specific terms the shared list does not cover, layered on top rather than duplicating it. The shared list wins on any word both cover.
 
 ## Prose only
 
