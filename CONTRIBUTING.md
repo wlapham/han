@@ -82,7 +82,7 @@ If you are adding a section that is not in the template but applies to several s
 
 ## Writing voice
 
-All han documentation follows the writing voice profile in [`docs/writing-voice.md`](./docs/writing-voice.md). The most load-bearing rules:
+All han documentation follows the writing voice profile in [`han-core/references/writing-voice.md`](./han-core/references/writing-voice.md). The most load-bearing rules:
 
 - No em-dashes anywhere. Replace with periods, colons, commas, or parentheses.
 - Direct second person (*"you"*), mentor-tone, plainspoken. No flattery, no hype words.
@@ -116,7 +116,7 @@ Before opening the PR, run through this checklist:
 
 - [Plugin landing page](./README.md). Where end-users start.
 - [Root CLAUDE.md](./CLAUDE.md). Project map and doc index for assistants and contributors.
-- [Writing voice](./docs/writing-voice.md). The voice profile every doc follows.
+- [Writing voice](./han-core/references/writing-voice.md). The voice profile every doc follows.
 - [Skills Index](./docs/skills/README.md). All skills, grouped by purpose.
 - [Agents Index](./docs/agents/README.md). All agents, grouped by role.
 - [Concepts](./docs/concepts.md). Skill vs. agent mental model.

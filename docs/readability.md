@@ -98,4 +98,4 @@ On a synthesis skill, the `readability-editor` preserves every fact as it rewrit
 - [Concepts](./concepts.md). The skill / agent split, and where readability sits among the plugin's mechanics.
 - [YAGNI](./yagni.md) and [Evidence](./evidence.md). The other shared rules, vendored and summarized the same way.
 - [Contributing](../CONTRIBUTING.md). The wiring procedure a contributor follows to bring a new skill under the standard.
-- [Writing voice](./writing-voice.md). The voice profile whose blocklist the standard reuses for word-level rules.
+- [Writing voice](../han-core/references/writing-voice.md). The voice profile whose blocklist the standard reuses for word-level rules.

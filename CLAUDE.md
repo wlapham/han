@@ -29,7 +29,7 @@ and / or the appropriate han-plugin-builder skill:
 │   │   └── plugin.json
 │   ├── agents/         # Agent definitions (.md with frontmatter)
 │   ├── skills/         # Skill directories, each with SKILL.md + references/
-│   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md, readability-rule.md — canonical copies)
+│   └── references/     # Cross-skill reference files (e.g. yagni-rule.md, evidence-rule.md, readability-rule.md, writing-voice.md — canonical copies)
 ├── han-planning/       # Planning plugin: plan-a-feature, plan-implementation, plan-a-phased-build, plan-work-items, iterative-plan-review (the skills for planning before implementation; depends on han-core; bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -39,17 +39,17 @@ and / or the appropriate han-plugin-builder skill:
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Coding-facing skill directories, each with SKILL.md + references/ (+ scripts/ where used)
-│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, readability-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-coding skills (yagni-rule.md, evidence-rule.md, readability-rule.md, writing-voice.md)
 ├── han-github/         # GitHub plugin: post-code-review-to-pr, update-pr-description, work-items-to-issues
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # GitHub-facing skill directories, each with SKILL.md + scripts/
-│   └── references/     # Cross-skill reference files vendored for han-github skills (readability-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-github skills (readability-rule.md, writing-voice.md)
 ├── han-reporting/      # Reporting plugin: stakeholder-summary, html-summary
 │   ├── .claude-plugin/
 │   │   └── plugin.json
 │   ├── skills/         # Reporting skill directories, each with SKILL.md + references/ (html-summary adds scripts/ + assets/)
-│   └── references/     # Cross-skill reference files vendored for han-reporting skills (readability-rule.md)
+│   └── references/     # Cross-skill reference files vendored for han-reporting skills (readability-rule.md, writing-voice.md)
 ├── han-feedback/       # Opt-in feedback plugin: han-feedback (depends on han-core; NOT bundled by the han meta-plugin)
 │   ├── .claude-plugin/
 │   │   └── plugin.json
@@ -64,7 +64,6 @@ and / or the appropriate han-plugin-builder skill:
 │   │   └── plugin.json
 │   └── skills/         # guidance skill (SKILL.md + assets/ + scripts/ + references/, the authoring guidance by topic); skill-builder and agent-builder (SKILL.md each, the interview-driven builders)
 ├── docs/               # Operator-facing documentation
-│   ├── writing-voice.md   # Voice profile every doc follows
 │   ├── concepts.md
 │   ├── quickstart.md
 │   ├── sizing.md
@@ -92,7 +91,7 @@ This section does not need to list docs for all the skills, agents, etc. Only do
 
 ### Writing voice
 
-- **[docs/writing-voice.md](./docs/writing-voice.md).** Voice profile every doc in the plugin follows. No em-dashes, direct second person, plainspoken mentor tone, named voice violations to avoid.
+- **[han-core/references/writing-voice.md](./han-core/references/writing-voice.md).** Voice profile every doc in the plugin follows. No em-dashes, direct second person, plainspoken mentor tone, named voice violations to avoid. Canonical copy in `han-core/references/`; vendored byte-identical into `han-coding/`, `han-github/`, and `han-reporting/` references so it ships with each plugin.
 
 ### Templates (`docs/templates/`)
 
@@ -104,6 +103,6 @@ This section does not need to list docs for all the skills, agents, etc. Only do
 
 - **One canonical source per concept.** The long-form doc in `docs/skills/` or `docs/agents/` is canonical for that skill or agent. Index entries carry one-sentence scent plus a link. The README never duplicates long-form content.
 - **Every long-form doc links up.** The first bullet of the "Related Documentation" section always points back to the README at the repo root.
-- **Voice is uniform.** Every doc follows [docs/writing-voice.md](./docs/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
+- **Voice is uniform.** Every doc follows [han-core/references/writing-voice.md](./han-core/references/writing-voice.md). No em-dashes, direct second person, no flattery or hype.
 - **YAGNI applies to docs too.** Don't add speculative sections, for-future-flexibility warnings, or examples for behavior the skill doesn't have. The same evidence rule that gates plan steps gates docs.
 - **Indexes stay complete, not counted.** Every skill in `han-core/skills/`, `han-planning/skills/`, `han-coding/skills/`, `han-github/skills/`, `han-reporting/skills/`, `han-feedback/skills/`, `han-atlassian/skills/`, `han-linear/skills/`, and `han-plugin-builder/skills/` has a long-form doc in `docs/skills/` and an entry in the skills index; same for agents in `han-core/agents/` and `docs/agents/`. Verify the indexes list every entity when editing them, rather than tracking a running total.
