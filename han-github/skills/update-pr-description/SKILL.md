@@ -66,6 +66,8 @@ While analyzing, count the **significant** changed files from `branch stats`, si
 
 Launch a single `han-core:junior-developer` agent to write the PR description directly. Junior-developer's fresh-reviewer perspective is the asset here: by authoring the description with the eyes of a teammate who lacks full project context, the result already anticipates what a reviewer needs to see, removing the need for a separate reviewer-context edit pass.
 
+This skill loads and applies `../../references/readability-rule.md` as it writes the PR description, holding a named audience above the default: the reviewer evaluating the pull request, who will read the code. Scope that frame per section so the technical specifics a reviewer needs — a flag and its default, a migration's direction, the new vs. old behavior — are preserved rather than simplified away.
+
 First, compose the **structure directive** based on the Step 2 result. The structure directive is the only part of the prompt that differs between the two cases; everything else is shared.
 
 - **Option A — no repository template** (Step 2 recorded "no repository template"). The structure directive is:
@@ -106,6 +108,7 @@ Use this prompt body (with the context above interpolated):
 > - Only describe changes unique to the PR branch — never include changes merged from the default branch.
 > - Define any internal flag, service, or acronym briefly on first use.
 > - "What to look at first" is a 2-4 bullet reading-order guide for a large change, pointing at decisions, tradeoffs, or risks in the order to read them — it is NOT a file list. Include it ONLY when the PR has more than ~8-10 files with significant (code) changes per the inclusion rule in the structure directive; otherwise omit the section, heading included.
+> - **Readability:** Apply `../../references/readability-rule.md`. Lead each section with its main point, give sections descriptive headings, keep each paragraph to one idea carried by its first sentence, number anything sequential and bullet anything that is not, and reveal detail in layers (progressive disclosure). Do not simplify away a technical fact a reviewer needs, and do not disturb any required PR-template section structure.
 >
 > **Formatting:** Never nest fenced code blocks inside the PR description — use inline backticks for short references, indented 4-space blocks for short snippets, prose descriptions, or small tables instead. Use `##`/`###` headers for sections. Do not leave authoring-instruction HTML comments or template placeholder braces in the rendered output. Never include any form of 'Generated with Claude Code.'
 >
@@ -122,6 +125,19 @@ Use this prompt body (with the context above interpolated):
 > Read additional source files via your Read/Grep tools when the diff alone does not explain the change. Return only the final PR description text — no preamble, no review notes."
 
 If the agent returns anything other than a PR description (a review report, question log, etc.), discard it and re-issue the prompt with an explicit reminder to return only the description text.
+
+Once the draft description exists, dispatch a single `han-core:readability-editor` agent to audit and rewrite it against `../../references/readability-rule.md`, operating on **prose regions only** — never inside code fences, table markup, or any commit, PR, or issue reference identifier. Pass it the draft description text, the rule path `../../references/readability-rule.md`, and the named audience: the reviewer evaluating the pull request, who will read the code. Instruct it to preserve every fact — every claim, quantity, named flag or service, and stated condition or qualifier — with its precision intact, and to leave any required PR-template section structure and its headings unchanged. Apply its rewrite as the working description.
+
+Then run the standardized readability self-check from `../../references/readability-rule.md` over the description's prose regions only — never inside code fences, diagram bodies, or commit/PR/issue reference identifiers. Confirm each criterion and fix any failure before finalizing:
+
+1. The opening line states the main point.
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No word from the vocabulary blocklist (the writing-voice profile's 'Avoided words and phrases' and 'AI slop to avoid' lists) is present.
+6. Every fact is preserved — every claim, quantity, named entity, and stated condition or qualifier survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required technical fact appears.
 
 ## Step 5: Verify the PR Description
 

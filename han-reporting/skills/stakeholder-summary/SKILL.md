@@ -9,7 +9,7 @@ description: >
   build into phases — use plan-a-phased-build. Does not produce an
   implementation plan — use plan-implementation.
 argument-hint: "[path to feature-specification.md, optional: extra context for the summary]"
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *)
+allowed-tools: Read, Write, Edit, Glob, Grep, Agent, Bash(find *)
 ---
 
 ## Project Context
@@ -24,6 +24,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(find *)
 - **High level only.** A stakeholder summary is for getting feedback before kickoff. Skip anything that would only matter once implementation has started: schemas, sequencing, file boundaries, test plans, rollout strategy, telemetry. If a detail is only meaningful to engineers, it does not belong in this document.
 - **Diagrams carry weight.** Use Mermaid for both the user experience flow and the data flow before-and-after. Diagrams are not decoration — they replace paragraphs of prose, so they must be readable on their own.
 - **Open questions are stakeholder-shaped.** The closing questions are framed in customer or product language, not engineering language. They ask stakeholders to confirm framing, scope, and trade-offs — not to make technical decisions.
+- **Apply the shared readability standard.** As it writes and refines the summary, the skill loads and applies [`../../references/readability-rule.md`](../../references/readability-rule.md), holding the named audience: the non-technical stakeholder. The plain-language rules above are this skill's domain-specific supplement to the shared standard, not a replacement for it. The standard's dedicated `han-core:readability-editor` rewrite pass (Step 5) is this skill's readability rewrite; it and the standardized self-check (Step 6, Pass B) take the place of the freehand plain-language rewrite this skill used to run, so the summary gets one readability review, not two. The standard governs how the summary reads, never whether a required fact from the spec survives.
 
 # Stakeholder Summary
 
@@ -83,7 +84,15 @@ Use the template at [`references/stakeholder-summary-template.md`](./references/
 
 **Write the file in one pass once the content is ready** — the document is short enough that incremental saves are unnecessary. After writing, read it back end-to-end and rewrite any sentence that still leaks implementation detail.
 
-## Step 5: Self-Check Before Presenting
+## Step 5: Readability Rewrite
+
+Dispatch `han-core:readability-editor` over the drafted summary to rewrite it for the non-technical stakeholder against the shared readability standard, preserving every fact from the source spec. This is the skill's dedicated readability rewrite; it replaces the freehand plain-language rewrite the skill used to do at the end of Step 4.
+
+- **`han-core:readability-editor`** — rewrite the summary at the output path against [`../../references/readability-rule.md`](../../references/readability-rule.md) for the named audience (the non-technical stakeholder), preserving every fact: every capability, exclusion, quantity, named system-in-customer-terms, and stated condition survives with its precision intact. It operates on **prose regions only**: it does not touch the Mermaid diagram bodies (their customer-readable node and edge labels are checked separately in Step 6, Pass C), and it leaves no engineering artifacts behind. Pass it the output-file path, the rule path, and the named audience. It rewrites the file in place and returns a rubric verdict and a fact-preservation ledger.
+
+Apply its rewrite. If the editor reports it could not preserve a fact while satisfying a criterion, keep the fact.
+
+## Step 6: Self-Check Before Presenting
 
 Run three passes before reporting the summary as done. Each pass has a single focus, and **each pass begins with a fresh Read of the output file from disk** — do not check against working memory or the draft you held while writing. The Read tool call is required, not optional. Working memory drifts from what actually landed on disk; only the file contents matter.
 
@@ -109,14 +118,22 @@ For every contradiction found, take an evidence-based approach to resolving it:
 
 After applying any contradiction-driven edits, Read the file from disk again before continuing. Pass B and Pass C must run against the post-fix contents.
 
-### Pass B: Plain-language audit
+### Pass B: Standardized readability self-check
 
-**First, use the Read tool to load the output file from disk.** Then read the document as a non-technical stakeholder. For each sentence, ask: would a reader without engineering context understand this without translation? Fix anything that fails. Specifically verify:
+**First, use the Read tool to load the output file from disk.** The readability-editor already rewrote the summary in Step 5; this pass confirms the standardized self-check from [`../../references/readability-rule.md`](../../references/readability-rule.md) holds, over the document's prose regions only — never inside the Mermaid diagram bodies. Confirm each of the six criteria and fix any failure with Edit:
 
-- **No engineering artifacts.** No file paths, function names, class names, database tables or columns, API endpoints, HTTP verbs, library or framework names, environment variables, queue or topic names, or language primitives.
-- **No engineering hedges.** No "eventually consistent", "idempotent", "race condition", "backfill", "migration", "schema", "payload", "request/response", "stateless", "async", "webhook", "polling vs. push", or similar. If a concept like this is load-bearing, restate it as a user-visible behavior or omit it.
-- **No leftover scaffolding.** Template placeholders, TODOs, "TBD", or example text from the template that was not replaced with real content.
-- **Closing questions are stakeholder-answerable.** A non-technical reader can give a real answer without asking an engineer what the question means.
+1. The opening line states the main point (the customer problem, before any capability).
+2. Each heading names its content and is not a generic label.
+3. Each paragraph carries one idea and leads with it.
+4. No sentence runs past the soft length flag (about thirty words) without reason.
+5. No blocklisted word is present. The shared writing-voice blocklist ("Avoided words and phrases" and "AI slop to avoid") is authoritative; layered on top of it, this skill's own domain-specific list for a non-technical stakeholder:
+   - **No engineering artifacts.** No file paths, function names, class names, database tables or columns, API endpoints, HTTP verbs, library or framework names, environment variables, queue or topic names, or language primitives.
+   - **No engineering hedges.** No "eventually consistent", "idempotent", "race condition", "backfill", "migration", "schema", "payload", "request/response", "stateless", "async", "webhook", "polling vs. push", or similar. If a concept like this is load-bearing, restate it as a user-visible behavior or omit it.
+   - **No leftover scaffolding.** Template placeholders, TODOs, "TBD", or example text from the template that was not replaced with real content.
+   - **Closing questions are stakeholder-answerable.** A non-technical reader can give a real answer without asking an engineer what the question means.
+6. Every fact is preserved — every capability, exclusion, quantity, named entity, and stated condition or qualifier from the source spec survives with its precision intact.
+
+Fidelity wins: the standard governs how the content is said, never whether a required fact appears.
 
 If Pass B required any edits, apply them with Edit, then **Read the file again from disk** before starting Pass C. The Pass C read-through must run against the post-fix contents, not your memory of what you intended to fix.
 
@@ -137,7 +154,7 @@ If Pass B required any edits, apply them with Edit, then **Read the file again f
 
 If any check in any pass fails, fix it with Edit and Read the file again before re-running the affected pass. If a Pass A edit changes content that Pass B or Pass C already cleared, re-run those passes against the new content — contradiction fixes can re-introduce language or reading-order issues that the earlier passes caught. Do not present a summary that fails Pass A or Pass B — a stakeholder who reads a contradiction or has to ask "what does X mean?" has already lost trust in the document.
 
-## Step 6: Present the Summary
+## Step 7: Present the Summary
 
 Summarize for the user in one short message:
 

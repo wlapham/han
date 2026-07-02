@@ -67,7 +67,7 @@ Verification rules applied to every entity in scope. The skill's mode (branch vs
 5. **README.md agent references stay count-free.** The Agents Index links resolve and the surrounding text names no hardcoded agent count.
 6. **Skills that dispatch this agent** name it in their long-form Related documentation section.
 
-## Top-level concept docs (`docs/concepts.md`, `docs/quickstart.md`, `docs/sizing.md`, `docs/yagni.md`, `docs/writing-voice.md`)
+## Top-level concept docs (`docs/concepts.md`, `docs/quickstart.md`, `docs/sizing.md`, `docs/yagni.md`)
 
 1. **`docs/concepts.md` stays count-free.** The "What does the plugin include?" bullets reference the skills and agents through their index links, not a hardcoded count.
 2. **Named skills/agents still exist** under those names. No mention of removed skills, no missing mention of skills added to relevant categories.
