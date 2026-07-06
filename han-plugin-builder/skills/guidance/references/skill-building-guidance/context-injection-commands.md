@@ -34,13 +34,13 @@ Do not duplicate commands across both sections. A tool availability check belong
 
 ### Rule: Keep commands simple — single commands only
 
-Context injection commands must be simple, single commands. No pipes, redirects, subcommand substitution, or chained operations. These patterns cause repeated execution failures and permission prompts.
+Context injection commands must be simple. No pipes, subcommand substitution, or `&&`-chaining — these cause repeated execution failures and permission prompts. The one compound form that is allowed, and is sometimes required, is a single trailing `2>/dev/null || echo <sentinel>` guard on a command that exits non-zero when its subject is absent (see the guarded-`which` rule below).
 
 The reason is structural. The skill loader does not run context injection commands through a full interactive shell. It matches each command against the `allowed-tools` Bash patterns and runs it as a single auto-approved invocation. Anything that turns one command into a compound expression defeats that match:
 
 - **Subcommand substitution** (`$(...)`) and **chaining** (`cmd1 && cmd2`) produce a command string that no single `Bash()` prefix covers, so the loader cannot auto-approve it and the command stalls or fails.
 - **Pipes** (`cmd | sed ...`) have the same problem: the piped stage is a second command the prefix match never sees.
-- **Redirects** (`2>/dev/null`) are unnecessary. Empty output is a valid result the step logic can check for, so suppressing errors only hides information.
+- **Redirects** (`2>/dev/null`) alone are unnecessary when the command exits 0 with empty output — empty output is a valid result the step logic can check for. But a command that exits *non-zero* when its subject is absent (`which` on a missing tool, `git symbolic-ref` with no `origin/HEAD`, `git config user.name` with no identity) aborts the skill on that exit. Guard it with a trailing `2>/dev/null || echo <sentinel>` so it exits 0 and injects a value the step logic checks. That trailing guard is the one permitted compound form.
 
 The fix in every case is the same: replace the compound expression with one flag-driven command that returns the value directly. For example, instead of piping `git symbolic-ref` through `sed` to strip a prefix, use the `--short` flag. Instead of substituting a subshell into an `export`, reference `origin/HEAD` directly.
 
@@ -48,18 +48,18 @@ The fix in every case is the same: replace the compound expression with one flag
 ```
 !`export DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | cut -d '/' -f4-) && echo $DEFAULT_BRANCH`
 !`git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/@@'`
-!`git config user.name 2>/dev/null || echo "UNKNOWN"`
 !`find . -maxdepth 3 ... 2>/dev/null | head -10`
 !`test -f Makefile && echo "yes" || echo "no"`
 ```
 
 **After (current, working):**
 ```
-!`git symbolic-ref --short refs/remotes/origin/HEAD`
-!`git config user.name`
+!`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 !`find . -maxdepth 3 ...`
 !`find . -maxdepth 1 -name "Makefile" -type f`
 ```
+
+Do not confuse a *compound expression that defeats the prefix match* (a pipe, a `$(...)` substitution, or an `&&`-chain — always wrong) with a *single trailing guard* (`2>/dev/null || echo <sentinel>` — allowed, and required when the command exits non-zero on an absent subject). `git config user.name || echo unset` is the guard, not a violation. The `git symbolic-ref` "After" above keeps its guard for the same reason: `origin/HEAD` may be unset.
 
 ### Rule: Use shell scripts for complex operations
 
@@ -188,19 +188,19 @@ See also: [allowed-tools: AskUserQuestion](./allowed-tools-AskUserQuestion.md) f
 
 Examples organized by purpose:
 
-**Git state:**
-- `` !`git branch --show-current` `` — current branch
-- `` !`git symbolic-ref --short refs/remotes/origin/HEAD` `` — default branch
-- `` !`git log origin/HEAD..HEAD --oneline` `` — branch summary
-- `` !`git diff origin/HEAD...HEAD --stat` `` — branch stats
-- `` !`git diff origin/HEAD...HEAD` `` — branch changes
+**Git state** (each exits non-zero outside a repo or with `origin/HEAD` unset, so each is guarded):
+- `` !`git branch --show-current 2>/dev/null || echo unknown` `` — current branch
+- `` !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown` `` — default branch
+- `` !`git log origin/HEAD..HEAD --oneline 2>/dev/null || echo unknown` `` — branch summary
+- `` !`git diff origin/HEAD...HEAD --stat 2>/dev/null || echo unknown` `` — branch stats
+- `` !`git diff origin/HEAD...HEAD 2>/dev/null || echo unknown` `` — branch changes
 
 **Git diffs/logs (via gh CLI):**
-- `` !`gh pr diff --name-only` `` — PR changed files
+- `` !`gh pr diff --name-only 2>/dev/null || echo "no pr"` `` — PR changed files (fails when no PR exists)
 
 **User identity:**
-- `` !`git config user.name` `` — git user name
-- `` !`git config user.email` `` — git user email
+- `` !`git config user.name || echo unset` `` — git user name (exits 1 when identity is unset)
+- `` !`git config user.email || echo unset` `` — git user email
 - `` !`whoami` `` — OS username
 
 **File/directory discovery:**
@@ -218,11 +218,12 @@ Examples organized by purpose:
 ## Summary Checklist
 
 1. Use `` !`command` `` in `## Pre-requisites` or `## Project Context`
-2. Single commands only — no pipes, redirects, subcommands, or chaining
+2. Single commands only — no pipes, subcommand substitution, or `&&`-chaining; the one allowed compound is a trailing `2>/dev/null || echo <sentinel>` guard (items 3-4)
 3. Use `which {command} 2>/dev/null || echo "not installed"` for tool availability checks
-4. Use `find` for file/directory detection, not `ls`
-5. Extract complex operations into shell scripts
-6. Handle empty output in step logic — don't trim it with `| head`
-7. Do not duplicate commands across sections
-8. Use separate `Bash()` entries in `allowed-tools`
-9. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown escaping
+4. Guard any read that exits non-zero when its subject is absent (`git symbolic-ref … origin/HEAD`, `git log/diff origin/HEAD…`, `gh pr diff`, `git config user.name/email`) with a trailing `2>/dev/null || echo <sentinel>`, and gate its consumer on that sentinel
+5. Use `find` for file/directory detection, not `ls`
+6. Extract complex operations into shell scripts
+7. Handle empty output in step logic — don't trim it with `| head`
+8. Do not duplicate commands across sections
+9. Use separate `Bash()` entries in `allowed-tools`
+10. Never use the literal bang-backtick pattern in SKILL.md prose — the loader parses raw text regardless of markdown escaping
