@@ -1,5 +1,50 @@
 # Han Release Notes
 
+## v4.5.1
+
+han 4.5.1 is a maintenance release that guards context-injection commands against absent tools and references, normalizes user-reference wording, and sweeps the operator-facing documentation for readability. `han-core` (2.2.1) guards the `project-discovery`, `research`, and `runbook` skills and normalizes wording in the `research-analyst` agent, `issue-triage`, and `research`; `han-planning` (2.0.3) normalizes wording in its references; `han-coding` (2.5.1) guards six skills and normalizes wording in `code-overview` and `code-review`; `han-github` (2.2.1) guards `post-code-review-to-pr` and `update-pr-description` and normalizes its references; `han-reporting` (2.1.1) normalizes its references; `han-linear` (1.0.2) normalizes `work-items-to-linear` and its templates; and `han-plugin-builder` (2.0.4) guards the `guidance` skill and finishes the guarding in its command-example references. `han-feedback` (2.0.0) and `han-atlassian` (2.2.0) are unchanged.
+
+### han v4.5.1
+
+The suite-level work is documentation plus the per-plugin version syncs in `.claude-plugin/marketplace.json`. The `user` normalization reaches the long-form docs under `docs/agents/` and `docs/skills/han-coding/`. A readability sweep applies the suite's Human-Readable Output Standard across `docs/` (skill docs, agent docs, how-to guides, templates, and top-level docs such as `docs/concepts.md`, `docs/why-solo-and-small-teams.md`, and `docs/semantic-versioning.md`), `README.md`, and `CONTRIBUTING.md`, and syncs the skill and agent docs with the current rosters and dispatchers; it changes no SKILL.md or agent behavior. Contributed by [@taminomara](https://github.com/taminomara) in #104 and [@mxriverlynn](https://github.com/mxriverlynn) in #106.
+
+### han-core v2.2.1
+
+The `project-discovery`, `research`, and `runbook` skills guard their context-injection commands so an absent tool or referenced file cannot abort the skill. Text in the `research-analyst` agent, the `references/`, and the `issue-triage` and `research` skills normalizes references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #103 and #104.
+
+### han-planning v2.0.3
+
+The `han-planning/references/` normalize references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #104.
+
+### han-coding v2.5.1
+
+The `architectural-analysis`, `code-overview`, `code-review`, `refactor`, `tdd`, and `test-planning` skills guard their context-injection commands so an absent tool or referenced file cannot abort the skill. Text in `code-overview`, `code-review`, and the `references/` normalizes references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #103 and #104.
+
+### han-github v2.2.1
+
+The `post-code-review-to-pr` and `update-pr-description` skills guard their context-injection commands so an absent tool or referenced file cannot abort the skill. The `references/` normalize references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #103 and #104.
+
+### han-reporting v2.1.1
+
+The `han-reporting/references/` normalize references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #104.
+
+### han-linear v1.0.2
+
+The `work-items-to-linear` skill and its reference templates normalize references to "the Claude Code user" to "user". Contributed by [@taminomara](https://github.com/taminomara) in #104.
+
+### han-plugin-builder v2.0.4
+
+The `guidance` skill guards its context-injection commands so an absent tool or referenced file cannot abort the skill, and the guidance references finish the same guarding for the command examples in `context-injection-commands.md` and `dynamic-project-discovery.md`. Contributed by [@taminomara](https://github.com/taminomara) in #103 and [@mxriverlynn](https://github.com/mxriverlynn) in #105.
+
+### Pull requests in this release
+
+- fix(skills): guard context-injection commands so absent tools or refs can't abort a skill (#103) — [@taminomara](https://github.com/taminomara)
+- docs(guidance): finish guarding context-injection command examples (#105) — [@mxriverlynn](https://github.com/mxriverlynn)
+- docs: normalize the Claude Code user reference to "user" (#104) — [@taminomara](https://github.com/taminomara)
+- Readability edits across all documentation (#106) — [@mxriverlynn](https://github.com/mxriverlynn)
+
+Full changelog: https://github.com/testdouble/han/blob/v4.5.1/CHANGELOG.md#v451
+
 ## v4.5.0
 
 han 4.5.0 lands a shared Human-Readable Output Standard across the suite: a single readability rule plus a dedicated `readability-editor` agent, wired into the reader-facing synthesis skills so their drafts lead with the main point, use descriptive headings, keep one idea per paragraph, and use short active sentences, while preserving every fact. The canonical `writing-voice.md` also moved out of `docs/` and into plugin `references/`. The release bumps `han-core` (2.2.0) with the new agent, the new `edit-for-readability` skill, and the shared `readability-rule.md` and `writing-voice.md` references; `han-coding` (2.5.0), `han-github` (2.2.0), and `han-reporting` (2.1.0) each vendor those two references and wire the standard into their reader-facing skills; and `han-plugin-builder` (2.0.3) fixes two guidance rules. `han-planning` (2.0.2), `han-feedback` (2.0.0), `han-atlassian` (2.2.0), and `han-linear` (1.0.1) are unchanged.
