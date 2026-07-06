@@ -27,11 +27,11 @@ git diff origin/HEAD...HEAD
 ```
 Using `origin/HEAD` works regardless of the default branch name.
 
-For context injection commands, use:
+For context injection commands, guard the read so an unset `origin/HEAD` (which makes `git symbolic-ref` exit 128) can't abort the skill:
 ```
-- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD`
+- default branch: !`git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 ```
-This injects the actual default branch name at skill load time.
+This injects the actual default branch name at skill load time, or the sentinel `unknown` when `origin/HEAD` isn't set — which the skill's step logic checks the same way it checks for empty output.
 
 ### Rule: Use `which` (guarded) for tool availability, not `--version`
 
@@ -79,7 +79,7 @@ The Pre-requisites section runs before any substantive steps. If a required tool
 
 ## Summary Checklist
 
-1. Never hardcode branch names — use `origin/HEAD` or `git symbolic-ref --short refs/remotes/origin/HEAD`
+1. Never hardcode branch names — use `origin/HEAD`, or inject the default branch with `git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo unknown`
 2. Use `which {command} 2>/dev/null || echo "not installed"` for tool availability checks, not `{command} --version`
 3. Discover project structure with `find` — don't assume paths exist
 4. Gate execution on Pre-requisites and handle empty output gracefully
