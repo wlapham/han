@@ -4,7 +4,6 @@
   "private": true,
   "description": "Dev tooling for the han plugin suite (lint, format, and shell tests).",
   "scripts": {
-    "prepare": "prek install",
     "lint": "prek run --all-files",
     "test": "bats --recursive test/"
   },

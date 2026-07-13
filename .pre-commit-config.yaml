@@ -1,7 +1,5 @@
 # Pre-commit hooks for the han plugin suite, run with prek.
 #
-# prek is installed as an npm devDependency (@j178/prek); `npm install` fetches
-# it and installs the git hook automatically (the package.json "prepare" script).
 # Run every hook manually with `npm run lint` (prek run --all-files).
 
 # Files no hook ever touches: static archives and vendored assets.

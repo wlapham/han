@@ -24,18 +24,19 @@ Read these once:
 
 ## Setting up your environment
 
-Han's dev tooling is managed as npm devDependencies, so a single `npm install` sets everything up at pinned versions with nothing installed globally. It installs [prek](https://github.com/j178/prek) (the git-hook runner), [Prettier](https://prettier.io) (formatting), and [Bats](https://github.com/bats-core/bats-core) (shell tests), and wires up the git pre-commit hook automatically.
+Han's dev tooling is managed as npm devDependencies, so a single `npm install` sets everything up at pinned versions with nothing installed globally. It installs [prek](https://github.com/j178/prek) (the git-hook runner), [Prettier](https://prettier.io) (formatting), and [Bats](https://github.com/bats-core/bats-core) (shell tests).
 
 One-time setup, from the repo root:
 
 1. Install [Node.js](https://nodejs.org/) (the current LTS is fine).
-2. Run `npm install`. It installs the pinned tools into `node_modules/` and runs `prek install` to add the git hook. Nothing lands on your global PATH, so tool versions never clash with your other projects.
+2. Run `npm install`. It installs the pinned tools into `node_modules/`. Nothing lands on your global PATH, so tool versions never clash with your other projects.
+3. If you want pre-commit hooks, run `npx prek install`.
 
 Everyday use:
 
-- Every commit runs the lint hooks (Prettier, ShellCheck, and file hygiene) on your staged files.
 - `npm run lint` runs every hook over the whole repo (`prek run --all-files`).
 - `npm test` runs the shell tests (`bats --recursive test/`).
+- If installed, every commit runs the lint hooks (Prettier, ShellCheck, and file hygiene) on your staged files.
 
 CI runs the same lint hooks and the tests on every pull request.
 
@@ -137,7 +138,8 @@ Before opening the PR, run through this checklist:
 - [ ] Internal links resolve.
 - [ ] No em-dashes anywhere in the doc.
 - [ ] No *"actually," "just," "leverage," "utilize," "showcase," "robust" (vague), "It's worth noting," "Importantly,"* or other voice violations.
-- [ ] `npm run lint` passes (Prettier, ShellCheck, and the hygiene hooks).
+- [ ] `npm run lint` passes.
+- [ ] `npm run test` passes.
 
 ## Related Documentation
 
