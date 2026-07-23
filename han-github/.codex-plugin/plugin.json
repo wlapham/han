@@ -1,6 +1,6 @@
 {
   "name": "han-github",
-  "version": "1.2.0",
+  "version": "1.2.0.2bea08af8b7f183a8abeca8064ef41dd4d79f850",
   "description": "GitHub-facing Han skills for PR descriptions, code review comments, and publishing issues.",
   "author": {
     "name": "Test Double",
