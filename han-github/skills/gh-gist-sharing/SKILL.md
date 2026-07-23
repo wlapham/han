@@ -53,6 +53,7 @@ Check `tmp/.gist-manifest.yml` for an existing entry where `local_dir` matches.
 3. Clone the Gist: `gh gist clone <id> tmp/.gist-clones/<id>`.
 4. Ensure `tmp/.gist-clones/` is listed in `.gitignore`; add it if absent.
 5. Write a new entry to the manifest (see manifest schema). Set `role: creator`.
+6. **Context file (optional):** Ask the user: "Would you like to add a `.context.md` working-conventions file so Claude knows how to use this shared directory?" If yes: ask for the content, or confirm to write a minimal template. Also ask if there is a Linear project or GitHub URL for this work to include as a reference link. The template includes the directory name as a heading, an optional reference link (if provided), and placeholder text inviting the user to describe conventions — what skills read and write here, naming rules, what output belongs here vs elsewhere. Write the content to `<local-dir>/.context.md`. Then check `CLAUDE.md` at the project root: if the file exists and does not already contain `@<local-dir>/.context.md`, append that line. Tell the user: the context file will sync to teammates on the next push; teammates who join via Join mode will be prompted to add the import to their own CLAUDE.md.
 
 **If an existing entry:** Proceed directly to Step 4.
 
@@ -97,6 +98,8 @@ Ask which `tmp/` subdirectory to sync the files into. Run `${CLAUDE_SKILL_DIR}/s
 ### Step 4: Record in manifest and output
 
 Write an entry to `tmp/.gist-manifest.yml` with `role: fork`, `gist_id: <fork-id>`, `upstream_id: <creator-id>`, `local_dir: <target-dir>`.
+
+If `<target-dir>/.context.md` is present in the synced files, offer to add `@<target-dir>/.context.md` to `CLAUDE.md` at the project root. Check first — if the line is already there, skip silently.
 
 Display the instructions from `${CLAUDE_SKILL_DIR}/references/collaboration-guide.md` (collaborator section), substituting the actual IDs.
 
