@@ -55,6 +55,23 @@ Check `tmp/.gist-manifest.yml` for an existing entry where `local_dir` matches.
 5. Write a new entry to the manifest (see manifest schema). Set `role: creator`.
 6. **Context file (optional):** Ask the user: "Would you like to add a `.context.md` working-conventions file so Claude knows how to use this shared directory?" If yes: ask for the content, or confirm to write a minimal template. Also ask if there is a Linear project or GitHub URL for this work to include as a reference link. The template includes the directory name as a heading, an optional reference link (if provided), and placeholder text inviting the user to describe conventions — what skills read and write here, naming rules, what output belongs here vs elsewhere. Write the content to `<local-dir>/.context.md`. Then check `CLAUDE.md` at the project root: if the file exists and does not already contain `@<local-dir>/.context.md`, append that line. Tell the user: the context file will sync to teammates on the next push; teammates who join via Join mode will be prompted to add the import to their own CLAUDE.md.
 
+7. **Stop-hook registration:** Set up automatic session-end syncing.
+   - Copy `${CLAUDE_SKILL_DIR}/scripts/auto-push-gists.sh` to `.claude/scripts/auto-push-gists.sh` (skip if the file is already there).
+   - Read `.claude/settings.json` if it exists. If a Stop hook for `bash .claude/scripts/auto-push-gists.sh` is not already present, add it. Write the updated (or new) file. The expected shape:
+     ```json
+     {
+       "hooks": {
+         "Stop": [
+           {
+             "matcher": "",
+             "hooks": [{ "type": "command", "command": "bash .claude/scripts/auto-push-gists.sh" }]
+           }
+         ]
+       }
+     }
+     ```
+   - Tell the user: "Changes in this directory will now sync to the Gist automatically at the end of each session."
+
 **If an existing entry:** Proceed directly to Step 4.
 
 ### Step 4: Sync files to the Gist
