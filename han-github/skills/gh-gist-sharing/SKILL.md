@@ -8,8 +8,8 @@ description: >
   inside the shared directory — Gists are flat by design. Does not post to
   Slack or any channel; the Gist URL is shared manually. For posting code
   reviews to GitHub, use post-code-review-to-pr instead.
-argument-hint: "[<local-dir-path> | <gist-url-or-id> | --add-collaborator <name> <fork-id> | --merge [<name>]]"
-allowed-tools: Bash(gh *), Bash(git *), Bash(find *), Bash(rsync *), Bash(cp *), Read, Write, Edit
+argument-hint: "[<project-name-or-path> | <gist-url-or-id> | --add-collaborator <name> <fork-id> | --merge [<name>]]"
+allowed-tools: Bash(gh *), Bash(git *), Bash(find *), Bash(cp *), Read, Write, Edit
 ---
 
 ## Pre-requisites
@@ -24,23 +24,23 @@ Route based on the argument:
 
 - Argument starts with `--add-collaborator` → **Add-collaborator mode**
 - Argument starts with `--merge` → **Merge mode**
-- Argument looks like a local path (starts with `tmp/` or `.`) → **Push mode**
+- Argument looks like a local path (starts with `tmp/`) → **Push mode**
 - Argument looks like a Gist URL or 32-char hex ID, AND appears in the registry as `role: fork` → **Pull mode**
 - Argument looks like a Gist URL or 32-char hex ID, AND is NOT in the registry (or no clones registered yet) → **Join mode**
 - No argument → Display the registry (or "no Gists shared yet" if empty), show usage summary, and stop.
 
-Build the in-memory registry now: `find tmp/.han-gist-sharing -maxdepth 2 -name manifest.yml 2>/dev/null`. Read each found file to collect `{gist_id, local_dir, role, upstream_id}` per entry. The manifest schema is documented in `${CLAUDE_SKILL_DIR}/references/manifest-schema.md`.
+Build the in-memory registry now: `find tmp/features -maxdepth 2 -name manifest.yml 2>/dev/null`. Read each found file to collect `{gist_id, local_dir, role, upstream_id}` per entry. The manifest schema is documented in `${CLAUDE_SKILL_DIR}/references/manifest-schema.md`.
 
 ---
 
 ## Push Mode
 
-The creator syncs local changes to their Gist.
+The creator syncs local changes to their Gist. The working directory at `tmp/features/<project-name>` is also the Gist clone — no separate clone directory.
 
 ### Step 2: Validate the directory
 
-1. Confirm the path exists under `tmp/`.
-2. Run `find <dir> -maxdepth 1 -mindepth 1 -type d` to check for subdirectories. If any exist, list them and stop — Gists are flat and cannot represent directory structure.
+1. Confirm the path exists under `tmp/features/`.
+2. Run `find <dir> -maxdepth 1 -mindepth 1 -type d ! -name .git` to check for subdirectories. If any exist, list them and stop — Gists are flat and cannot represent directory structure.
 3. List the files that will be shared: `find <dir> -maxdepth 1 -mindepth 1 -type f`.
 
 ### Step 3: Look up or create the Gist
@@ -49,12 +49,14 @@ Check the registry for an existing entry where `local_dir` matches.
 
 **If no existing entry (new Gist):** Human gate before creating.
 1. Show the user: the directory path, the file list, and ask whether the Gist should be public or secret.
-2. Run `${CLAUDE_SKILL_DIR}/scripts/create-gist-from-dir.sh <dir> "[<repo-name>] <rel-path>" [--secret]`. It outputs the Gist ID and URL on separate lines.
-3. Clone the Gist: `gh gist clone <id> tmp/.han-gist-sharing/<id>`.
-4. Ensure `tmp/.han-gist-sharing/` is listed in `.gitignore`; add it if absent.
-5. Write `tmp/.han-gist-sharing/<id>/manifest.yml` with `local_dir`, `gist_id: <id>`, `role: creator` (see manifest schema).
-6. Write `<local-dir>/.han-gist-sharing-manifest.yml` with `gist_id: <id>` and an empty `collaborators:` block (see manifest schema). This file travels with the gist so collaborators can discover the creator's Gist ID.
-7. **Context file (optional):** Ask the user: "Would you like to add a `.context.md` working-conventions file so Claude knows how to use this shared directory?" If yes: ask for the content, or confirm to write a minimal template. Also ask if there is a Linear project or GitHub URL for this work to include as a reference link. The template includes the directory name as a heading, an optional reference link (if provided), and placeholder text inviting the user to describe conventions — what skills read and write here, naming rules, what output belongs here vs elsewhere. Write the content to `<local-dir>/.context.md`. Then check `CLAUDE.md` at the project root: if the file exists and does not already contain `@<local-dir>/.context.md`, append that line. Tell the user: the context file will sync to teammates on the next push; teammates who join via Join mode will be prompted to add the import to their own CLAUDE.md.
+2. Ask for a short human-readable project name to use as the directory name (e.g. `topaz-fit`). The directory will be at `tmp/features/<project-name>`.
+3. Run `${CLAUDE_SKILL_DIR}/scripts/create-gist-from-dir.sh <dir> "[<repo-name>] <project-name>" [--secret]`. It outputs the Gist ID and URL on separate lines.
+4. Set up `tmp/features/<project-name>` as the Gist clone:
+   - If the directory already exists with content: `git -C tmp/features/<project-name> init`, `git -C tmp/features/<project-name> remote add origin git@gist.github.com:<id>.git`, stage all files except manifest.yml (`git -C tmp/features/<project-name> add -A -- ':!manifest.yml'`), commit, then `git -C tmp/features/<project-name> push --force -u origin master`.
+   - If the directory does not yet exist: `gh gist clone <id> tmp/features/<project-name>`.
+5. Write `tmp/features/<project-name>/manifest.yml` with `local_dir: tmp/features/<project-name>`, `gist_id: <id>`, `role: creator` (see manifest schema).
+6. Write `tmp/features/<project-name>/.han-gist-sharing-manifest.yml` with `gist_id: <id>` and an empty `collaborators:` block (see manifest schema). This file travels with the gist so collaborators can discover the creator's Gist ID.
+7. **Context file (optional):** Ask the user: "Would you like to add a `.context.md` working-conventions file so Claude knows how to use this shared directory?" If yes: ask for the content, or confirm to write a minimal template. Also ask if there is a Linear project or GitHub URL for this work to include as a reference link. The template includes the directory name as a heading, an optional reference link (if provided), and placeholder text inviting the user to describe conventions — what skills read and write here, naming rules, what output belongs here vs elsewhere. Write the content to `tmp/features/<project-name>/.context.md`. Then check `CLAUDE.md` at the project root: if the file exists and does not already contain `@tmp/features/<project-name>/.context.md`, append that line. Tell the user: the context file will sync to teammates on the next push; teammates who join via Join mode will be prompted to add the import to their own CLAUDE.md.
 
 8. **Stop-hook registration:** Set up automatic session-end syncing.
    - Copy `${CLAUDE_SKILL_DIR}/scripts/auto-push-gists.sh` to `.claude/scripts/auto-push-gists.sh` (skip if the file is already there).
@@ -77,7 +79,16 @@ Check the registry for an existing entry where `local_dir` matches.
 
 ### Step 4: Sync files to the Gist
 
-Run `${CLAUDE_SKILL_DIR}/scripts/sync-dir-to-gist.sh <src-dir> tmp/.han-gist-sharing/<gist-id>`.
+```bash
+git -C tmp/features/<project-name> add -A -- ':!manifest.yml'
+```
+
+If there are staged changes, commit and push:
+
+```bash
+git -C tmp/features/<project-name> commit -m "sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
+git -C tmp/features/<project-name> push origin master
+```
 
 ### Step 5: Output
 
@@ -89,12 +100,11 @@ Display the Gist URL and the collaborator onboarding instructions from `${CLAUDE
 
 A collaborator pulls the creator's latest updates into their local directory. Triggered when the Gist ID/URL is already in the manifest as `role: fork`.
 
-### Step 2: Pull and sync
+### Step 2: Pull
 
 1. Look up the registry entry for this Gist: `gist_id` (the fork's own ID), `upstream_id`, `local_dir`.
-2. `git -C tmp/.han-gist-sharing/<fork-id> pull upstream master`.
-3. Run `${CLAUDE_SKILL_DIR}/scripts/sync-gist-to-dir.sh tmp/.han-gist-sharing/<fork-id> <local_dir>`.
-4. Report which files changed.
+2. `git -C tmp/features/<project-name> pull upstream master`
+3. Report which files changed.
 
 ---
 
@@ -106,18 +116,15 @@ First-time collaborator setup for a Gist the creator shared.
 
 1. Extract the Gist ID from the URL (strip `https://gist.github.com/` and any trailing path).
 2. Tell the user: "Fork this Gist first by running `gh gist fork <id>` in your terminal. When it completes, paste the fork's Gist ID here." Wait for the response.
-3. Clone the fork: `gh gist clone <fork-id> tmp/.han-gist-sharing/<fork-id>`.
-4. Add the creator's Gist as upstream: `git -C tmp/.han-gist-sharing/<fork-id> remote add upstream https://gist.github.com/<creator-id>.git`.
+3. Ask for a short human-readable project name for the local directory (e.g. `topaz-fit`). The directory will be at `tmp/features/<project-name>`.
+4. Clone the fork: `gh gist clone <fork-id> tmp/features/<project-name>`.
+5. Add the creator's Gist as upstream: `git -C tmp/features/<project-name> remote add upstream https://gist.github.com/<creator-id>.git`.
 
-### Step 3: Sync to a local directory
+### Step 3: Record in manifest and output
 
-Ask which `tmp/` subdirectory to sync the files into. Run `${CLAUDE_SKILL_DIR}/scripts/sync-gist-to-dir.sh tmp/.han-gist-sharing/<fork-id> <target-dir>`.
+Read `tmp/features/<project-name>/.han-gist-sharing-manifest.yml` from the cloned files to confirm `gist_id` (the creator's Gist ID). Write `tmp/features/<project-name>/manifest.yml` with `local_dir: tmp/features/<project-name>`, `gist_id: <fork-id>`, `role: fork`, `upstream_id: <creator-gist-id>`.
 
-### Step 4: Record in manifest and output
-
-Read `<target-dir>/.han-gist-sharing-manifest.yml` from the synced files to confirm `gist_id` (the creator's Gist ID). Write `tmp/.han-gist-sharing/<fork-id>/manifest.yml` with `local_dir: <target-dir>`, `gist_id: <fork-id>`, `role: fork`, `upstream_id: <creator-gist-id>`.
-
-If `<target-dir>/.context.md` is present in the synced files, offer to add `@<target-dir>/.context.md` to `CLAUDE.md` at the project root. Check first — if the line is already there, skip silently.
+If `tmp/features/<project-name>/.context.md` is present in the cloned files, offer to add `@tmp/features/<project-name>/.context.md` to `CLAUDE.md` at the project root. Check first — if the line is already there, skip silently.
 
 Display the instructions from `${CLAUDE_SKILL_DIR}/references/collaboration-guide.md` (collaborator section), substituting the actual IDs.
 
@@ -133,13 +140,19 @@ Argument form: `--add-collaborator <name> <fork-gist-id-or-url>`
 
 1. Resolve which creator Gist to use: find the `role: creator` entry in the registry. If there is more than one, ask the user which Gist this collaborator is forking.
 2. Extract the fork Gist ID (strip URL prefix if needed).
-3. `git -C tmp/.han-gist-sharing/<creator-id> remote add <name> https://gist.github.com/<fork-id>.git`.
+3. `git -C tmp/features/<project-name> remote add <name> https://gist.github.com/<fork-id>.git`.
 
 ### Step 3: Update the manifest
 
-Add `<name>: <fork-id>` under `collaborators` in `<local-dir>/.han-gist-sharing-manifest.yml`. Sync immediately: run `${CLAUDE_SKILL_DIR}/scripts/sync-dir-to-gist.sh <local-dir> tmp/.han-gist-sharing/<creator-id>` so the updated collaborator list reaches the gist.
+Add `<name>: <fork-id>` under `collaborators` in `tmp/features/<project-name>/.han-gist-sharing-manifest.yml`. Sync immediately:
 
-Confirm success and show the current remote list: `git -C tmp/.han-gist-sharing/<creator-id> remote -v`.
+```bash
+git -C tmp/features/<project-name> add .han-gist-sharing-manifest.yml
+git -C tmp/features/<project-name> commit -m "chore: add collaborator <name>"
+git -C tmp/features/<project-name> push origin master
+```
+
+Confirm success and show the current remote list: `git -C tmp/features/<project-name> remote -v`.
 
 ---
 
@@ -151,19 +164,15 @@ Argument form: `--merge [<name>]`
 
 ### Step 2: Identify the collaborator
 
-1. Resolve the creator's Gist ID from the registry (the `role: creator` entry).
+1. Resolve the creator's project directory from the registry (the `role: creator` entry).
 2. If `<name>` was not provided and the registry lists multiple creator entries, show them and ask which one to merge.
 
 ### Step 3: Fetch, merge, push
 
-In `tmp/.han-gist-sharing/<creator-id>/`:
+In `tmp/features/<project-name>/`:
 
 1. `git fetch <name>`
 2. `git merge <name>/master` — if conflicts arise, report them and stop. Do not auto-resolve.
 3. `git push origin master`
-
-### Step 4: Sync to local directory
-
-Run `${CLAUDE_SKILL_DIR}/scripts/sync-gist-to-dir.sh tmp/.han-gist-sharing/<creator-id> <local_dir>`.
 
 Report what changed.
