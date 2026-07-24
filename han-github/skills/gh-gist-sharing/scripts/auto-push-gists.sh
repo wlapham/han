@@ -8,23 +8,10 @@ CLONES_DIR="tmp/.han-gist-sharing"
 [ -d "$CLONES_DIR" ] || exit 0
 
 while IFS= read -r manifest; do
-    result=$(python3 - "$manifest" <<'PYTHON'
-import sys
-
-entry = {}
-with open(sys.argv[1]) as f:
-    for line in f:
-        s = line.rstrip()
-        if not s or s.startswith('#') or s.startswith(' '):
-            continue
-        if ': ' in s:
-            k, v = s.split(': ', 1)
-            entry[k.strip()] = v.strip()
-
-if entry.get('role') == 'creator':
-    print(entry.get('gist_id', ''), entry.get('local_dir', ''))
-PYTHON
-)
+    result=$(ruby -r yaml -e '
+      m = YAML.load_file(ARGV[0])
+      puts "#{m["gist_id"]} #{m["local_dir"]}" if m["role"] == "creator"
+    ' "$manifest")
     [ -z "$result" ] && continue
     read -r gist_id local_dir <<< "$result"
     clone="$CLONES_DIR/$gist_id"
