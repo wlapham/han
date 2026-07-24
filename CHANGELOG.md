@@ -2,9 +2,9 @@
 
 ## Unreleased
 
-### han-github v6f4600a
+### han-github v1b5feb8
 
-Adds the `gh-gist-sharing` skill, plus two follow-on features wired into it.
+Adds the `gh-gist-sharing` skill, plus follow-on features wired into it.
 
 `/gh-gist-sharing` shares a local `tmp/` subdirectory with teammates via a GitHub Gist and keeps both sides in sync using git-on-Gist. The creator runs the skill against a local path to create and push the Gist; collaborators join by passing the Gist URL, which forks it and syncs the files locally. Subsequent runs in either direction push or pull the latest changes. A manifest at `tmp/.gist-manifest.yml` tracks Gist IDs, roles, and collaborator forks, and is committed to the repo so teammates can discover each other's Gist IDs. The skill also provides `--add-collaborator` and `--merge` modes for the creator to register a teammate's fork and pull their changes back. Gists are flat by design; the skill rejects any shared directory that contains subdirectories.
 
