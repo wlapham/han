@@ -3,13 +3,13 @@
 [ -n "$HAN_MIGRATING" ] || exec env HAN_MIGRATING=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
-# One-time migration to the new tmp/.han-gist-sharing/ layout with split manifests.
+# One-time migration to the new tmp/features/ layout with split manifests.
 # Steps are independent and idempotent — safe to run multiple times or in any state.
 # Revert this script from the repo once all workspaces have been migrated.
 
 OLD_MANIFEST="tmp/.gist-manifest.yml"
 OLD_CLONES="tmp/.gist-clones"
-NEW_CLONES="tmp/.han-gist-sharing"
+NEW_CLONES="tmp/features"
 
 step() { echo; echo "── $*"; }
 
