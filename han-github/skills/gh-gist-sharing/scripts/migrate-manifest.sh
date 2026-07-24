@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
+# Re-execute with the user's shell so hooks and aliases behave as expected.
+[ -n "$HAN_MIGRATING" ] || exec env HAN_MIGRATING=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
 # One-time migration to the new tmp/.han-gist-sharing/ layout with split manifests.
@@ -20,12 +22,11 @@ gist_ids=()
 
 # From the old project-level manifest (list format)
 if [ -f "$OLD_MANIFEST" ]; then
-  mapfile -t old_ids < <(ruby -r yaml -e '
+  while IFS= read -r id; do gist_ids+=("$id"); done < <(ruby -r yaml -e '
     manifest = YAML.load_file(ARGV[0])
     (manifest["gists"] || []).each { |e| puts e["gist_id"] if e["gist_id"] }
   ' "$OLD_MANIFEST")
-  gist_ids+=("${old_ids[@]}")
-  echo "  found ${#old_ids[@]} gist(s) in $OLD_MANIFEST"
+  echo "  found ${#gist_ids[@]} gist(s) in $OLD_MANIFEST"
 fi
 
 # From old clone directories
@@ -46,13 +47,15 @@ if [ -d "$NEW_CLONES" ]; then
   done < <(find "$NEW_CLONES" -maxdepth 1 -mindepth 1 -type d)
 fi
 
-# Deduplicate
-mapfile -t gist_ids < <(printf '%s\n' "${gist_ids[@]}" | sort -u)
-
 if [ ${#gist_ids[@]} -eq 0 ]; then
   echo "  no gists found — nothing to migrate."
   exit 0
 fi
+
+# Deduplicate
+deduped=()
+while IFS= read -r id; do deduped+=("$id"); done < <(printf '%s\n' "${gist_ids[@]}" | sort -u)
+gist_ids=("${deduped[@]}")
 
 echo "  migrating ${#gist_ids[@]} gist(s): ${gist_ids[*]}"
 
