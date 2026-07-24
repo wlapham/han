@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-### han-github vc07cf78
+### han-github vbb0ee7e
 
 Adds the `gh-gist-sharing` skill, plus follow-on features wired into it.
 
