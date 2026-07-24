@@ -21,6 +21,6 @@ mkdir -p "$TARGET"
 git -C "$CLONE" pull "$REMOTE" master
 
 # Copy only top-level files back to the target directory
-find "$CLONE" -maxdepth 1 -mindepth 1 -type f ! -name ".git" -exec cp {} "$TARGET/" \;
+find "$CLONE" -maxdepth 1 -mindepth 1 -type f ! -name ".git" ! -name "manifest.yml" -exec cp {} "$TARGET/" \;
 
 echo "Synced files from Gist clone to '$TARGET'."

@@ -21,7 +21,7 @@ fi
 # Copy only top-level files (Gists are flat)
 find "$SRC" -maxdepth 1 -mindepth 1 -type f -exec cp {} "$CLONE/" \;
 
-git -C "$CLONE" add -A
+git -C "$CLONE" add -A -- ':!manifest.yml'
 
 if git -C "$CLONE" diff --cached --quiet; then
   echo "Nothing to sync — no changes since last push."
