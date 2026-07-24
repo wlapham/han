@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+[ -n "$HAN_GIST_SHELL" ] || exec env HAN_GIST_SHELL=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
 # Usage: sync-gist-to-dir.sh <clone-dir> <target-dir> [<remote>]

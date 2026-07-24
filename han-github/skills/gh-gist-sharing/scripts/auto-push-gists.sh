@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+[ -n "$HAN_GIST_SHELL" ] || exec env HAN_GIST_SHELL=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
 # Auto-push all creator-owned Gist directories at session end.

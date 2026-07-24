@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/sh
+[ -n "$HAN_GIST_SHELL" ] || exec env HAN_GIST_SHELL=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
 # Usage: create-gist-from-dir.sh <dir> <description> [--secret]
@@ -15,7 +16,8 @@ if [ ! -d "$DIR" ]; then
   exit 1
 fi
 
-mapfile -t FILES < <(find "$DIR" -maxdepth 1 -mindepth 1 -type f)
+FILES=()
+while IFS= read -r f; do FILES+=("$f"); done < <(find "$DIR" -maxdepth 1 -mindepth 1 -type f)
 
 if [ ${#FILES[@]} -eq 0 ]; then
   echo "Error: no files found in '$DIR'" >&2
