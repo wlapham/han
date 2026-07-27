@@ -2,34 +2,28 @@
 [ -n "$HAN_GIST_SHELL" ] || exec env HAN_GIST_SHELL=1 "${SHELL:-bash}" "$0" "$@"
 set -euo pipefail
 
-# Usage: sync-dir-to-gist.sh <src-dir> <clone-dir>
+# Usage: sync-dir-to-gist.sh <dir>
 #
-# Copies top-level files from <src-dir> into the Gist clone, commits, and pushes.
+# Stages, commits, and pushes a Gist-backed working directory.
+# The working directory IS the Gist clone, so there is no copy step.
+#
+# auto-push-gists.sh repeats this logic on purpose: it is copied out of the
+# skill into the user's .claude/scripts/ and has to stand on its own there.
 
-SRC="${1:?Usage: sync-dir-to-gist.sh <src-dir> <clone-dir>}"
-CLONE="${2:?Missing clone-dir}"
+DIR="${1:?Usage: sync-dir-to-gist.sh <dir>}"
 
-if [ ! -d "$SRC" ]; then
-  echo "Error: source directory '$SRC' not found" >&2
+if [ ! -d "$DIR/.git" ]; then
+  echo "Error: '$DIR' is not a Gist clone (no .git directory)" >&2
   exit 1
 fi
 
-if [ ! -d "$CLONE/.git" ]; then
-  echo "Error: '$CLONE' is not a git repository" >&2
-  exit 1
-fi
+git -C "$DIR" add -A -- ':!manifest.yml'
 
-# Copy only top-level files (Gists are flat)
-find "$SRC" -maxdepth 1 -mindepth 1 -type f -exec cp {} "$CLONE/" \;
-
-git -C "$CLONE" add -A -- ':!manifest.yml'
-
-if git -C "$CLONE" diff --cached --quiet; then
+if git -C "$DIR" diff --cached --quiet; then
   echo "Nothing to sync — no changes since last push."
   exit 0
 fi
 
-TIMESTAMP=$(date -u '+%Y-%m-%d %H:%M UTC')
-git -C "$CLONE" commit -m "sync: $TIMESTAMP"
-git -C "$CLONE" push origin master
-echo "Pushed to Gist."
+git -C "$DIR" commit -m "sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
+git -C "$DIR" push origin master
+echo "Pushed $DIR to its Gist."

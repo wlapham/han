@@ -9,7 +9,7 @@ description: >
   Slack or any channel; the Gist URL is shared manually. For posting code
   reviews to GitHub, use post-code-review-to-pr instead.
 argument-hint: "[<project-name-or-path> | <gist-url-or-id> | --add-collaborator <name> <fork-id> | --merge [<name>]]"
-allowed-tools: Bash(gh *), Bash(git *), Bash(find *), Bash(cp *), Read, Write, Edit
+allowed-tools: Bash(gh *), Bash(git *), Bash(find *), Read, Write, Edit
 ---
 
 ## Pre-requisites
@@ -79,16 +79,7 @@ Check the registry for an existing entry where `local_dir` matches.
 
 ### Step 4: Sync files to the Gist
 
-```bash
-git -C tmp/features/<project-name> add -A -- ':!manifest.yml'
-```
-
-If there are staged changes, commit and push:
-
-```bash
-git -C tmp/features/<project-name> commit -m "sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
-git -C tmp/features/<project-name> push origin master
-```
+Push the directory by running `${CLAUDE_SKILL_DIR}/scripts/sync-dir-to-gist.sh tmp/features/<project-name>`. It stages everything except `manifest.yml`, commits with a timestamped message, and pushes to the Gist. When there is nothing to push it says so and exits cleanly. Report its output to the user.
 
 ### Step 5: Output
 
