@@ -120,15 +120,13 @@ Argument form: `--add-collaborator <name> <fork-gist-id-or-url>`
 
 ### Step 3: Update the manifest
 
-Add `<name>: <fork-id>` under `collaborators` in `tmp/features/<project-name>/.han-gist-sharing-manifest.yml`. Sync immediately:
+Add `<name>: <fork-id>` under `collaborators` in `tmp/features/<project-name>/.han-gist-sharing-manifest.yml`, then sync it to the Gist immediately:
 
-```bash
-git -C tmp/features/<project-name> add .han-gist-sharing-manifest.yml
-git -C tmp/features/<project-name> commit -m "chore: add collaborator <name>"
-git -C tmp/features/<project-name> push origin master
-```
+1. Stage the manifest by running `git -C tmp/features/<project-name> add .han-gist-sharing-manifest.yml`.
+2. Commit it by running `git -C tmp/features/<project-name> commit -m "chore: add collaborator <name>"`.
+3. Push it by running `git -C tmp/features/<project-name> push origin master`.
 
-Confirm success and show the current remote list: `git -C tmp/features/<project-name> remote -v`.
+Confirm success and show the current remote list by running `git -C tmp/features/<project-name> remote -v`.
 
 ---
 
@@ -145,10 +143,8 @@ Argument form: `--merge [<name>]`
 
 ### Step 3: Fetch, merge, push
 
-In `tmp/features/<project-name>/`:
-
-1. `git fetch <name>`
-2. `git merge <name>/master` — if conflicts arise, report them and stop. Do not auto-resolve.
-3. `git push origin master`
+1. Fetch the collaborator's fork by running `git -C tmp/features/<project-name> fetch <name>`.
+2. Merge it by running `git -C tmp/features/<project-name> merge <name>/master`. If conflicts arise, report them and stop. Do not auto-resolve.
+3. Push the result by running `git -C tmp/features/<project-name> push origin master`.
 
 Report what changed.
