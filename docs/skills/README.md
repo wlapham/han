@@ -77,6 +77,7 @@ The coding layer: the skills you reach for while working in code. Writing it, re
 
 GitHub-facing skills that talk to GitHub through the `gh` CLI. Depends on `han-core`.
 
+- **[`/gh-gist-collaboration`](./han-github/gh-gist-collaboration.md).** Share a `tmp/features/` directory with teammates through a GitHub Gist, keeping both sides in sync by treating the Gist as a git remote, with fork, pull, and merge for collaborators.
 - **[`/post-code-review-to-pr`](./han-github/post-code-review-to-pr.md).** Run `/code-review` against a GitHub PR and post the review as comments, after a `junior-developer` clarity check on the drafted review body.
 - **[`/update-pr-description`](./han-github/update-pr-description.md).** Generate a PR description from the current branch's changes, conforming to the repository's PR template when one exists.
 - **[`/work-items-to-issues`](./han-github/work-items-to-issues.md).** Publish each item in a `/plan-work-items` work-items file as a GitHub issue in its target repo, with within-repo blockers linked, screenshots copied into the repo, and no label or assignee by default.
