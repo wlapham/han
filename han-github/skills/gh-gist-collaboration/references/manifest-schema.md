@@ -39,7 +39,9 @@ and see who else is involved.
 
 The filename keeps the older `han-gist-sharing` spelling on purpose. It is a runtime
 file that already exists inside every Gist created so far, and renaming it would
-strand those Gists on a name the skill no longer looks for.
+strand those Gists on a name the skill no longer looks for. Aligning the name is
+planned, via expand-and-contract, in `docs/plans/shared-manifest-rename/`; do not
+rename it in a single step.
 
 ```yaml
 gist_id: abc1234567890abcdef     # creator's Gist ID
