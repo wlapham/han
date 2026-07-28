@@ -2,15 +2,15 @@
 
 ## Unreleased
 
-### han-github vbb0ee7e
+### han-github v2baaaf7
 
 Adds the `gh-gist-sharing` skill, plus follow-on features wired into it.
 
-`/gh-gist-sharing` shares a local `tmp/` subdirectory with teammates via a GitHub Gist and keeps both sides in sync using git-on-Gist. The creator runs the skill against a local path to create and push the Gist; collaborators join by passing the Gist URL, which forks it and syncs the files locally. Subsequent runs in either direction push or pull the latest changes. A manifest at `tmp/.gist-manifest.yml` tracks Gist IDs, roles, and collaborator forks, and is committed to the repo so teammates can discover each other's Gist IDs. The skill also provides `--add-collaborator` and `--merge` modes for the creator to register a teammate's fork and pull their changes back. Gists are flat by design; the skill rejects any shared directory that contains subdirectories.
+`/gh-gist-sharing` shares a local `tmp/` subdirectory with teammates via a GitHub Gist and keeps both sides in sync using git-on-Gist. The creator runs the skill against a local path to create and push the Gist; collaborators join by passing the Gist URL, which forks it and syncs the files locally. Subsequent runs in either direction push or pull the latest changes. Two manifests split the bookkeeping: `tmp/features/<project-name>/manifest.yml` records this machine's Gist ID and role and never leaves the machine, while `.han-gist-sharing-manifest.yml` sits beside it, syncs to the Gist, and carries the creator's Gist ID and the collaborator forks so teammates can discover each other. The skill also provides `--add-collaborator` and `--merge` modes for the creator to register a teammate's fork and pull their changes back. Gists are flat by design; the skill rejects any shared directory that contains subdirectories.
 
 When a new Gist is created, the skill now offers to write a `.context.md` working-conventions file into the shared directory. The file optionally includes a Linear project or GitHub URL as a reference link, and a placeholder for conventions such as which skills read and write to the directory, naming rules, and what output belongs there versus elsewhere. The skill appends the corresponding `@<local-dir>/.context.md` import to `CLAUDE.md` at the project root so Claude picks it up automatically each session. The context file syncs to teammates on the next push; teammates who join via Join mode are prompted to add the import to their own `CLAUDE.md`.
 
-The skill also installs an auto-push script at `.claude/scripts/auto-push-gists.sh` and registers a `Stop` hook in `.claude/settings.json` so all creator-owned Gist directories sync automatically at the end of each session. The script reads the manifest, finds every `role: creator` entry, and pushes any changed files. It exits immediately when no manifest is present, so the hook adds negligible overhead to projects that do not use gist sharing.
+The skill also sets up automatic session-end syncing, installing the push script at `~/.claude/scripts/han-gist-auto-push.sh` and registering a `Stop` hook in the project's gitignored `.claude/settings.local.json` so all creator-owned Gist directories sync at the end of each session. Keeping both outside version control means running the skill adds nothing to the repository and nothing to a teammate's session; the hook is personal to the machine it was installed on. The script reads the manifest, finds every `role: creator` entry, and pushes any changed files. It exits immediately when no manifest is present, so the hook adds negligible overhead to projects that do not use gist sharing.
 
 ## v4.6.0
 
