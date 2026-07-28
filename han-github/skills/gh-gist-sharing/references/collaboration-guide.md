@@ -2,11 +2,11 @@
 
 ## For the creator — sharing with a teammate
 
-After `/gh-gist-sharing tmp/<your-dir>` creates the Gist, send your teammate this message (substituting the actual Gist ID):
+After `/gh-gist-sharing tmp/features/<project-name>` creates the Gist, send your teammate this message (substituting the actual Gist ID):
 
 ---
 
-I've shared `tmp/<dir-name>` as a Gist. Here's how to get in and contribute:
+I've shared `tmp/features/<project-name>` as a Gist. Here's how to get in and contribute:
 
 1. Fork the Gist so you have your own writable copy:
    ```
@@ -18,9 +18,9 @@ I've shared `tmp/<dir-name>` as a Gist. Here's how to get in and contribute:
    ```
    /gh-gist-sharing https://gist.github.com/<CREATOR_GIST_ID>
    ```
-   It will ask for your fork ID and which local directory to sync into.
+   It will ask for your fork ID and a short project name. Your copy lands at `tmp/features/<project-name>`, and that directory is the Gist clone — work in it directly, there is nothing to copy.
 
-3. To push your changes back: commit and push inside `tmp/.gist-clones/<your-fork-id>/`, then let me know your fork ID so I can pull your changes.
+3. To push your changes back: run `/gh-gist-sharing tmp/features/<project-name>`, then let me know your fork ID so I can pull your changes.
 
 4. To pull my latest updates: run `/gh-gist-sharing https://gist.github.com/<CREATOR_GIST_ID>` again.
 
