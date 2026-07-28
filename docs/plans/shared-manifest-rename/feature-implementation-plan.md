@@ -9,12 +9,13 @@ exists in other people's Gists is a distributed change, not a local one.
 This plan aligns the name without ever leaving a Gist in a state some client
 cannot read.
 
-## Do not start until
+## Precondition, satisfied
 
-`migrate-manifest.sh` has been confirmed run by every collaborator. Two
-half-applied migrations at once is the thing this plan exists to avoid. Confirm
-by asking, not by inspecting your own machine — your Gists tell you nothing
-about a teammate's fork.
+This plan was written to wait on the earlier `manifest.yml` split migration,
+because two half-applied migrations at once is the thing it exists to avoid.
+That migration is now confirmed complete and `scripts/migrate-manifest.sh` has
+been deleted, so nothing blocks Phase 1. Recover the script from git history if
+an unmigrated workspace turns up.
 
 ## Why a straight rename fails
 
@@ -31,7 +32,7 @@ Three failure modes, in the order they would appear:
    own `git mv` and push. A fork with unpushed work hits a rename-versus-modify
    conflict on the next merge.
 
-## Phase 1 — Expand: read both, write both
+## Phase 1. Expand: read both, write both
 
 Ship this and let it run for a while. Nothing is deleted in this phase, so a
 client on the old plugin version keeps working throughout.
@@ -59,7 +60,7 @@ old plugin version reads the legacy name and sees current data.
 Also update `references/manifest-schema.md` to document both names and say which
 one is authoritative during the transition.
 
-## Phase 2 — Migrate: get both files into every Gist
+## Phase 2. Migrate: get both files into every Gist
 
 Each creator runs the skill once against each of their Gist directories, which
 dual-writes and pushes. Each collaborator then pulls. Nothing to automate; the
@@ -70,10 +71,10 @@ Done when every Gist and every fork carries both files. Verify per Gist:
     git -C tmp/features/<project-name> ls-tree --name-only origin/master
 
 Both filenames should appear. Check the collaborator's fork the same way before
-declaring the phase complete — a fork that never pulled is the case that breaks
+declaring the phase complete. A fork that never pulled is the case that breaks
 Phase 3.
 
-## Phase 3 — Contract: drop the legacy name
+## Phase 3. Contract: drop the legacy name
 
 Only after Phase 2 is verified across every Gist and fork:
 
@@ -87,9 +88,6 @@ Only after Phase 2 is verified across every Gist and fork:
 
 3. Update `references/manifest-schema.md`: drop the dual-name documentation and
    the note explaining why the old spelling persisted.
-4. Update `scripts/migrate-manifest.sh`, which references the legacy name twelve
-   times. If the original migration is long finished by then, deleting the
-   script outright is the better move — it was always meant to be temporary.
 
 ## Rollback
 
