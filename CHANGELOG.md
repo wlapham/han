@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-### han-github v0d99ef7
+### han-github v2a3f12b
 
 Adds the `gh-gist-collaboration` skill, plus follow-on features wired into it.
 
