@@ -46,6 +46,8 @@ skill-and-agent split is fuzzy, read [Concepts](../concepts.md) first.
   outcome instead of a mechanism.
 - [`/gap-analysis`](../../han-research/docs/skills/gap-analysis.md) — Compare two artifacts (current state versus desired
   state) and produce a plain-language, stakeholder-readable report indexed by stable gap IDs.
+- [`/gh-gist-collaboration`](../../han-github/docs/skills/gh-gist-collaboration.md) — Share a `tmp/features/` directory
+  with teammates through a GitHub Gist, keeping both sides in sync by treating the Gist as a git remote.
 - [`/guidance`](../../han-plugin-builder/docs/skills/guidance.md) — Serve the authoritative guidance for building skills,
   agents, and plugins, or vendor the plugin-building skills into the current repository (`/guidance init`).
 - [`/han-feedback`](../../han-feedback/docs/skills/han-feedback.md) — Capture structured post-session feedback on the Han
