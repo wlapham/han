@@ -1,9 +1,9 @@
 #!/usr/bin/env bats
 #
-# gh-gist-sharing: the Stop-hook installer merges into settings.local.json
+# gh-gist-collaboration: the Stop-hook installer merges into settings.local.json
 # without clobbering existing settings, and re-running adds no duplicate.
 
-SCRIPT="$BATS_TEST_DIRNAME/../han-github/skills/gh-gist-sharing/scripts/install-stop-hook.sh"
+SCRIPT="$BATS_TEST_DIRNAME/../han-github/skills/gh-gist-collaboration/scripts/install-stop-hook.sh"
 
 setup() {
   export HOME="$BATS_TEST_TMPDIR/home"

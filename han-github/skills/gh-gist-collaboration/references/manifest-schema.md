@@ -37,6 +37,10 @@ Lives in the Gist directory and syncs to the Gist as a Gist file.
 Visible to all collaborators. Lets new collaborators discover the creator's Gist ID
 and see who else is involved.
 
+The filename keeps the older `han-gist-sharing` spelling on purpose. It is a runtime
+file that already exists inside every Gist created so far, and renaming it would
+strand those Gists on a name the skill no longer looks for.
+
 ```yaml
 gist_id: abc1234567890abcdef     # creator's Gist ID
 collaborators:

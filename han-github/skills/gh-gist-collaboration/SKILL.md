@@ -1,5 +1,5 @@
 ---
-name: gh-gist-sharing
+name: gh-gist-collaboration
 description: >
   Share a local tmp/ subdirectory with teammates via a GitHub Gist, and keep
   both sides in sync using git-on-Gist. Requires the gh CLI. Use when a team
