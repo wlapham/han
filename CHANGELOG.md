@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-### han-github v2a3f12b
+### han-github vffaa265
 
 Adds the `gh-gist-collaboration` skill, plus follow-on features wired into it.
 
@@ -11,6 +11,8 @@ Adds the `gh-gist-collaboration` skill, plus follow-on features wired into it.
 When a new Gist is created, the skill now offers to write a `.context.md` working-conventions file into the shared directory. The file optionally includes a Linear project or GitHub URL as a reference link, and a placeholder for conventions such as which skills read and write to the directory, naming rules, and what output belongs there versus elsewhere. The skill appends the corresponding `@<local-dir>/.context.md` import to `CLAUDE.md` at the project root so Claude picks it up automatically each session. The context file syncs to teammates on the next push; teammates who join via Join mode are prompted to add the import to their own `CLAUDE.md`.
 
 The skill also sets up automatic session-end syncing, installing the push script at `~/.claude/scripts/han-gist-auto-push.sh` and registering a `Stop` hook in the project's gitignored `.claude/settings.local.json` so all creator-owned Gist directories sync at the end of each session. Keeping both outside version control means running the skill adds nothing to the repository and nothing to a teammate's session; the hook is personal to the machine it was installed on. The script reads the manifest, finds every `role: creator` entry, and pushes any changed files. It exits immediately when no manifest is present, so the hook adds negligible overhead to projects that do not use gist sharing.
+
+Three follow-on fixes ship in this version. All `git push origin master` and `git pull upstream master` references in `SKILL.md` are replaced with `HEAD` (and `FETCH_HEAD` for the merge step) so the skill works on gists whose default branch is `main`. Push mode Step 2 now documents the underscore-prefix flattening convention for files that would otherwise require a subdirectory, and `references/context-file-template.md` carries matching examples. The skill's `SKILL.md` and references no longer contain hardcoded `~/.claude/` paths — the stop-hook step describes the install mechanism rather than the install location. Finally, Push mode Step 4 now refreshes the installed auto-push script on every run (not just first-time setup) by calling `scripts/install-stop-hook.sh`, which is idempotent, so the script stays in sync with the skill version automatically.
 
 ## v4.6.0
 
