@@ -66,6 +66,8 @@ Check the registry for an existing entry where `local_dir` matches.
 
 ### Step 4: Sync files to the Gist
 
+Run `${CLAUDE_SKILL_DIR}/scripts/install-stop-hook.sh` to refresh the installed auto-push script with the current version from the skill. It is idempotent — the Stop hook registration is skipped when already present.
+
 Push the directory by running `${CLAUDE_SKILL_DIR}/scripts/sync-dir-to-gist.sh tmp/features/<project-name>`. It stages everything except `manifest.yml`, commits with a timestamped message, and pushes to the Gist. When there is nothing to push it says so and exits cleanly. Report its output to the user.
 
 ### Step 5: Output
