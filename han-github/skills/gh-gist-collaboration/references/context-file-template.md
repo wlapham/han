@@ -34,4 +34,9 @@ anything a teammate should do before adding to the directory.
 ## Notes
 
 Gists are flat, so subdirectories cannot be shared. Keep everything at the top
-level of this directory.
+level of this directory. To share a file that would otherwise live in a
+subdirectory, flatten it to the gist root using the directory name as an
+underscore-prefix:
+
+- `artifacts/implementation-decision-log.md` → `artifacts_implementation-decision-log.md`
+- `artifacts/.discovery-notes.md` → `.artifacts_discovery-notes.md`

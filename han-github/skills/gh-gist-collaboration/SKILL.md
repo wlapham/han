@@ -40,7 +40,9 @@ The creator syncs local changes to their Gist. The working directory at `tmp/fea
 ### Step 2: Validate the directory
 
 1. Confirm the path exists under `tmp/features/`.
-2. Run `find <dir> -maxdepth 1 -mindepth 1 -type d ! -name .git` to check for subdirectories. If any exist, list them and stop — Gists are flat and cannot represent directory structure.
+2. Run `find <dir> -maxdepth 1 -mindepth 1 -type d ! -name .git` to check for subdirectories. If any exist, list them and stop — Gists are flat and cannot represent directory structure. To share a file that would otherwise live in a subdirectory, flatten it to the gist root using the directory name as an underscore-prefix before pushing:
+   - `path/to/implementation-decision-log.md` → `path_to_implementation-decision-log.md`
+   - `path/to/.discovery-notes.md` → `.path_to_discovery-notes.md` (preserve the leading dot)
 3. List the files that will be shared: `find <dir> -maxdepth 1 -mindepth 1 -type f`.
 
 ### Step 3: Look up or create the Gist
@@ -52,7 +54,7 @@ Check the registry for an existing entry where `local_dir` matches.
 2. Ask for a short human-readable project name to use as the directory name (e.g. `topaz-fit`). The directory will be at `tmp/features/<project-name>`.
 3. Run `${CLAUDE_SKILL_DIR}/scripts/create-gist-from-dir.sh <dir> "[<repo-name>] <project-name>" [--secret]`. It outputs the Gist ID and URL on separate lines.
 4. Set up `tmp/features/<project-name>` as the Gist clone:
-   - If the directory already exists with content: `git -C tmp/features/<project-name> init`, `git -C tmp/features/<project-name> remote add origin git@gist.github.com:<id>.git`, stage all files except manifest.yml (`git -C tmp/features/<project-name> add -A -- ':!manifest.yml'`), commit, then `git -C tmp/features/<project-name> push --force -u origin master`.
+   - If the directory already exists with content: `git -C tmp/features/<project-name> init`, `git -C tmp/features/<project-name> remote add origin git@gist.github.com:<id>.git`, stage all files except manifest.yml (`git -C tmp/features/<project-name> add -A -- ':!manifest.yml'`), commit, then `git -C tmp/features/<project-name> push --force -u origin HEAD`.
    - If the directory does not yet exist: `gh gist clone <id> tmp/features/<project-name>`.
 5. Write `tmp/features/<project-name>/manifest.yml` with `local_dir: tmp/features/<project-name>`, `gist_id: <id>`, `role: creator` (see manifest schema).
 6. Write `tmp/features/<project-name>/.han-gist-sharing-manifest.yml` with `gist_id: <id>` and an empty `collaborators:` block (see manifest schema). This file travels with the gist so collaborators can discover the creator's Gist ID.
@@ -79,7 +81,7 @@ A collaborator pulls the creator's latest updates into their local directory. Tr
 ### Step 2: Pull
 
 1. Look up the registry entry for this Gist: `gist_id` (the fork's own ID), `upstream_id`, `local_dir`.
-2. `git -C tmp/features/<project-name> pull upstream master`
+2. `git -C tmp/features/<project-name> pull upstream HEAD`
 3. Report which files changed.
 
 ---
@@ -124,7 +126,7 @@ Add `<name>: <fork-id>` under `collaborators` in `tmp/features/<project-name>/.h
 
 1. Stage the manifest by running `git -C tmp/features/<project-name> add .han-gist-sharing-manifest.yml`.
 2. Commit it by running `git -C tmp/features/<project-name> commit -m "chore: add collaborator <name>"`.
-3. Push it by running `git -C tmp/features/<project-name> push origin master`.
+3. Push it by running `git -C tmp/features/<project-name> push origin HEAD`.
 
 Confirm success and show the current remote list by running `git -C tmp/features/<project-name> remote -v`.
 
@@ -144,7 +146,7 @@ Argument form: `--merge [<name>]`
 ### Step 3: Fetch, merge, push
 
 1. Fetch the collaborator's fork by running `git -C tmp/features/<project-name> fetch <name>`.
-2. Merge it by running `git -C tmp/features/<project-name> merge <name>/master`. If conflicts arise, report them and stop. Do not auto-resolve.
-3. Push the result by running `git -C tmp/features/<project-name> push origin master`.
+2. Merge it by running `git -C tmp/features/<project-name> merge FETCH_HEAD`. If conflicts arise, report them and stop. Do not auto-resolve.
+3. Push the result by running `git -C tmp/features/<project-name> push origin HEAD`.
 
 Report what changed.
