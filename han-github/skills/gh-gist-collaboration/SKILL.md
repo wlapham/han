@@ -29,7 +29,7 @@ Route based on the argument:
 - Argument looks like a Gist URL or 32-char hex ID, AND is NOT in the registry (or no clones registered yet) → **Join mode**
 - No argument → Display the registry (or "no Gists shared yet" if empty), show usage summary, and stop.
 
-Build the in-memory registry now: `find tmp/features -maxdepth 2 -name manifest.yml 2>/dev/null`. Read each found file to collect `{gist_id, local_dir, role, upstream_id}` per entry. The manifest schema is documented in `${CLAUDE_SKILL_DIR}/references/manifest-schema.md`.
+Build the in-memory registry now: `find tmp/features -maxdepth 2 -name manifest.yml 2>/dev/null`. Read each found file to collect `{gist_id, local_dir, role, upstream_id}` per entry. The manifest schema is documented in `references/manifest-schema.md`.
 
 ---
 
@@ -60,7 +60,7 @@ Check the registry for an existing entry where `local_dir` matches.
 6. Write `tmp/features/<project-name>/.han-gist-sharing-manifest.yml` with `gist_id: <id>` and an empty `collaborators:` block (see manifest schema). This file travels with the gist so collaborators can discover the creator's Gist ID.
 7. **Context file (optional):** Ask the user: "Would you like to add a `.context.md` working-conventions file so Claude knows how to use this shared directory?" If yes, ask for the content (or confirm they want the template as-is), and ask whether there is a Linear project or GitHub URL to include as a reference link. Fill in `${CLAUDE_SKILL_DIR}/references/context-file-template.md` and write the result to `tmp/features/<project-name>/.context.md`. Then check `CLAUDE.md` at the project root: if the file exists and does not already contain `@tmp/features/<project-name>/.context.md`, append that line. Tell the user: the context file will sync to teammates on the next push; teammates who join via Join mode will be prompted to add the import to their own CLAUDE.md.
 
-8. **Stop-hook registration:** Set up automatic session-end syncing by running `${CLAUDE_SKILL_DIR}/scripts/install-stop-hook.sh`. It installs the push script to `~/.claude/scripts/han-gist-auto-push.sh`, outside the repository, and registers the Stop hook in the project's gitignored `.claude/settings.local.json`, preserving every other setting and skipping registration when the hook is already there. Then tell the user: "Changes in this directory will now sync to the Gist automatically at the end of each session. The hook is personal to this machine — run this skill again on any other machine you work from."
+8. **Stop-hook registration:** Set up automatic session-end syncing by running `${CLAUDE_SKILL_DIR}/scripts/install-stop-hook.sh`. It installs the push script outside the repository and registers the Stop hook in the project's gitignored `.claude/settings.local.json`, preserving every other setting and skipping registration when the hook is already there. Then tell the user: "Changes in this directory will now sync to the Gist automatically at the end of each session. The hook is personal to this machine — run this skill again on any other machine you work from."
 
 **If an existing entry:** Proceed directly to Step 4.
 
