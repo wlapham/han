@@ -266,6 +266,10 @@ such as Claude, should be referenced here.
   `iterative-plan-review`, and `plan-implementation`. Vendored byte-identical into `han-coding/references/` and
   `han-planning/references/`; edit the canonical copy and re-sync the others.
 
+### Fork-specific decisions (`docs/adr/`)
+
+- **[docs/adr/release-fork-plugin-versioning.md](./docs/adr/release-fork-plugin-versioning.md).** How plugin versions are set in this fork: `<next-upstream-version>-wl.<n>`, bumped only on `main`. Read before changing any `plugin.json` version. Applies to this fork only, not upstream.
+
 ### Writing voice
 
 - **[han-communication/references/writing-voice.md](./han-communication/references/writing-voice.md).** Voice profile
