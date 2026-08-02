@@ -68,11 +68,16 @@ when a step needs the full rule or a step feels off.
 
 **Bind the target.** Resolve the request to a named target: specific files or directories, a named code smell in a named
 place, or the refactoring findings in a provided document (a `/code-review` report, an `/architectural-analysis` report,
-or equivalent). When a findings document is given, extract only the refactoring-shaped findings (structural suggestions,
-duplication, naming, coupling) and record each finding's ID so the summary can trace back to it. If the request is
-open-ended ("clean up the codebase", "improve quality") with no named target, ask the user for one before doing
-anything: open-ended refactoring runs are the documented failure mode this skill exists to avoid, and a wrong guess here
-burns the whole run.
+or equivalent). For the smell vocabulary, use
+[../../references/code-smell-baseline.md](../../references/code-smell-baseline.md): naming the smell tells you which
+refactoring the plan needs (Data Clumps wants a type extracted, Middle Man wants a layer removed, Repeated Switches
+wants polymorphism). The two rules in that reference apply here as well. A documented project standard overrides the
+baseline, and a smell is always a judgement call, so a smell on its own is not evidence that code has a reason to
+change. Pair it with the YAGNI evidence below. When a findings document is given, extract only the refactoring-shaped
+findings (structural suggestions, duplication, naming, coupling) and record each finding's ID so the summary can trace
+back to it. If the request is open-ended ("clean up the codebase", "improve quality") with no named target, ask the user
+for one before doing anything: open-ended refactoring runs are the documented failure mode this skill exists to avoid,
+and a wrong guess here burns the whole run.
 
 **Resolve commands.** Read CLAUDE.md's `## Project Discovery` section for the test command (under
 `### Commands and Tests`), the lint command, the build command, language, and framework. If absent, fall back to
