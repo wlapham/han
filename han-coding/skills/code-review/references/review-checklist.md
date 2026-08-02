@@ -21,6 +21,20 @@ Named anti-patterns to match in Pass 2:
 - Code or comment justifying its presence with "for future flexibility", "in case we want to…", "when we scale", "best practice says", or symmetry with another feature ("we have create, so we should have delete") with no concrete near-term need
 - A strictly simpler form (single function instead of class, inline check instead of helper, literal instead of configurable, single concrete instead of interface) would satisfy the same evidence as the introduced code
 
+**Code Smell Baseline** (apply [../../../references/code-smell-baseline.md](../../../references/code-smell-baseline.md); these are ordinary CRIT/WARN/SUGG findings under their matched category, not a separate class)
+
+The baseline gives every reviewer the same names for design problems, and it applies even when this repository documents no conventions. Two rules bind it, and they are not optional:
+
+1. **A documented repo standard overrides the baseline.** Where `CONTRIBUTING.md`, the project's coding standards, an ADR, or CLAUDE.md endorses a pattern the baseline would flag, suppress the smell. Same for anything a linter, formatter, type checker, or CI gate already enforces.
+2. **Every smell is a judgement call, never a hard violation.** Name it as "possible Feature Envy", not as a rule breach. A smell alone never justifies Critical; it earns Warning only when the diff actively introduces or worsens it, Suggestion otherwise. When unsure, leave it out.
+
+Smells to match against the diff: Mysterious Name, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, Speculative Generality, Message Chains, Middle Man, Refused Bequest. Read the reference for what each one is and how it is fixed.
+
+Two routing rules keep findings from doubling up:
+
+- **Speculative Generality goes to YAGNI**, not here. It is the same problem, and the YAGNI section above owns it.
+- **`han-core:structural-analyst` (Step 7) already covers** Duplicated Code, Feature Envy, Shotgun Surgery, Divergent Change, Middle Man, Message Chains, and Refused Bequest. When that agent ran and raised the finding with evidence, keep the agent's version and drop the manual one at aggregation. The smells this manual pass uniquely catches are **Mysterious Name, Primitive Obsession, Data Clumps, and Repeated Switches**.
+
 **Correctness**
 - Does the code accomplish its stated purpose?
 - Are edge cases handled (null, empty, boundary values)?
