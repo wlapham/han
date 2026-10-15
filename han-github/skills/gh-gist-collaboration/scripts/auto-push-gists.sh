@@ -19,7 +19,7 @@ while IFS= read -r manifest; do
     git -C "$local_dir" add -A -- ':!manifest.yml'
     if ! git -C "$local_dir" diff --cached --quiet; then
         git -C "$local_dir" commit -m "sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
-        git -C "$local_dir" push origin master
+        git -C "$local_dir" push origin HEAD
         echo "[gh-gist-collaboration] Pushed $local_dir"
     fi
 done < <(find "$FEATURES_DIR" -maxdepth 2 -name "manifest.yml" 2>/dev/null)

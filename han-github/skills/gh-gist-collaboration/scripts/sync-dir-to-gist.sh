@@ -25,5 +25,5 @@ if git -C "$DIR" diff --cached --quiet; then
 fi
 
 git -C "$DIR" commit -m "sync: $(date -u '+%Y-%m-%d %H:%M UTC')"
-git -C "$DIR" push origin master
+git -C "$DIR" push origin HEAD
 echo "Pushed $DIR to its Gist."
