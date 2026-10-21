@@ -1,5 +1,43 @@
 # Han Release Notes
 
+## Unreleased (fork)
+
+Fork-only work on top of upstream `v5.5.0`. See
+[docs/adr/release-fork-plugin-versioning.md](./docs/adr/release-fork-plugin-versioning.md) for how these versions are
+set.
+
+### han-github 2.4.0-wl.3
+
+Adds the `gh-gist-collaboration` skill. `/gh-gist-collaboration` shares a local `tmp/features/` subdirectory with
+teammates through a GitHub Gist and keeps both sides in sync by treating the Gist as a git remote. The creator runs the
+skill against a local path to create and push the Gist; collaborators join by passing the Gist URL, which forks it and
+syncs the files locally. Subsequent runs in either direction push or pull. Two manifests split the bookkeeping:
+`tmp/features/<project-name>/manifest.yml` records this machine's Gist ID and role and never leaves the machine, while
+`.han-gist-sharing-manifest.yml` sits beside it, syncs to the Gist, and carries the creator's Gist ID and the
+collaborator forks so teammates can discover each other. `--add-collaborator` and `--merge` let the creator register a
+teammate's fork and pull their changes back. Gists are flat by design, so the skill rejects any shared directory that
+contains subdirectories.
+
+New Gists are **secret by default**. `scripts/create-gist-from-dir.sh` takes an optional third argument, and `--public`
+is now the deliberate opt-in rather than the fallback; an unrecognized flag fails rather than silently publishing. A
+secret Gist is unlisted, not private, so nothing sensitive belongs in either kind.
+
+On creation the skill offers to write a `.context.md` working-conventions file into the shared directory and appends the
+matching `@<local-dir>/.context.md` import to the project's `CLAUDE.md`. It also installs a push script at the
+operator's Claude configuration directory and registers a `Stop` hook in the project's gitignored
+`.claude/settings.local.json`, so every creator-owned Gist directory syncs at session end. Both live outside version
+control, so running the skill adds nothing to the repository and nothing to a teammate's session. The script exits
+immediately when no manifest is present. Push mode refreshes the installed script on every run, so it tracks the skill
+version automatically.
+
+Pushes target `HEAD` rather than `master`, because a Gist clone comes back on whichever branch GitHub gave it.
+
+### han-coding 3.5.0-wl.1 and han-core 3.3.0-wl.1
+
+Adds `references/code-smell-baseline.md`, the Fowler smell vocabulary, and wires it into `/refactor` (naming the smell
+selects the refactoring) and `/code-review`'s checklist. A documented project standard overrides the baseline, and a
+smell on its own is not evidence that code has a reason to change.
+
 ## v5.5.0
 
 han 5.5.0 adds an opt-in Domain-Driven Design plugin, a second planning entry point for code that already exists, and

@@ -43,7 +43,7 @@ Run `/gh-gist-collaboration` in Claude Code. The argument selects the mode.
 
 Give it:
 
-1. **A path, to push.** A directory under `tmp/features/`. On the first run the skill asks whether the Gist should be public or secret, and for a short project name to use as the directory name.
+1. **A path, to push.** A directory under `tmp/features/`. On the first run the skill creates a secret Gist unless you ask for a public one, and asks for a short project name to use as the directory name.
 2. **A Gist URL or ID, to join or pull.** The skill decides between the two by looking the ID up in the registry. Known fork means pull; unknown means first-time join.
 3. **`--add-collaborator <name> <fork-id>`, to register a teammate's fork.** Needed once per collaborator before you can merge their work.
 4. **`--merge [<name>]`, to pull a collaborator's changes into your Gist.**
@@ -60,7 +60,7 @@ Example prompts:
 
 Which artifacts appear depends on the mode.
 
-- **A Gist, public or secret**, described as `[<repo-name>] <project-name>` so it is identifiable in a list of Gists.
+- **A Gist, secret by default**, described as `[<repo-name>] <project-name>` so it is identifiable in a list of Gists.
 - **`tmp/features/<project-name>`**, a git repository with the Gist as `origin`. For a collaborator, the fork is `origin` and the creator's Gist is `upstream`.
 - **`manifest.yml`**, inside that directory, holding `local_dir`, `gist_id`, `role`, and (on a fork) `upstream_id`. Excluded from every `git add`, so it never reaches GitHub.
 - **`.han-gist-sharing-manifest.yml`**, beside it, holding the creator's `gist_id` and the `collaborators` map. This one does sync, which is how a new collaborator discovers who to set as upstream.
@@ -71,7 +71,7 @@ Which artifacts appear depends on the mode.
 ## How to get the most out of it
 
 - **Pick the project name deliberately.** It becomes the directory name on your machine and, through the Gist description, the label everyone sees. Rename cost is real, so choose the name you would use in conversation.
-- **Choose secret for anything client-adjacent.** A secret Gist is unlisted, not private. Anyone with the URL can read it, and forks stay secret but remain reachable by URL. Nothing sensitive belongs in either kind.
+- **Secret is the default, and it is not privacy.** A secret Gist is unlisted, not private. Anyone with the URL can read it, and forks stay secret but remain reachable by URL. Nothing sensitive belongs in either kind, so `--public` is a deliberate choice rather than a fallback.
 - **Write `.context.md` even when it feels premature.** It is the only place that tells a teammate's Claude what the directory is for. Two lines beat nothing, and it syncs, so it improves as the work does.
 - **Keep it flat from the start.** The skill rejects subdirectories, so a structure you build locally has to be flattened before the first push. Naming files `area-topic.md` costs less than reorganizing later.
 - **Register collaborators before you need to merge.** `--add-collaborator` is a one-time setup per person. Doing it when they tell you their fork ID is easier than doing it while trying to merge.
@@ -86,7 +86,7 @@ No agents are dispatched and no model tier is involved beyond the conversation i
 
 Step 1 is always mode detection. The skill reads the argument, builds the registry by scanning `tmp/features/*/manifest.yml`, and routes to one of five modes. The interesting case is a bare Gist ID, which means pull when the registry already knows it as a fork, and join when it does not.
 
-**Push mode** validates that the path is under `tmp/features/`, has no subdirectories, and lists what will be shared. If the registry has no entry for the directory, the skill gates on a human: it shows the file list, asks public or secret, and asks for a project name before creating anything. It then creates the Gist through [`scripts/create-gist-from-dir.sh`](../../../han-github/skills/gh-gist-collaboration/scripts/create-gist-from-dir.sh), wires the directory up as the clone, writes both manifests, offers `.context.md`, and installs the Stop hook. With an entry already present it skips straight to the push, which runs [`scripts/sync-dir-to-gist.sh`](../../../han-github/skills/gh-gist-collaboration/scripts/sync-dir-to-gist.sh) and reports when there was nothing to send.
+**Push mode** validates that the path is under `tmp/features/`, has no subdirectories, and lists what will be shared. If the registry has no entry for the directory, the skill gates on a human: it shows the file list, says the Gist will be secret, and asks for a project name before creating anything. It then creates the Gist through [`scripts/create-gist-from-dir.sh`](../../../han-github/skills/gh-gist-collaboration/scripts/create-gist-from-dir.sh), wires the directory up as the clone, writes both manifests, offers `.context.md`, and installs the Stop hook. With an entry already present it skips straight to the push, which runs [`scripts/sync-dir-to-gist.sh`](../../../han-github/skills/gh-gist-collaboration/scripts/sync-dir-to-gist.sh) and reports when there was nothing to send.
 
 **Join mode** is deliberately not fully automatic. Forking a Gist is something you do in your own terminal with `gh gist fork`, and the skill waits for you to paste the resulting fork ID rather than forking on your behalf. It then clones your fork, adds the creator's Gist as `upstream`, reads the shared manifest to confirm the creator's ID, writes your local manifest with `role: fork`, and offers the `.context.md` import if the creator wrote one.
 

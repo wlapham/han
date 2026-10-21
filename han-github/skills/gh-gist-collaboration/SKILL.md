@@ -50,9 +50,9 @@ The creator syncs local changes to their Gist. The working directory at `tmp/fea
 Check the registry for an existing entry where `local_dir` matches.
 
 **If no existing entry (new Gist):** Human gate before creating.
-1. Show the user: the directory path, the file list, and ask whether the Gist should be public or secret.
+1. Show the user: the directory path, the file list, and state that the Gist will be secret. Only pass `--public` if the user asks for a public Gist.
 2. Ask for a short human-readable project name to use as the directory name (e.g. `topaz-fit`). The directory will be at `tmp/features/<project-name>`.
-3. Run `${CLAUDE_SKILL_DIR}/scripts/create-gist-from-dir.sh <dir> "[<repo-name>] <project-name>" [--secret]`. It outputs the Gist ID and URL on separate lines.
+3. Run `${CLAUDE_SKILL_DIR}/scripts/create-gist-from-dir.sh <dir> "[<repo-name>] <project-name>"`. The Gist is secret unless you pass `--public` as a third argument. It outputs the Gist ID and URL on separate lines.
 4. Set up `tmp/features/<project-name>` as the Gist clone:
    - If the directory already exists with content: `git -C tmp/features/<project-name> init`, `git -C tmp/features/<project-name> remote add origin git@gist.github.com:<id>.git`, stage all files except manifest.yml (`git -C tmp/features/<project-name> add -A -- ':!manifest.yml'`), commit, then `git -C tmp/features/<project-name> push --force -u origin HEAD`.
    - If the directory does not yet exist: `gh gist clone <id> tmp/features/<project-name>`.
