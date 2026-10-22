@@ -7,6 +7,10 @@ set -euo pipefail
 # Collects top-level files from <dir> and creates a GitHub Gist. Gists are
 # secret by default; pass --public to create a public one instead.
 # Prints the Gist ID on the first line and the URL on the second line.
+#
+# `gh gist create` is already secret by default and has no --secret flag, so
+# secret means passing no visibility flag at all. --secret is accepted here to
+# say so at the call site, and is deliberately not forwarded to gh.
 
 DIR="${1:?Usage: create-gist-from-dir.sh <dir> <description> [--public|--secret]}"
 DESCRIPTION="${2:?Missing description}"
@@ -25,16 +29,15 @@ if [ ${#FILES[@]} -eq 0 ]; then
   exit 1
 fi
 
+GH_ARGS=("--desc" "$DESCRIPTION")
 case "$VISIBILITY_FLAG" in
   --secret) ;;
-  --public) ;;
+  --public) GH_ARGS+=("--public") ;;
   *)
     echo "Error: unknown flag '$VISIBILITY_FLAG' (expected --public or --secret)" >&2
     exit 1
     ;;
 esac
-
-GH_ARGS=("--desc" "$DESCRIPTION" "$VISIBILITY_FLAG")
 
 for f in "${FILES[@]}"; do
   GH_ARGS+=("$f")

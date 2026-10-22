@@ -6,7 +6,7 @@ Fork-only work on top of upstream `v5.5.0`. See
 [docs/adr/release-fork-plugin-versioning.md](./docs/adr/release-fork-plugin-versioning.md) for how these versions are
 set.
 
-### han-github 2.4.0-wl.3
+### han-github 2.4.0-wl.4
 
 Adds the `gh-gist-collaboration` skill. `/gh-gist-collaboration` shares a local `tmp/features/` subdirectory with
 teammates through a GitHub Gist and keeps both sides in sync by treating the Gist as a git remote. The creator runs the
@@ -21,6 +21,12 @@ contains subdirectories.
 New Gists are **secret by default**. `scripts/create-gist-from-dir.sh` takes an optional third argument, and `--public`
 is now the deliberate opt-in rather than the fallback; an unrecognized flag fails rather than silently publishing. A
 secret Gist is unlisted, not private, so nothing sensitive belongs in either kind.
+
+Secret means passing no visibility flag at all, because `gh gist create` is already secret by default and accepts only
+`-p/--public`. An earlier build of this change forwarded a `--secret` flag that `gh` does not have, so every creation
+failed with `unknown flag: --secret`. The script now accepts `--secret` at the call site to state the intent and does
+not forward it, and `test/create-gist-visibility.bats` parses flags the way `gh` does so a flag it would reject fails
+the test.
 
 On creation the skill offers to write a `.context.md` working-conventions file into the shared directory and appends the
 matching `@<local-dir>/.context.md` import to the project's `CLAUDE.md`. It also installs a push script at the
